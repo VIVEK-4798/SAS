@@ -5,7 +5,7 @@ const header = () => {
   return (
     <header>
         {/* <img src='../public/pizzeria-logo.jpg'/> */}
-        <Link  href="">Pizzeria</Link>
+        <Link className='text-primary font-semibold' href="">Pizzeria</Link>
         <nav>
             <Link href={''}>Home</Link>
             <Link href={''}>Menu</Link>
