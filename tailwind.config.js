@@ -10,6 +10,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        // Custom grid template columns
+        'custom': '0.4fr 0.6fr',
+      },
       colors:{
         primary: '#f13a01'
       }
