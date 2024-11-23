@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import React from 'react'
+import React from 'react';
+import '../src/app/globals.css'
 
 const header = () => {
   return (
