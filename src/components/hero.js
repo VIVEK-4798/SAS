@@ -1,5 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
+
 
 const hero = () => {
   return (
@@ -14,11 +17,23 @@ const hero = () => {
          meal, or a quick bite, every slice is made to bring 
          happiness to your day.
         </p>
-        <div>
-          <button className='bg-primary text-white
-          px-8 py-2 rounded-full'>
-            Order now</button>
-          <button>Learn more</button>
+        <div className='flex items-center gap-4'>
+          <button className='flex items-center bg-primary text-white
+          px-5 py-2 rounded-full text-sm'>
+            ORDER NOW
+            <FontAwesomeIcon
+              icon={faArrowCircleRight}
+              className="ml-2 w-4"
+            />
+          </button>
+          <button className='flex items-center gap-2 py-2
+           text-gray-600 font-semibold text-sm'>
+            Learn more
+            <FontAwesomeIcon
+              icon={faArrowCircleRight}
+              className="ml-2 w-4"
+            />
+          </button>
         </div>
       </div>
         <div className='relative'>
