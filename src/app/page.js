@@ -1,5 +1,6 @@
 import Header from '../components/header';
-import Hero from '../components/hero'
+import Hero from '../components/hero';
+import HomeMenu from '../components/homeMenu';
 import '../app/globals.css'
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
     <>
       <Header/>
       <Hero/>
+      <HomeMenu/>
     </>
   );
 }
