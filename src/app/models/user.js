@@ -19,4 +19,8 @@ const UserSchema = new Schema({
 }, 
 {timestamps: true});
 
+UserSchema.post('validate', (user) => {
+    user.password = 'hashed'
+})
+
 export const User = models?.User || model('User', UserSchema);
