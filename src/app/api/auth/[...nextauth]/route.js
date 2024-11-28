@@ -1,7 +1,11 @@
+import mongoose from "mongoose";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import {User} from '../../../models/user';
+// import bcrypt from ''
 
 const handler = NextAuth({
+  secret: process.env.SECRET,
     providers: [
         CredentialsProvider({
           name: 'Credentials',
@@ -10,15 +14,14 @@ const handler = NextAuth({
             password: { label: "Password", type: "password" }
           },
           async authorize(credentials, req) {
-            const res = await fetch("/your/endpoint", {
-              method: 'POST',
-              body: JSON.stringify(credentials),
-              headers: { "Content-Type": "application/json" }
-            })
-            const user = await res.json()
-      
-            if (res.ok && user) {
-              return user
+            const {email, password} = credentials;
+
+            mongoose.connect(process.env.MONGO_URL);
+            const user = await User.findOne({email});
+            const passwordOk = user && bcrypt.CompareSync(password, user.password);            
+            
+            if(passwordOk){
+              return user;
             }
             return null
           }

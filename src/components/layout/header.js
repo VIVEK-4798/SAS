@@ -1,10 +1,15 @@
+"use client"
+import { useSession } from 'next-auth/react';
 import Link from 'next/link'
 import React from 'react';
 
 const header = () => {
+
+  const session = useSession();
+   console.log(session);
+
   return (
     <header className='flex items-center justify-between'>
-        {/* <img src='../public/pizzeria-logo.jpg'/> */}
         <Link className='text-primary font-semibold text-2xl' href="/">
           Pizzeria
         </Link>

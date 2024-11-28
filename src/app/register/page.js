@@ -14,17 +14,19 @@ const RegisterPage = () => {
   async function handleFormSubmit(ev){
     ev.preventDefault();
     setCreatingUser(true);
+    setError(false);
+    setUserCreated(false);
+
       const response = await fetch('api/register', {
         method: 'POST',
         body: JSON.stringify({email, password}),
         headers: {'content-Type': 'application/json'},
       });
-      if(!response.ok){
-        setError(true);
-      }
       if(response.ok){
         setUserCreated(true);
-
+      }
+      else{
+        setError(true);
       }
       setCreatingUser(false);
   }
@@ -45,7 +47,7 @@ const RegisterPage = () => {
         </div>
       )}
       {error && (
-        <div>
+        <div className='my-4 text-center'>
           An error has occured.<br/>
           Please try again later
         </div>
@@ -59,7 +61,7 @@ const RegisterPage = () => {
             onChange={ev => setPassword(ev.target.value)}/>
         <button type='submit' disabled={creatingUser}>
           Register
-          </button>
+        </button>
         <div className='my-4 text-center text-gray-500'>
           or login with provider
         </div>
@@ -67,6 +69,12 @@ const RegisterPage = () => {
           <Image src={'/google.png'} alt={'google icon'} width={24} height={24}/>
           Login with google
           </button>
+          <div className='text-center my-4 text-gray-500 border-t pt-4'>
+            Existing account?{' '}
+            <Link href={'/login'} className='underline'>
+              Login here &raquo;
+            </Link>
+          </div>
       </form>
     </section>
   )
