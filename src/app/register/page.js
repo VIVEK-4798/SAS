@@ -1,23 +1,31 @@
 "use client"
 import React, {useState} from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const RegisterPage = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword]= useState('');
   const [creatingUser, setCreatingUser] = useState(false);
-  const [userCreated, setUserCreated] = useState(true);
+  const [userCreated, setUserCreated] = useState(false);
+  const [error, setError] = useState(false);
 
   async function handleFormSubmit(ev){
     ev.preventDefault();
     setCreatingUser(true);
-    await fetch('api/register', {
-      method: 'POST',
-      body: JSON.stringify({email, password}),
-      headers: {'content-Type': 'application/json'},
-    });
-    setCreatingUser(false);
+    try {
+      await fetch('api/register', {
+        method: 'POST',
+        body: JSON.stringify({email, password}),
+        headers: {'content-Type': 'application/json'},
+      });
+      setCreatingUser(false);
+      setUserCreated(true);
+    } catch (e) {
+      setError(true);
+    }
+    
   }
 
   return (
@@ -26,8 +34,19 @@ const RegisterPage = () => {
         Register
       </h1>
       {userCreated && (
-        <div className='my-4'>
-          User craeted. Now you can login
+        <div className='my-4 text-center'>
+          User created.
+          <br/>
+           Now you can {' '}
+          <Link href={'/login'} className='underline'>
+            Login &raquo;
+          </Link>
+        </div>
+      )}
+      {error && (
+        <div>
+          An error has occured.<br/>
+          Please try again later
         </div>
       )}
       <form className='block max-w-xs mx-auto' onSubmit={handleFormSubmit}>
