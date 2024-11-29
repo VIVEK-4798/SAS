@@ -16,17 +16,6 @@ const loginPage = () => {
 
         await signIn('credentials', {email, password})
 
-        // const response = await fetch('/api/login', {
-        //   body: JSON.stringify({email, password}),
-        //   headers: {'Content-Type': 'application/json'},
-        //   method: 'POST'
-        // });
-        // if(response.ok){
-          
-        // }
-        // else{
-
-        // }
         setLoginInProgress(false);
     }
 
