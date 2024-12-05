@@ -14,6 +14,8 @@ const handler = NextAuth({
             password: { label: "Password", type: "password" }
           },
           async authorize(credentials, req) {
+            console.log(credentials);
+            
             const {email, password} = credentials;
 
             mongoose.connect(process.env.MONGO_URL);
@@ -26,7 +28,7 @@ const handler = NextAuth({
             return null
           }
         })
-      ]
+      ],
 });
 
-export { }
+export {handler as GET, handler as POST}

@@ -2,12 +2,11 @@
 import React from 'react';
 import { SessionProvider } from "next-auth/react";
 
-const AppContext = ({Children}) => {
+export function AppProvider({Children}) {
   return (
     <SessionProvider>
         {Children}
     </SessionProvider>
-  )
+  );
 }
 
-export default AppContext
