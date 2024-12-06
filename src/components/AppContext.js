@@ -1,12 +1,11 @@
-"use client"
-import React from 'react';
+"use client";
+import React from "react";
 import { SessionProvider } from "next-auth/react";
 
-export function AppProvider({Children}) {
+export function AppProvider({ children }) { 
   return (
     <SessionProvider>
-        {Children}
+      {children}
     </SessionProvider>
   );
 }
-

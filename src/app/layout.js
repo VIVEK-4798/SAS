@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
-import Header from '../components/layout/header';
-import Footer from '../components/layout/footer';
-import AppProvider from '../components/AppContext';
+import { AppProvider } from "../components/AppContext"; // Named import
+import Header from "../components/layout/header";
+import Footer from "../components/layout/footer";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -26,13 +26,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main className="max-w-4xl mx-auto p-4">
-          <AppProvider>
-          <Header/>
-          {children}
-          <Footer/>
-          </AppProvider>
-        </main>
+        <AppProvider>
+          <main className="max-w-4xl mx-auto p-4">
+            <Header />
+            {children}
+            <Footer />
+          </main>
+        </AppProvider>
       </body>
     </html>
   );
