@@ -23,14 +23,17 @@ const header = () => {
         </nav>
         <nav className='flex items-center gap-4 text-gray-500'>
           {status === 'authenticated' && (
-            <button
+            <>
+            {/* <Link href={}>Profile</Link> */}
+              <button
               onClick={() => signOut}
               href={'/register'} className='bg-primary
               rounded-full text-white px-8 py-2'>
               Logout
            </button>
+            </>
           )}
-          {status === 'authenticated' && (
+          {status !== 'authenticated' && (
             <>
               <Link href={'/login'}>Login</Link>
               <Link href={'/register'} className='bg-primary
@@ -39,7 +42,6 @@ const header = () => {
               </Link>
             </>
           )}
-          
         </nav>
     </header>
   )
