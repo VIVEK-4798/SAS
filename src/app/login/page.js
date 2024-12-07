@@ -10,14 +10,19 @@ const loginPage = () => {
     const [password, setPassword]= useState('');
     const [loginInProgress, setLoginInProgress] = useState(false);
 
-    async function handleFormSubmit(ev){
-        ev.preventDefault();
-        setLoginInProgress(true);
-
-        await signIn('credentials', {email, password})
-
-        setLoginInProgress(false);
-    }
+    async function handleFormSubmit(ev) {
+      ev.preventDefault();
+      setLoginInProgress(true);
+  
+      const result = await signIn('credentials', {
+          redirect: false, 
+          email,
+          password,
+      });
+  
+      setLoginInProgress(false);
+  }
+  
 
   return (
     <section className='mt-8'>
