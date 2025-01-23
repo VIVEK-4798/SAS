@@ -15,13 +15,22 @@ const loginPage = () => {
       setLoginInProgress(true);
   
       const result = await signIn('credentials', {
-          redirect: false, 
           email,
           password,
+          redirect: false, // Get the result without redirecting
       });
   
       setLoginInProgress(false);
+  
+      if (result.ok) {
+          console.log('Login successful');
+          // window.location.href = result.url;
+          window.location.href = '/';
+      } else {
+          console.error('Login failed:', result.error);
+      }
   }
+  
   
 
   return (
@@ -46,12 +55,12 @@ const loginPage = () => {
           <Image src={'/google.png'} alt={'google icon'} width={24} height={24}/>
           Login with google
         </button>
-        <div className='text-center my-4 text-gray-500 border-t pt-4'>
+        {/* <div className='text-center my-4 text-gray-500 border-t pt-4'>
             Existing account?{' '}
             <Link href={'/login'} className='underline'>
               Login here &raquo;
             </Link>
-        </div>
+        </div> */}
       </form>
     </section>
   )

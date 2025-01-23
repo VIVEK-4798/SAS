@@ -14,21 +14,29 @@ const handler = NextAuth({
             password: { label: "Password", type: "password" }
           },
           async authorize(credentials, req) {
-            console.log(credentials);
-            
-            const {email, password} = credentials;
-
-            mongoose.connect(process.env.MONGO_URL);
-            const user = await User.findOne({email});
-            const passwordOk = user && bcrypt.CompareSync(password, user.password);            
-            
-            if(passwordOk){
-              return user;
+            const { email, password } = credentials;
+          
+            await mongoose.connect(process.env.MONGO_URL);
+          
+            const user = await User.findOne({ email });
+            if (!user) {
+              console.error('User not found');
+              return null;
             }
-            return null
+          
+            const passwordOk = bcrypt.compareSync(password, user.password);
+            if (passwordOk) {
+              return { id: user._id, email: user.email }; // Return minimal user data
+            }
+          
+            console.error('Invalid password');
+            return null;
           }
         })
       ],
+      pages:{
+        signIn: "/src/app/login/page.js"
+      }
 });
 
 export {handler as GET, handler as POST}

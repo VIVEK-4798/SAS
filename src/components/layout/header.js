@@ -10,6 +10,10 @@ const header = () => {
 
   const status = session.status;
 
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
+
   return (
     <header className='flex items-center justify-between'>
         <Link className='text-primary font-semibold text-2xl' href="/">
@@ -26,8 +30,8 @@ const header = () => {
             <>
             {/* <Link href={}>Profile</Link> */}
               <button
-              onClick={() => signOut}
-              href={'/register'} className='bg-primary
+              onClick={() => signOut()}
+              className='bg-primary
               rounded-full text-white px-8 py-2'>
               Logout
            </button>

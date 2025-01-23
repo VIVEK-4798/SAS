@@ -16,6 +16,7 @@ const RegisterPage = () => {
     setCreatingUser(true);
     setError(false);
     setUserCreated(false);
+    
 
       const response = await fetch('api/register', {
         method: 'POST',
