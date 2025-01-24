@@ -8,11 +8,8 @@ const header = () => {
   const session = useSession();
    console.log(session);
 
-  const status = session.status;
+  const status = session?.status;
 
-  if (status === 'loading') {
-    return <p>Loading...</p>;
-  }
 
   return (
     <header className='flex items-center justify-between'>
