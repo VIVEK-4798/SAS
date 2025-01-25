@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import NextAuth from "next-auth";
+import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import {User} from '../../../models/user';
 
@@ -18,34 +19,27 @@ const handler = NextAuth({
           },
 
           async authorize(credentials, req) {
-            try {
-              console.log("Authorize function triggered");
-              
-              const email = credentials?.email;
-              const password = credentials?.password;
-
-              await mongoose.connect(process.env.MONGO_URL);
-              console.log("Connected to database");
+            console.log("Authorize triggered with credentials:", credentials);
           
-              const user = await User.findOne({ email });
-              console.log("User fetched:", user);
+            const { email, password } = credentials;
           
-              if (!user) {
-                console.error("User not found");
-                throw new Error("User not found");
-              }
+            // Connect to the database
+            await mongoose.connect(process.env.MONGO_URL);
           
-              const passwordOk = user && bcrypt.compareSync(password, user.password);
-              if (!passwordOk) {
-                console.error("Invalid credentials");
-                throw new Error("Invalid credentials");
-              }
-          
-              return { id: user._id, email: user.email };
-            } catch (error) {
-              console.error("Authorize Error:", error);
-              throw error;
+            const user = await User.findOne({ email });
+            if (!user) {
+              console.error("User not found");
+              throw new Error("User not found");
             }
+          
+            const isValidPassword = bcrypt.compareSync(password, user.password);
+            if (!isValidPassword) {
+              console.error("Invalid password");
+              throw new Error("Invalid credentials");
+            }
+          
+            console.log("User authorized:", user);
+            return { id: user._id, email: user.email };
           }
           
         })

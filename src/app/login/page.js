@@ -7,14 +7,33 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginInProgress, setLoginInProgress] = useState(false);
-
+  
+    
   async function handleFormSubmit(ev) {
     ev.preventDefault();
     setLoginInProgress(true);
 
-    await signIn('credentials', { username: email, password, redirect:false});
-
-    setLoginInProgress(false);
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        username: ev.target.email.value,
+        password: ev.target.password.value,
+      });
+      
+      if (!result) {
+        console.error("No response from signIn");
+      } else if (!result.ok) {
+        console.error("Login failed:", result.error);
+      } else {
+        console.log("Login successful:", result);
+      }
+      
+      console.log("Login result:", result);
+    } catch (err) {
+      console.error("Error during signIn:", err);
+    } finally {
+      setLoginInProgress(false);
+    }
   }
   return (
     <section className="mt-8">
