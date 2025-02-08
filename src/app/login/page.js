@@ -1,5 +1,5 @@
 'use client';
-import {signIn} from "next-auth/react";
+import {signIn, getSession} from "next-auth/react";
 import Image from "next/image";
 import {useState} from "react";
 
@@ -12,29 +12,34 @@ export default function LoginPage() {
   async function handleFormSubmit(ev) {
     ev.preventDefault();
     setLoginInProgress(true);
-
+  
     try {
       const result = await signIn("credentials", {
         redirect: false,
-        username: ev.target.email.value,
+        email: ev.target.email.value,
         password: ev.target.password.value,
       });
-      
-      if (!result) {
-        console.error("No response from signIn");
-      } else if (!result.ok) {
-        console.error("Login failed:", result.error);
-      } else {
-        console.log("Login successful:", result);
-      }
-      
+  
       console.log("Login result:", result);
+  
+      if (!result || result.error) {
+        console.error("❌ Login failed:", result?.error);
+        return;
+      }
+  
+      console.log("✅ Login successful, refreshing session...");
+      
+      // Manually refresh the session after successful login
+      const session = await getSession();
+      console.log("📦 Updated Session:", session);
+  
     } catch (err) {
       console.error("Error during signIn:", err);
     } finally {
       setLoginInProgress(false);
     }
   }
+  
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">

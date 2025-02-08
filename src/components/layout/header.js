@@ -5,11 +5,10 @@ import React from 'react';
 
 const header = () => {
 
-  const session = useSession();
-   console.log(session);
+  const { data: session, status } = useSession();
 
-  const status = session?.status;
-
+  console.log("Session Status:", status);
+  console.log("Session Data:", session);
 
   return (
     <header className='flex items-center justify-between'>
