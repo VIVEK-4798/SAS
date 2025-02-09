@@ -4,15 +4,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { User } from "../../../models/user";
 
-console.log("route.js trigred");
+console.log("✅ NextAuth API Loaded");
 
-
-const handler = NextAuth({
-  secret: process.env.SECRET,
+export const handler = NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   debug: true,
-  session: {
-    strategy: "jwt", 
-  },
+  session: { strategy: "jwt" },
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -21,46 +18,17 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        try {
-          console.log("🚀 Authorize function triggered!");
-
-          if (!credentials) {
-            console.error("❌ No credentials provided!");
-            throw new Error("No credentials provided");
-          }
-
-          const email = credentials?.email;
-          const password = credentials?.password;
-
-          if (!mongoose.connection.readyState) {
-            await mongoose.connect(process.env.MONGO_URL);
-            console.log("✅ Connected to MongoDB");
-          }
-
-          const user = await User.findOne({ email });
-          console.log("🔍 Fetched user from DB:", user);
-
-          if (!user) {
-            console.error("❌ User not found!");
-            throw new Error("User not found");
-          }
-
-          const passwordOk = bcrypt.compareSync(password, user.password);
-          console.log("🔑 Password valid:", passwordOk);
-
-          if (!passwordOk) {
-            console.error("❌ Invalid password!");
-            throw new Error("Invalid credentials");
-          }
-
-          console.log("✅ User authenticated:", user);
-          return { id: user._id, email: user.email };
-
-        } catch (error) {
-          console.error("🔥 Authorization error:", error);
-          throw error;
+        console.log("🚀 Authorize function triggered!");
+        console.log("📧 Received Email:", credentials?.email);
+        console.log("🔑 Received Password:", credentials?.password ? "Present" : "Missing");
+      
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Missing email or password");
         }
-      },
+      
+        return { id: "fake_user_id", email: credentials.email }; // Temporarily return a fake user
+      }      
+      ,
     }),
   ],
   callbacks: {
@@ -76,15 +44,13 @@ const handler = NextAuth({
     async session({ session, token }) {
       console.log("📦 Session Callback Before:", session);
       if (token) {
-        session.user = { id: token.id, email: token.email }; // ✅ Ensure user data is stored
+        session.user = { id: token.id, email: token.email };
       }
       console.log("📦 Session Callback After:", session);
       return session;
     },
-  },  
-  pages: {
-    signIn: "/login",
   },
+  pages: { signIn: "/login" },
 });
 
 export { handler as GET, handler as POST };

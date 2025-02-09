@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { AppProvider } from "../components/AppContext"; // Named import
+import SessionWrapper from "../components/SessionWrapper"; // ✅ Import Client Component
 import Header from "../components/layout/header";
 import Footer from "../components/layout/footer";
 import "./globals.css";
@@ -26,13 +26,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AppProvider>
+        <SessionWrapper> 
           <main className="max-w-4xl mx-auto p-4">
             <Header />
             {children}
             <Footer />
           </main>
-        </AppProvider>
+        </SessionWrapper>
       </body>
     </html>
   );

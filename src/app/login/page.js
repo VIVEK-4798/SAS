@@ -1,4 +1,5 @@
 'use client';
+import Credentials from "next-auth/providers/credentials";
 import {signIn, getSession} from "next-auth/react";
 import Image from "next/image";
 import {useState} from "react";
@@ -8,38 +9,45 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loginInProgress, setLoginInProgress] = useState(false);
   
+  
+async function handleFormSubmit(ev) {
+  ev.preventDefault();
+  setLoginInProgress(true);
+
+  const email = ev.target.email.value;
+  const password = ev.target.password.value;
+
+  console.log("📧 Email entered:", email);
+  console.log("🔑 Password entered:", password ? "Present" : "Missing"); // Hide actual password for security
+
+  try {
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: ev.target.email.value,  
+      password: ev.target.password.value,
+    })
+    console.log(Credentials);
     
-  async function handleFormSubmit(ev) {
-    ev.preventDefault();
-    setLoginInProgress(true);
-  
-    try {
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: ev.target.email.value,
-        password: ev.target.password.value,
-      });
-  
-      console.log("Login result:", result);
-  
-      if (!result || result.error) {
-        console.error("❌ Login failed:", result?.error);
-        return;
-      }
-  
-      console.log("✅ Login successful, refreshing session...");
-      
-      // Manually refresh the session after successful login
-      const session = await getSession();
-      console.log("📦 Updated Session:", session);
-  
-    } catch (err) {
-      console.error("Error during signIn:", err);
-    } finally {
-      setLoginInProgress(false);
+    console.log("🚀 Sign-in Response:", result);
+
+    if (!result || result.error) {
+      console.error("❌ Login failed:", result?.error);
+      return;
     }
+
+    console.log("✅ Login successful, refreshing session...");
+
+    // Check if session is updated
+    const session = await getSession();
+    console.log("📦 Updated Session:", session);
+
+  } catch (err) {
+    console.error("🔥 Error during signIn:", err);
+  } finally {
+    setLoginInProgress(false);
   }
-  
+}
+
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">
