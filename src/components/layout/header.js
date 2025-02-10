@@ -33,7 +33,7 @@ const header = () => {
            </button>
             </>
           )}
-          {status !== 'authenticated' && (
+          {status === 'unauthenticated' && (
             <>
               <Link href={'/login'}>Login</Link>
               <Link href={'/register'} className='bg-primary

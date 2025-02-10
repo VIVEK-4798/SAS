@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import SessionWrapper from "../components/SessionWrapper"; // ✅ Import Client Component
+import SessionWrapper from "../components/SessionWrapper"; 
 import Header from "../components/layout/header";
 import Footer from "../components/layout/footer";
 import "./globals.css";

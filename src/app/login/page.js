@@ -1,51 +1,34 @@
 'use client';
-import Credentials from "next-auth/providers/credentials";
 import {signIn, getSession} from "next-auth/react";
 import Image from "next/image";
 import {useState} from "react";
 
-export default function LoginPage() {
+const loginPage = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginInProgress, setLoginInProgress] = useState(false);
   
   
-async function handleFormSubmit(ev) {
-  ev.preventDefault();
-  setLoginInProgress(true);
+  async function handleFormSubmit(ev) {
+    ev.preventDefault();
+    setLoginInProgress(true);
 
-  const email = ev.target.email.value;
-  const password = ev.target.password.value;
+    const result = await signIn('credentials', {
+        email,
+        password,
+        callbackUrl: '/',
+    });
 
-  // console.log("📧 Email entered:", email);
-  // console.log("🔑 Password entered:", password ? "Present" : "Missing");
-
-  try {
-    const result = await signIn("credentials", {
-      redirect: false,
-      email: ev.target.email.value,  
-      password: ev.target.password.value,
-    })
-    console.log(Credentials);
-    
-    console.log("🚀 Sign-in Response:", result);
-
-    if (!result || result.error) {
-      console.error("❌ Login failed:", result?.error);
-      return;
-    }
-
-    console.log("✅ Login successful, refreshing session...");
-
-    // Check if session is updated
-    const session = await getSession();
-    console.log("📦 Updated Session:", session);
-
-  } catch (err) {
-    console.error("🔥 Error during signIn:", err);
-  } finally {
     setLoginInProgress(false);
-  }
+
+    if (result.ok) {
+        console.log('Login successful');
+        // window.location.href = result.url;
+        window.location.href = '/';
+    } else {
+        console.error('Login failed:', result.error);
+    }
 }
 
   return (
@@ -73,3 +56,5 @@ async function handleFormSubmit(ev) {
     </section>
   );
 }
+
+export default loginPage
