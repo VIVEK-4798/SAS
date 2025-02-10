@@ -17,8 +17,8 @@ async function handleFormSubmit(ev) {
   const email = ev.target.email.value;
   const password = ev.target.password.value;
 
-  console.log("📧 Email entered:", email);
-  console.log("🔑 Password entered:", password ? "Present" : "Missing"); // Hide actual password for security
+  // console.log("📧 Email entered:", email);
+  // console.log("🔑 Password entered:", password ? "Present" : "Missing");
 
   try {
     const result = await signIn("credentials", {

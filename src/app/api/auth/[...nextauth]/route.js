@@ -1,10 +1,7 @@
-import mongoose from "mongoose";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import { User } from "../../../models/user";
 
-console.log("✅ NextAuth API Loaded");
+console.log("✅ NextAuth API Route Loaded"); 
 
 export const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -19,37 +16,45 @@ export const handler = NextAuth({
       },
       async authorize(credentials, req) {
         console.log("🚀 Authorize function triggered!");
-        console.log("📧 Received Email:", credentials?.email);
-        console.log("🔑 Received Password:", credentials?.password ? "Present" : "Missing");
-      
+
         if (!credentials?.email || !credentials?.password) {
+          console.error("❌ Missing email or password!");
           throw new Error("Missing email or password");
         }
-      
-        return { id: "fake_user_id", email: credentials.email }; // Temporarily return a fake user
-      }      
-      ,
+
+        console.log("📧 Received Email:", credentials.email);
+        console.log("🔑 Received Password:", credentials.password ? "Present" : "Missing");
+
+        // Simulating user authentication (Replace this with DB validation)
+        if (credentials.email === "marry@gmail.com" && credentials.password === "marry123") {
+          const user = { id: "12345", email: credentials.email };
+          console.log("✅ User authenticated:", user);
+          return user;  // ✅ Ensure this user object is returned
+        } else {
+          console.error("❌ Invalid credentials");
+          throw new Error("Invalid email or password");
+        }
+      },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      console.log("🔄 JWT Callback Before:", token);
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-      }
-      console.log("🔄 JWT Callback After:", token);
-      return token;
-    },
-    async session({ session, token }) {
-      console.log("📦 Session Callback Before:", session);
-      if (token) {
-        session.user = { id: token.id, email: token.email };
-      }
-      console.log("📦 Session Callback After:", session);
-      return session;
-    },
+  async jwt({ token, user }) {
+    console.log("🔄 JWT Callback Before:", token);
+    if (user) {
+      token.id = user.id;
+      token.email = user.email;
+    }
+    console.log("🔄 JWT Callback After:", token);
+    return token;
   },
+  async session({ session, token }) {
+    console.log("📦 Session Callback Before:", session);
+    if (token) {
+      session.user = { id: token.id, email: token.email };
+    }
+    console.log("📦 Session Callback After:", session);
+    return session;
+  }  
+  ,
   pages: { signIn: "/login" },
 });
 
