@@ -1,5 +1,5 @@
 'use client';
-import {signIn, getSession} from "next-auth/react";
+import {signIn} from "next-auth/react";
 import Image from "next/image";
 import {useState} from "react";
 
