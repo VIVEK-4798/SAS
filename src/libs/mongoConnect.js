@@ -23,4 +23,4 @@ if (!global._mongoClientPromise) {
 
 clientPromise = global._mongoClientPromise;
 
-export default clientPromise; // ✅ Export a promise instead of the client directly
+export default clientPromise; 
