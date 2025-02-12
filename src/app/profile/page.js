@@ -1,15 +1,30 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import Image from "next/image";
 
 const ProfilePage = () => {
   const session = useSession();
-  console.log("hahah:", session);
-
+  const [userName, setUserName] = useState('');
+  
   const { status } = session;
   const router = useRouter();
+
+  async function handleProfileInfoUpdate(ev){
+    ev.preventDefault();
+    const response = await fetch('/api/profile', {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name:userName}),
+    });
+  }
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      setUserName(session.data.user.name);
+    }
+  }, [session, status]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -26,20 +41,24 @@ const ProfilePage = () => {
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
-      <form className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto">
         <div className="flex gap-4 items-center">
           <div>
-            <div className="p-2 rounded-lg">
-            <Image className="rounded-lg" src={userImage} alt="avatar" layout={'fill'}/>
-            <button type="button">Change avatar</button>
+            <div className="p-2 rounded-lg relative">
+            <Image className="rounded-lg w-full h-full mb-1"
+               src={userImage} alt="avatar"
+               width={250} height={250}/>
+            <button type="button">Edit</button>
             </div>
           </div>
-          <div className="grow">
-            <input type="text" placeholder="first and last name"/>
+          <form className="grow" onSubmit={handleProfileInfoUpdate}>
+            <input type="text" placeholder="first and last name"
+              value={userName} onChange={ev => setUserName(ev.target.value)}/>
+            <input type="email"  disabled={true} value={session.data.user.email}/>
             <button type="submit">Save</button>
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
     </section>
   );
 };
