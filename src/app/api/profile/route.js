@@ -8,9 +8,6 @@ export async function PUT(req){
     const data = await req.json();
     const session = await getServerSession(authOptions);
     const email = session.user.email;
-
-    const user = await User.findOne({email});
-    
     
     if('name' in data){
         // Update user name
