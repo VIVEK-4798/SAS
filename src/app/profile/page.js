@@ -47,10 +47,10 @@ const ProfilePage = () => {
   }, [status, router]);
 
   async function handleFileChange(ev) {
-    const files = ev.target.files; // Fix the issue with accessing files
-    if (files?.length > 0) {
+    const files = ev.target.files; 
+    if (files?.length === 1) {
       const data = new FormData();
-      data.append('files', files[0]); // Ensure the file is correctly added to FormData
+      data.append('files', files[0]); 
       await fetch('/api/upload', {
         method: 'POST',
         body: data,
@@ -94,7 +94,7 @@ const ProfilePage = () => {
           <form className="grow" onSubmit={handleProfileInfoUpdate}>
             <input type="text" placeholder="first and last name"
               value={userName} onChange={ev => setUserName(ev.target.value)} />
-            <input type="email" disabled={true} value={session.data.user.email} />
+            <input type="email" disabled={true} value={session.data?.user.email} />
             <button type="submit" disabled={userName === originalUserName}>
               Save
             </button>

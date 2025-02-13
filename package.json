@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.7.4",
+    "@aws-sdk/client-s3": "^3.744.0",
     "@fortawesome/free-brands-svg-icons": "^6.7.1",
     "@fortawesome/free-regular-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
@@ -22,7 +23,8 @@
     "next-auth": "^4.24.10",
     "nextjs-cors": "^2.2.0",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "unique": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "22.9.3",
