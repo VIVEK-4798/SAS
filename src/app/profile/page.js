@@ -7,9 +7,10 @@ import Image from "next/image";
 const ProfilePage = () => {
   const session = useSession();
   const [userName, setUserName] = useState('');
-  const [originalUserName, setOriginalUserName] = useState(''); 
+  const [originalUserName, setOriginalUserName] = useState('');
   const [saved, setSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isEdited, setIsEdited] = useState(false); 
 
   const { status } = session;
   const router = useRouter();
@@ -17,8 +18,8 @@ const ProfilePage = () => {
   async function handleProfileInfoUpdate(ev) {
     ev.preventDefault();
     setSaved(false);
-    
-    if (userName !== originalUserName) {
+
+    if (isEdited || userName !== originalUserName) {
       setIsSaving(true);
       const response = await fetch('/api/profile', {
         method: 'PUT',
@@ -28,7 +29,8 @@ const ProfilePage = () => {
       setIsSaving(false);
       if (response.ok) {
         setSaved(true);
-        setOriginalUserName(userName); 
+        setOriginalUserName(userName);
+        setIsEdited(false); 
       }
     }
   }
@@ -36,7 +38,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (status === 'authenticated') {
       setUserName(session.data?.user.name);
-      setOriginalUserName(session.data.user.name); 
+      setOriginalUserName(session.data?.user.name);
     }
   }, [session, status]);
 
@@ -47,15 +49,16 @@ const ProfilePage = () => {
   }, [status, router]);
 
   async function handleFileChange(ev) {
-    const files = ev.target.files; 
+    const files = ev.target.files;
     if (files?.length === 1) {
+      setIsEdited(true); 
       const data = new FormData();
-      data.append('files', files[0]); 
+      data.append('files', files[0]);
       await fetch('/api/upload', {
         method: 'POST',
         body: data,
       });
-    }    
+    }
   }
 
   if (status === "loading") {
@@ -95,7 +98,7 @@ const ProfilePage = () => {
             <input type="text" placeholder="first and last name"
               value={userName} onChange={ev => setUserName(ev.target.value)} />
             <input type="email" disabled={true} value={session.data?.user.email} />
-            <button type="submit" disabled={userName === originalUserName}>
+            <button type="submit" disabled={!isEdited && userName === originalUserName}>
               Save
             </button>
           </form>

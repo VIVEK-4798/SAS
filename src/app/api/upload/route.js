@@ -1,36 +1,46 @@
-import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
-import { unique } from "next/dist/build/utils";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
-export async function POST(req){
-    const data = await req.formData();
-    if(data.get('file')){
-        // upload the file
-        const file = data.get('file');
+export async function POST(req) {
+    try {
+        const data = await req.formData();
+        const file = data.get("file");
+        console.log("File haha: ",file);
         
-        const s3Client = new S3Client({
-            region: 'ap-south-1',
-            credentials:{
-                accessKeyId: process.env.AWS_ACCESS_KEY,
-                secretAccessKey: process.env.AWS_SECRET_KEY,
-            }
-        });
 
-        const ext = file.name.split('.').slice(-1)[0];
-        const newFileName = unique() + '.' + ext;
-
-        const chunks = [];
-        for await (const chunk of file.stream()){
-            chunks.push(chunk);
+        if (!file) {
+            return Response.json({ error: "No file uploaded" }, { status: 400 });
         }
 
-        await s3Client.send(new PutObjectCommand({
-            Bucket: 'pizzeria98',
-            key:'newFileName',
-            ACL: 'public-read',
-            ContentType: file.type,
-        }))
+        const s3Client = new S3Client({
+            region: "ap-south-1",
+            credentials: {
+                accessKeyId: process.env.AWS_ACCESS_KEY,
+                secretAccessKey: process.env.AWS_SECRET_KEY,
+            },
+        });
 
+        const ext = file.name.split(".").pop();
+        const newFileName = `${crypto.randomUUID()}.${ext}`;
+
+        // Convert file stream to buffer
+        const buffer = Buffer.from(await file.arrayBuffer());
+
+        const bucket = "pizzeria98";
+
+        await s3Client.send(
+            new PutObjectCommand({
+                Bucket: bucket,
+                Key: newFileName, // Corrected Key
+                ContentType: file.type || "application/octet-stream",
+                Body: buffer,
+            })
+        );
+
+        const link = `https://${bucket}.s3.amazonaws.com/${newFileName}`;
+
+        return Response.json({ link });
+    } catch (error) {
+        console.error("Upload Error:", error);
+        return Response.json({ error: "File upload failed" }, { status: 500 });
     }
-    
-    return Response.json(true);
 }
