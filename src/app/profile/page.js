@@ -7,6 +7,7 @@ import Image from "next/image";
 const ProfilePage = () => {
   const session = useSession();
   const [userName, setUserName] = useState('');
+  const [image, setImage] = useState('');
   const [originalUserName, setOriginalUserName] = useState('');
   const [saved, setSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -24,7 +25,7 @@ const ProfilePage = () => {
       const response = await fetch('/api/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: userName }),
+        body: JSON.stringify({ name: userName,image}),
       });
       setIsSaving(false);
       if (response.ok) {
@@ -39,6 +40,7 @@ const ProfilePage = () => {
     if (status === 'authenticated') {
       setUserName(session.data?.user.name);
       setOriginalUserName(session.data?.user.name);
+      setImage(session.data.user?.image);
     }
   }, [session, status]);
 
@@ -54,18 +56,19 @@ const ProfilePage = () => {
       setIsEdited(true); 
       const data = new FormData();
       data.append('files', files[0]);
-      await fetch('/api/upload', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: data,
       });
+
+      const link = await response.json();
+      setImage(link.link);
     }
   }
 
   if (status === "loading") {
     return "Loading...";
   }
-
-  const userImage = session.data?.user?.image;
 
   return (
     <section className="mt-8">
@@ -83,10 +86,12 @@ const ProfilePage = () => {
         )}
         <div className="flex gap-4 items-center">
           <div>
-            <div className="p-2 rounded-lg relative">
-              <Image className="rounded-lg w-full h-full mb-1"
-                src={userImage} alt="avatar"
-                width={250} height={250} />
+            <div className="p-2 rounded-lg relative max-w-[80px] ">
+              {image && (
+                <Image className="rounded-lg w-full h-full mb-1 max-h-[80px]"
+                src={image || "/src/images/default-avatar-profile-icon.avif"} 
+                alt="avatar" width={250} height={250} />
+              )}
               <label>
                 <input type="file" className="hidden" onChange={handleFileChange} />
                 <span className="block text-center border border-gray-300

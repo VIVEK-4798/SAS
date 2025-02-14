@@ -8,12 +8,11 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    password: {type:String,}
+    password: {type:String},
+    image: {type: String}
 }, 
 {timestamps: true});
 
-// UserSchema.post('validate', (user) => {
-   
-// })
+
 
 export const User = models?.User || model('User', UserSchema);
