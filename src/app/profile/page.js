@@ -4,50 +4,65 @@ import { useRouter } from "next/navigation";
 import { React, useEffect, useState } from "react";
 import Image from "next/image";
 import InfoBox from '../../components/layout/InfoBox';
-import SuccessBox from '../../components/layout/SuccessBox';
 
 const ProfilePage = () => {
   const session = useSession();
+  console.log("session hahah:",session);
+  
+  const router = useRouter();
+
   const [userName, setUserName] = useState('');
   const [image, setImage] = useState('');
   const [originalUserName, setOriginalUserName] = useState('');
   const [saved, setSaved] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false); 
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isEdited, setIsEdited] = useState(false); 
+  const [streetAddress, setStreetAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
 
   const { status } = session;
-  const router = useRouter();
 
   async function handleProfileInfoUpdate(ev) {
     ev.preventDefault();
     setSaved(false);
+    setFadeOut(false);
 
-    if (isEdited || userName !== originalUserName) {
-      setIsSaving(true);
-      const response = await fetch('/api/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: userName, image }),
-      });
-      setIsSaving(false);
-      if (response.ok) {
-        setSaved(true);
-        setOriginalUserName(userName);
-        setIsEdited(false);
+    setIsSaving(true);
+    const response = await fetch('/api/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: userName,
+        image,
+        phone,
+        streetAddress,
+        zipCode,
+        city,
+        country
+      }),
+    });
+    setIsSaving(false);
 
-        setTimeout(() => {
-          setSaved(false);
-        }, 3000);
-      }
+    if (response.ok) {
+      setSaved(true);
+      setOriginalUserName(userName);
+      setIsEdited(false);
+
+      setTimeout(() => setFadeOut(true), 2000);
+      setTimeout(() => setSaved(false), 3000);
     }
   }
 
   useEffect(() => {
     if (status === 'authenticated') {
-      setUserName(session.data?.user.name);
-      setOriginalUserName(session.data?.user.name);
-      setImage(session.data.user?.image);
+      setUserName(session.data?.user.name || '');
+      setOriginalUserName(session.data?.user.name || '');
+      setImage(session.data.user?.image || '');
     }
   }, [session, status]);
 
@@ -60,59 +75,58 @@ const ProfilePage = () => {
   async function handleFileChange(ev) {
     const files = ev.target.files;
     if (files?.length === 1) {
-      setIsEdited(true); 
       const data = new FormData();
       data.append('files', files[0]);
       setIsUploading(true);
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: data,
-      });
+      const response = await fetch('/api/upload', { method: 'POST', body: data });
       const link = await response.json();
       setImage(link.link);
       setIsUploading(false);
     }
   }
 
-  if (status === "loading") {
-    return "Loading...";
-  }
+  useEffect(() => {
+    setIsEdited(
+      userName !== originalUserName || phone || streetAddress || zipCode || city || country
+    );
+  }, [userName, phone, streetAddress, zipCode, city, country]);
+
+  if (status === "loading") return "Loading...";
 
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
       <div className="max-w-md mx-auto">
         {saved && (
-          <SuccessBox>Profile Saved!</SuccessBox>
+          <h2 className={`text-center bg-green-200 p-3 rounded-lg border border-green-400 transition-opacity duration-1000 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}>
+            Profile Saved!
+          </h2>
         )}
-        {isSaving && (
-          <InfoBox>Saving...</InfoBox>
-        )}
-        {isUploading && (
-          <InfoBox>Uploading...</InfoBox>
-        )}
-        <div className="flex gap-4 items-center">
+        {isSaving && <InfoBox>Saving...</InfoBox>}
+        {isUploading && <InfoBox>Uploading...</InfoBox>}
+        <div className="flex gap-4">
           <div>
             <div className="p-2 rounded-lg relative max-w-[80px]">
               {image && (
-                <Image className="rounded-lg w-full h-full mb-1 max-h-[80px]"
-                  src={image || "/src/images/default-avatar-profile-icon.avif"} 
-                  alt="avatar" width={250} height={250} />
+                <Image className="rounded-lg w-full h-full mb-1 max-h-[80px]" src={image} alt="avatar" width={250} height={250} />
               )}
               <label>
                 <input type="file" className="hidden" onChange={handleFileChange} />
-                <span className="block text-center border border-gray-300
-                 rounded-lg p-2 cursor-pointer">Edit</span>
+                <span className="block text-center border border-gray-300 rounded-lg p-2 cursor-pointer">Edit</span>
               </label>
             </div>
           </div>
           <form className="grow" onSubmit={handleProfileInfoUpdate}>
-            <input type="text" placeholder="first and last name"
-              value={userName} onChange={ev => setUserName(ev.target.value)} />
-            <input type="email" disabled={true} value={session.data?.user.email} />
-            <button type="submit" disabled={!isEdited && userName === originalUserName}>
-              Save
-            </button>
+            <input type="text" placeholder="First and Last Name" value={userName} onChange={ev => setUserName(ev.target.value)} />
+            <input type="email" disabled value={session.data?.user.email} />
+            <input type="tel" placeholder="Phone Number" value={phone} onChange={ev => setPhone(ev.target.value)} />
+            <input type="text" placeholder="Street Address" value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)} />
+            <div className="flex gap-4">
+              <input type="text" placeholder="Zip Code" value={zipCode} onChange={ev => setZipCode(ev.target.value)} />
+              <input type="text" placeholder="City" value={city} onChange={ev => setCity(ev.target.value)} />
+            </div>
+            <input type="text" placeholder="Country" value={country} onChange={ev => setCountry(ev.target.value)} />
+            <button type="submit" disabled={!isEdited}>Save</button>
           </form>
         </div>
       </div>
