@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import { React, useEffect, useState } from "react";
 import Image from "next/image";
 import InfoBox from '../../components/layout/InfoBox';
+import SuccessBox from '../../components/layout/SuccessBox';
+import UserTabs from '../../components/layout/UserTabs';
+import Link from "next/link";
 
 const ProfilePage = () => {
   const session = useSession();
@@ -24,6 +27,8 @@ const ProfilePage = () => {
   const [zipCode, setZipCode] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [profileFetched, setProfileFetched] = useState(false)
 
   const { status } = session;
 
@@ -60,11 +65,29 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      setUserName(session.data?.user.name || '');
-      setOriginalUserName(session.data?.user.name || '');
-      setImage(session.data.user?.image || '');
+        setUserName(session.data?.user.name || '');
+        setOriginalUserName(session.data?.user.name || '');
+        setImage(session.data.user?.image || '');
+        
+        fetch('/api/profile')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setPhone(data.userInfo?.phone || '');
+                setStreetAddress(data.userInfo?.streetAddress || '');
+                setZipCode(data.userInfo?.zipCode || '');
+                setCity(data.userInfo?.city || '');
+                setCountry(data.userInfo?.country || '');
+                setIsAdmin(data.user?.isAdmin || false);
+                setProfileFetched(true);
+            })
     }
-  }, [session, status]);
+}, [session, status]);
+
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -91,17 +114,17 @@ const ProfilePage = () => {
     );
   }, [userName, phone, streetAddress, zipCode, city, country]);
 
-  if (status === "loading") return "Loading...";
+  if (status === "loading" || !profileFetched){
+      return "Loading...";
+    }
+    
 
   return (
     <section className="mt-8">
-      <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
-      <div className="max-w-md mx-auto">
-        {saved && (
-          <h2 className={`text-center bg-green-200 p-3 rounded-lg border border-green-400 transition-opacity duration-1000 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}>
-            Profile Saved!
-          </h2>
-        )}
+      <UserTabs isAdmin={isAdmin}/>
+
+      <div className="max-w-md mx-auto mt-8">
+        {saved && <SuccessBox fadeOut={fadeOut}/>}
         {isSaving && <InfoBox>Saving...</InfoBox>}
         {isUploading && <InfoBox>Uploading...</InfoBox>}
         <div className="flex gap-4">
@@ -117,15 +140,28 @@ const ProfilePage = () => {
             </div>
           </div>
           <form className="grow" onSubmit={handleProfileInfoUpdate}>
-            <input type="text" placeholder="First and Last Name" value={userName} onChange={ev => setUserName(ev.target.value)} />
-            <input type="email" disabled value={session.data?.user.email} />
-            <input type="tel" placeholder="Phone Number" value={phone} onChange={ev => setPhone(ev.target.value)} />
-            <input type="text" placeholder="Street Address" value={streetAddress} onChange={ev => setStreetAddress(ev.target.value)} />
-            <div className="flex gap-4">
-              <input type="text" placeholder="Zip Code" value={zipCode} onChange={ev => setZipCode(ev.target.value)} />
-              <input type="text" placeholder="City" value={city} onChange={ev => setCity(ev.target.value)} />
+            <label> First and last name </label>
+            <input type="text" placeholder="First and Last Name"
+              value={userName || ''} onChange={ev => setUserName(ev.target.value)} 
+            />
+            <label> Email </label>
+            <input type="email" placeholder="email" disabled value={session.data?.user.email} />
+            <label> Phone No. </label>
+            <input type="tel" placeholder="Phone Number" value={phone || ''} onChange={ev => setPhone(ev.target.value)} />
+            <label> Street address </label>
+            <input type="text" placeholder="Street Address" value={streetAddress || ''} onChange={ev => setStreetAddress(ev.target.value)} />
+            <div className="flex gap-2">
+              <div>
+                <label> Zip code </label>
+                <input  type="text" placeholder="Zip Code" value={zipCode || ''} onChange={ev => setZipCode(ev.target.value)} />
+              </div>
+              <div>
+                <label> City </label>
+                <input  type="text" placeholder="City" value={city ||''} onChange={ev => setCity(ev.target.value)} />
+              </div>
             </div>
-            <input type="text" placeholder="Country" value={country} onChange={ev => setCountry(ev.target.value)} />
+            <label> Country </label>
+            <input type="text" placeholder="Country" value={country ||''} onChange={ev => setCountry(ev.target.value)} />
             <button type="submit" disabled={!isEdited}>Save</button>
           </form>
         </div>
