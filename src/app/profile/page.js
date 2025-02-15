@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { React, useEffect, useState } from "react";
 import Image from "next/image";
+import InfoBox from '../../components/layout/InfoBox';
+import SuccessBox from '../../components/layout/SuccessBox';
 
 const ProfilePage = () => {
   const session = useSession();
@@ -11,6 +13,7 @@ const ProfilePage = () => {
   const [originalUserName, setOriginalUserName] = useState('');
   const [saved, setSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [isEdited, setIsEdited] = useState(false); 
 
   const { status } = session;
@@ -25,13 +28,17 @@ const ProfilePage = () => {
       const response = await fetch('/api/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: userName,image}),
+        body: JSON.stringify({ name: userName, image }),
       });
       setIsSaving(false);
       if (response.ok) {
         setSaved(true);
         setOriginalUserName(userName);
-        setIsEdited(false); 
+        setIsEdited(false);
+
+        setTimeout(() => {
+          setSaved(false);
+        }, 3000);
       }
     }
   }
@@ -56,13 +63,14 @@ const ProfilePage = () => {
       setIsEdited(true); 
       const data = new FormData();
       data.append('files', files[0]);
+      setIsUploading(true);
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: data,
       });
-
       const link = await response.json();
       setImage(link.link);
+      setIsUploading(false);
     }
   }
 
@@ -75,22 +83,21 @@ const ProfilePage = () => {
       <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
       <div className="max-w-md mx-auto">
         {saved && (
-          <h2 className="text-center bg-green-200 p-3 rounded-lg border border-green-400">
-            Profile Saved!
-          </h2>
+          <SuccessBox>Profile Saved!</SuccessBox>
         )}
         {isSaving && (
-          <h2 className="text-center bg-blue-200 p-3 rounded-lg border border-blue-400">
-            Saving...
-          </h2>
+          <InfoBox>Saving...</InfoBox>
+        )}
+        {isUploading && (
+          <InfoBox>Uploading...</InfoBox>
         )}
         <div className="flex gap-4 items-center">
           <div>
-            <div className="p-2 rounded-lg relative max-w-[80px] ">
+            <div className="p-2 rounded-lg relative max-w-[80px]">
               {image && (
                 <Image className="rounded-lg w-full h-full mb-1 max-h-[80px]"
-                src={image || "/src/images/default-avatar-profile-icon.avif"} 
-                alt="avatar" width={250} height={250} />
+                  src={image || "/src/images/default-avatar-profile-icon.avif"} 
+                  alt="avatar" width={250} height={250} />
               )}
               <label>
                 <input type="file" className="hidden" onChange={handleFileChange} />

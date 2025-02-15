@@ -24,6 +24,7 @@
     "nextjs-cors": "^2.2.0",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-hot-toast": "^2.5.1",
     "unique": "^0.0.1"
   },
   "devDependencies": {

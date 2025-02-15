@@ -1,8 +1,9 @@
 import localFont from "next/font/local";
-import SessionWrapper from "../components/SessionWrapper"; 
+import SessionWrapper from "../components/sessionWrapper"; 
 import Header from "../components/layout/header";
 import Footer from "../components/layout/footer";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
       >
         <SessionWrapper> 
           <main className="max-w-4xl mx-auto p-4">
+            <Toaster/>
             <Header />
             {children}
             <Footer />
