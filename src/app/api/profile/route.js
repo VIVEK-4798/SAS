@@ -30,6 +30,7 @@ export async function PUT(req) {
         };
 
         const updateUserInfoData = {
+            email,
             phone: data.phone,
             streetAddress: data.streetAddress || "",
             zipCode: data.zipCode || "",
@@ -46,7 +47,7 @@ export async function PUT(req) {
         const updatedUserInfo = await User.findOneAndUpdate(
             { email },
             { $set: updateUserInfoData },  
-            { new: true, runValidators: true }
+            { new: true, runValidators: true, upsert: true}
         );
 
 
@@ -87,11 +88,11 @@ export async function GET() {
         return Response.json({
             success: true,
             user,
-            userInfo: userInfo || {} // Ensure userInfo is always an object
+            userInfo: userInfo || {} 
         });
 
     } catch (error) {
         console.error("Error fetching profile:", error);
-        return Response.json({ error: "Internal Server Error" }, { status: 500 });
+        return Response.json({ error: "Internal Server Error", message: error.message }, { status: 500 });
     }
 }
