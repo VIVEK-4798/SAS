@@ -82,7 +82,7 @@ const ProfilePage = () => {
                 setZipCode(data.userInfo?.zipCode || '');
                 setCity(data.userInfo?.city || '');
                 setCountry(data.userInfo?.country || '');
-                setIsAdmin(data.user?.isAdmin || false);
+                setIsAdmin(data.userInfo?.admin || false);
                 setProfileFetched(true);
             })
     }

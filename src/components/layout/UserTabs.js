@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 const UserTabs = ({isAdmin}) => {
 
-    const path = usePathname();
+    const path = usePathname();    
 
   return (
     <div className="flex mx-auto gap-2 tabs justify-center">
