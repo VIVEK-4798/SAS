@@ -9,7 +9,6 @@ const UserSchema = new Schema({
     },
     password: {type:String},
     image: {type: String},
-    phone: {type: String},
 }, 
 {timestamps: true});
 

@@ -7,6 +7,7 @@ const UserInfoSchema = new Schema({
     zipCode: {type: String},
     city: {type: String},
     country: {type: String},
+    phone: {type: String},
     admin: {type: Boolean, default: false},
 }, {timestamps: true});
 

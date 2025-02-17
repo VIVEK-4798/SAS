@@ -24,11 +24,6 @@ export async function PUT(req) {
             return Response.json({});
         }
 
-        const updateData = {
-            name: data.name,
-            image: data.image,
-        };
-
         const updateUserInfoData = {
             email,
             phone: data.phone,
@@ -38,13 +33,14 @@ export async function PUT(req) {
             country: data.country || "",
         };
 
-        const updatedUser = await User.findOneAndUpdate(
+        await User.findOneAndUpdate(
             { email },
-            { $set: updateData },  
+            { $set: { name: data.name, image: data.image } },
             { new: true, runValidators: true }
         );
+        const updatedUser = await User.findOne({ email }).select("name email image emailVerified").lean();
 
-        const updatedUserInfo = await User.findOneAndUpdate(
+        const updatedUserInfo = await UserInfo.findOneAndUpdate(
             { email },
             { $set: updateUserInfoData },  
             { new: true, runValidators: true, upsert: true}
