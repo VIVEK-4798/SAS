@@ -1,3 +1,4 @@
+import { Category } from "@/app/models/Category";
 import { MenuItem } from "@/app/models/MenuItem";
 import mongoose from "mongoose";
 
@@ -36,4 +37,18 @@ export async function GET(){
         return Response.json(
             await MenuItem.find()
         )
+}
+
+export async function DELETE(req){
+
+    await mongoose.connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });  
+
+    const url = new URL(req.url);
+    const _id = url.searchParams.get('_id');
+    await MenuItem.deleteOne({_id});
+
+    return Response.json(true);
 }

@@ -19,7 +19,6 @@ const CategoriesPage = () => {
   function fetchCategories() {
     fetch('api/categories').then(res => {
       res.json().then(categories => {
-        console.log("categories info:",categories);
         setCategories(categories);
       });
     });
@@ -57,6 +56,25 @@ const CategoriesPage = () => {
     })
   }
 
+  async function handleDeleteClick(_id){
+    const promise = new Promise(async(resolve, reject) => {
+      const response = await fetch('/api/categories?_id='+_id, {
+        method: 'DELETE',
+      });
+      if(response.ok)
+        resolve();
+      else
+        reject();
+    });
+
+    await toast.promise(promise, {
+      loading: 'Deleting...',
+      success: 'Deleted',
+      error: 'Error',
+    });
+    fetchCategories();
+  }
+
   if(profileLoading){
     return 'Loading user info...';
   }
@@ -83,28 +101,50 @@ const CategoriesPage = () => {
                 onChange={ev => setCategoryName(ev.target.value)}
               />
             </div>
-            <div className='pb-2'>
+            <div className='flex gap-2 pb-2'>
               <button 
                 type='submit'
                 className='border border-primary'>
                 {editedCategory ? 'Update' : 'Create'}
               </button>
+              <button
+                type='button'
+                onClick={() => {
+                  setEditedCategory(null)
+                  setCategoryName('');
+                }}
+                style={{ display: editedCategory ? 'block' : 'none' }}>
+                Cancel
+              </button>
             </div>
           </div>
         </form>
         <div>
-          <h2 className='mt-8 mb-2 text-sm text-gray-500'>Edit category:</h2>
+          <h2 className='mt-8 mb-2 text-sm text-gray-500'>Existing category:</h2>
           {categories?.length > 0 && categories.map(c => (
-            <button
-              onClick={() => {
-                setEditedCategory(c);
-              setCategoryName(c.name)
-            }}
+            <div
               key={c._id}
-              className='rounded-xl p-2 px-4 flex gap-1
-                cursor-pointer mb-1'>
-              <span>{c.name}</span>
-            </button>
+              className=' bg-gray-100 items-center rounded-xl p-2 px-4 flex gap-1 mb-1'>
+              <div 
+                className='grow'>
+                {c.name}
+              </div>
+               <div className='flex gap-1'>
+                  <button 
+                    onClick={() => {
+                      setEditedCategory(c);
+                      setCategoryName(c.name)
+                    }}
+                    type='button'>
+                    Edit
+                  </button>
+                  <button 
+                    onClick={() => handleDeleteClick(c._id)}
+                    type='button'>
+                    Delete
+                  </button>
+               </div>
+            </div>
             ))}
         </div>
     </section>
