@@ -1,6 +1,6 @@
 import {React, useState} from 'react';
 import EditableImage from '@/components/layout/EditableImage';
-import { faTrash} from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPlus} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const MenuItemForm = ({onSubmit, menuItem}) => {
@@ -87,7 +87,10 @@ const MenuItemForm = ({onSubmit, menuItem}) => {
                           <button
                             type='button'
                             onClick={addSize} 
-                            className='bg-white'>Add item size </button>
+                            className='bg-white'>
+                                <FontAwesomeIcon icon={faPlus} />
+                                Add item size
+                          </button>
                        </div>
                     <button type='submit'>Save</button>
                 </div>
