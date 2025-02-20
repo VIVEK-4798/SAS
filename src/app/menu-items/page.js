@@ -28,7 +28,7 @@ const MenuItemsPage = () => {
     }
 
   return (
-    <section className='mt-8 max-w-md mx-auto'>
+    <section className='mt-8 max-w-2xl mx-auto'>
         <UserTabs isAdmin={true}/>
         <div className='mt-8'>
             <Link 
@@ -51,7 +51,7 @@ const MenuItemsPage = () => {
                             <div className='relative'>
                                 <Image 
                                     className='rounded-md'
-                                    src={item.image} alt={''}
+                                    src={item.image || '/pizzeria-logo.jpg'} alt={''}
                                     width={200} height={200}/>
                             </div>
                         <div className='text-center'>

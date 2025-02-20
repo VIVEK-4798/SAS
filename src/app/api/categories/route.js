@@ -27,6 +27,7 @@ export async function PUT(req){
     return Response.json(true);
 
 }
+
 export async function GET(){
 
     await mongoose.connect(process.env.MONGO_URL, {
@@ -39,6 +40,7 @@ export async function GET(){
     )
 
 }
+
 export async function DELETE(req){
 
     await mongoose.connect(process.env.MONGO_URL, {
