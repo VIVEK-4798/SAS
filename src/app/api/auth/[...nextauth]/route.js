@@ -17,7 +17,7 @@ async function connectMongoose() {
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,
-  adapter: MongoDBAdapter(await clientPromise),
+  adapter: MongoDBAdapter(await clientPromise), // ✅ Ensuring Adapter is Used
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -29,41 +29,72 @@ export const authOptions = {
         email: { label: "Email", type: "email", placeholder: "example@example.com" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         try {
           console.log("Authorize function triggered!");
+          await connectMongoose();
 
-          await connectMongoose(); 
-
-          const email = credentials?.email;
-          const password = credentials?.password;
-
-          const user = await User.findOne({ email });
-          console.log("User fetched:", user);
+          const user = await User.findOne({ email: credentials.email });
 
           if (!user) {
-            console.error("User not found");
             throw new Error("User not found");
           }
 
-          const passwordOk = bcrypt.compareSync(password, user.password);
+          const passwordOk = bcrypt.compareSync(credentials.password, user.password);
           if (!passwordOk) {
-            console.error("Invalid credentials");
             throw new Error("Invalid credentials");
           }
 
-          console.log("User authenticated:", user);
           return { id: user._id, email: user.email };
         } catch (error) {
-          console.error("Authorization error:", error);
           throw error;
         }
-      },     
+      },
     }),
   ],
   pages: { signIn: "/login" },
-}
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      await connectMongoose();
+  
+      if (account.provider === "google") {
+        let existingUser = await User.findOne({ email: user.email });
+  
+        if (!existingUser) {
+          existingUser = await User.create({
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            provider: "google",
+          });
+        }
+  
+        const existingAccount = await mongoose.connection.db.collection("accounts").findOne({
+          provider: "google",
+          userId: existingUser._id.toString(),
+        });
+  
+        if (!existingAccount) {
+          await mongoose.connection.db.collection("accounts").insertOne({
+            userId: existingUser._id.toString(),
+            provider: "google",
+            providerAccountId: profile.sub, // Google Account ID
+            access_token: account.access_token,
+            expires_at: account.expires_at,
+            token_type: account.token_type,
+            id_token: account.id_token,
+            scope: account.scope,
+          });
+        }
+  
+        return true; 
+      }
+      return true;
+    },
+  }
+  
+  
+};
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };
