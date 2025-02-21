@@ -5,9 +5,9 @@ import React from 'react';
 
 const header = () => {
 
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession();  
 
-  const userData = session?.user;
+  const userData = session?.user;  
   let userName = userData?.name; 
    if(userName?.includes(' ')){
     userName = userName.split(' ')[0];
