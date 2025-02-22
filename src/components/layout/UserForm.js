@@ -3,8 +3,18 @@ import React, { useState, useEffect } from 'react';
 import EditableImage from './EditableImage';
 
 const UserForm = ({ user, onSave }) => {
-    // Normalize the user data structur    
-    const normalizedUser = user?.user || user?.userInfo || user || {};
+    console.log("user hehbe",user);
+    
+    const normalizedUser = { 
+        name: user?.name || user?.user?.name || '',
+        email: user?.email || user?.userInfo?.email || '',
+        image: user?.image || user?.user?.image || '',
+        phone: user?.phone || user?.userInfo?.phone || '',
+        streetAddress: user?.streetAddress || user?.userInfo?.streetAddress || '',
+        zipCode: user?.zipCode || user?.userInfo?.zipCode || '',
+        city: user?.city || user?.userInfo?.city || '',
+        country: user?.country || user?.userInfo?.country || '',
+    };
 
     // State to store user input fields
     const [originalData, setOriginalData] = useState({});
@@ -17,35 +27,24 @@ const UserForm = ({ user, onSave }) => {
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
 
-    // Update form fields when user data is received
+    // ✅ Update form fields when user data is received
     useEffect(() => {
         if (user) {
-            const userData = {
-                name: normalizedUser.name || '',
-                email: normalizedUser.email || '',
-                image: normalizedUser.image || '',
-                phone: normalizedUser.phone || user?.userInfo?.phone || '',
-                streetAddress: normalizedUser.streetAddress || user?.userInfo?.streetAddress || '',
-                zipCode: normalizedUser.zipCode || user?.userInfo?.zipCode || '',
-                city: normalizedUser.city || user?.userInfo?.city || '',
-                country: normalizedUser.country || user?.userInfo?.country || '',
-            };
-            console.log("user hee",normalizedUser);
-            
+            console.log("Normalized user data:", normalizedUser);
 
-            setOriginalData(userData);
-            setUserName(userData.name);
-            setEmail(userData.email);
-            setImage(userData.image);
-            setPhone(userData.phone);
-            setStreetAddress(userData.streetAddress);
-            setZipCode(userData.zipCode);
-            setCity(userData.city);
-            setCountry(userData.country);
+            setOriginalData(normalizedUser);
+            setUserName(normalizedUser.name);
+            setEmail(normalizedUser.email);
+            setImage(normalizedUser.image);
+            setPhone(normalizedUser.phone);
+            setStreetAddress(normalizedUser.streetAddress);
+            setZipCode(normalizedUser.zipCode);
+            setCity(normalizedUser.city);
+            setCountry(normalizedUser.country);
         }
-    }, [user]); // ✅ Runs when user changes
+    }, [user]);
 
-    // Check if any field has been modified
+    // ✅ Check if any field has been modified
     const isEdited =
         originalData &&
         (userName !== originalData.name ||
@@ -58,12 +57,9 @@ const UserForm = ({ user, onSave }) => {
 
     return (
         <div className="flex gap-4">
-            {/* Profile Image */}
             <div className="p-2 rounded-lg relative max-w-[80px]">
                 <EditableImage link={image} setLink={setImage} />
             </div>
-
-            {/* User Form */}
             <form
                 className="grow"
                 onSubmit={(ev) =>

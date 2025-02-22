@@ -35,7 +35,7 @@ export default function EditableImage({ link, setLink }) { // 🔹 Correct props
     <>
       {link && (
         <Image
-          className="rounded-lg w-full h-full mb-1 max-h-[80px]"
+          className="rounded-lg mb-1 max-h-[80px]"
           src={link}
           alt="avatar"
           width={250}
