@@ -44,7 +44,6 @@ const UserForm = ({ user, onSave }) => {
         }
     }, [user]);
 
-    // ✅ Check if any field has been modified
     const isEdited =
         originalData &&
         (userName !== originalData.name ||
@@ -64,8 +63,13 @@ const UserForm = ({ user, onSave }) => {
                 className="grow"
                 onSubmit={(ev) =>
                     onSave(ev, {
-                        name: userName, image, phone, city,
-                        streetAddress, zipCode, country,
+                        name: userName, image, userInfo: {  
+                            phone,
+                            streetAddress,
+                            zipCode,
+                            city,
+                            country,
+                        }
                     })}
             >
                 <label> First and last name </label>
