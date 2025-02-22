@@ -11,9 +11,7 @@ const UserPage = () => {
 
     useEffect(() => {
         fetch('api/users').then(response => {
-            response.json().then(users => {
-                console.log("users:",users);
-                
+            response.json().then(users => {                
                 setUsers(users);
             })
         })

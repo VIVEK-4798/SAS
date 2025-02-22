@@ -14,7 +14,7 @@ const header = () => {
    }
 
   console.log("Session Status:", status);
-  console.log("Session Data:", session);
+  // console.log("Session Data:", session);
 
   return (
     <header className='flex items-center justify-between'>
