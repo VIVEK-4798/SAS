@@ -12,69 +12,64 @@ export async function PUT(req) {
         });
 
         const data = await req.json();
-        console.log("dtatat",data);
-        const {_id, name, image, ...otherUserInfo} = data
         
+        const { _id, name, image, userInfo } = data; 
+         
         const session = await getServerSession(authOptions);  
         
-        if(_id){
+        if (_id) {
             await User.findOneAndUpdate(
                 { _id },
-                { $set: { name: data.name, image: data.image } },
+                { $set: { name, image } },
                 { new: true, runValidators: true }
             );
-            await UserInfo.findOneAndUpdate(
-                { _id, otherUserInfo },
-                { new: true, runValidators: true, upsert: true}
-            );
-        }
-        else{
+
+            if (userInfo) {
+                await UserInfo.findOneAndUpdate(
+                    { userId: _id },
+                    { $set: userInfo },
+                    { new: true, runValidators: true, upsert: true }
+                );
+            }
+        } else {
             if (!session?.user?.email) {
                 return Response.json({ error: "Unauthorized" }, { status: 401 });
             }
     
             const email = session.user.email;
     
-            if(!email){
+            if (!email) {
                 return Response.json({});
             }
-    
-            const updateUserInfoData = {
-                email,
-                phone: data.phone,
-                streetAddress: data.streetAddress || "",
-                zipCode: data.zipCode || "",
-                city: data.city || "",
-                country: data.country || "",
-            };
-    
+
+            const updateUserInfoData = userInfo || {};
+
             await User.findOneAndUpdate(
                 { email },
-                { $set: { name: data.name, image: data.image } },
+                { $set: { name, image } },
                 { new: true, runValidators: true }
             );
-            const updatedUser = await User.findOne({ email }).select("name email image emailVerified").lean();
-    
+
             const updatedUserInfo = await UserInfo.findOneAndUpdate(
                 { email },
                 { $set: updateUserInfoData },  
-                { new: true, runValidators: true, upsert: true}
+                { new: true, runValidators: true, upsert: true }
             );
-    
-    
+
+            const updatedUser = await User.findOne({ email }).select("name email image emailVerified").lean();
+
             if (!updatedUser) {
                 return Response.json({ error: "User not found" }, { status: 404 });
             }
     
-            return Response.json({ success: true, user: updatedUser || {}, userInfo: updatedUserInfo || {}});
+            return Response.json({ success: true, user: updatedUser, userInfo: updatedUserInfo || {} });
         }
-
-
     } catch (error) {
         console.error("Error updating profile:", error);
         return Response.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
+
 
 export async function GET() {
     try {

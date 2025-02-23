@@ -26,7 +26,7 @@ const EditUserPage = () => {
               city: '',
               country: '',
               phone: '',
-              address: '',
+              streetAddress: '',
               zipCode:'',
             }, 
           });
@@ -57,7 +57,7 @@ const EditUserPage = () => {
             city: "",
             country: "",
             phone: "",
-            address: "",
+            streetAddress: "",
             zipCode: "",
           },
         }),

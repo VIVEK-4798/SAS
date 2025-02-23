@@ -99,7 +99,7 @@ const UserForm = ({ user, onSave }) => {
                     onChange={(ev) => setStreetAddress(ev.target.value)}
                 />
 
-                <div className="flex gap-2">
+                <div className="grid grid-cols-2 gap-2">
                     <div>
                         <label> Zip code </label>
                         <input
@@ -127,7 +127,14 @@ const UserForm = ({ user, onSave }) => {
                     value={country}
                     onChange={(ev) => setCountry(ev.target.value)}
                 />
-
+                <div>
+                    <label
+                        className='p-2 '
+                        htmlFor='adminCb'>
+                            <input id='adminCb' type='checkbox'/>
+                            <span>Admin</span>
+                    </label>
+                </div>
                 <button type="submit" disabled={!isEdited}>Save</button>
             </form>
         </div>
