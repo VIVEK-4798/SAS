@@ -26,6 +26,7 @@ const UserForm = ({ user, onSave }) => {
     const [zipCode, setZipCode] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
+    const [admin, setAdmin] = useState(user?.admin || false);
 
     // ✅ Update form fields when user data is received
     useEffect(() => {
@@ -128,10 +129,18 @@ const UserForm = ({ user, onSave }) => {
                     onChange={(ev) => setCountry(ev.target.value)}
                 />
                 <div>
+                    {JSON.stringify(admin)}
                     <label
-                        className='p-2 '
+                        className='inline-flex items-center gap-2 mb-2 p-2'
                         htmlFor='adminCb'>
-                            <input id='adminCb' type='checkbox'/>
+                            <input 
+                                type='checkbox'
+                                id='adminCb'
+                                className=''
+                                value={'1'}
+                                checked={admin}
+                                onChange={ev => setAdmin(ev.target.checked)} 
+                                />
                             <span>Admin</span>
                     </label>
                 </div>
