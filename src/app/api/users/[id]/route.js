@@ -12,6 +12,7 @@ export async function GET(req, { params }) {
 
     try {
         const user = await User.findById(id);
+
         if (!user) {
             return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
         }
@@ -56,13 +57,12 @@ export async function PUT(req) {
         const user = await User.findByIdAndUpdate(id, {
             name: body.name,
             image: body.image,
+            admin: body.admin,
         }, { new: true });
 
         if (!user) {
             return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
         }
-
-        console.log("Incoming userInfo:", body.userInfo); // ✅ Debugging
 
         const userInfo = await UserInfo.findOneAndUpdate(
             { email: user.email }, 
@@ -73,12 +73,11 @@ export async function PUT(req) {
                     phone: body.userInfo.phone || '',
                     zipCode: body.userInfo.zipCode || '',
                     streetAddress: body.userInfo.streetAddress || '',
+                    admin: body.admin,
                 },
             },
-            { new: true, upsert: true } // ✅ Ensure update & create if missing
+            { new: true, upsert: true }
         );
-
-        console.log("Updated userInfo:", userInfo); // ✅ Debugging
 
         return new Response(JSON.stringify({
             message: 'User updated successfully',

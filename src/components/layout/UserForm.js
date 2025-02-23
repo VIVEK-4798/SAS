@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import EditableImage from './EditableImage';
+import { useProfile } from '../UseProfile';
 
 const UserForm = ({ user, onSave }) => {
-    console.log("user hehbe",user);
     
     const normalizedUser = { 
         name: user?.name || user?.user?.name || '',
@@ -14,9 +14,9 @@ const UserForm = ({ user, onSave }) => {
         zipCode: user?.zipCode || user?.userInfo?.zipCode || '',
         city: user?.city || user?.userInfo?.city || '',
         country: user?.country || user?.userInfo?.country || '',
+        admin: user?.admin || user?.userInfo?.admin || false,
     };
 
-    // State to store user input fields
     const [originalData, setOriginalData] = useState({});
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
@@ -26,13 +26,11 @@ const UserForm = ({ user, onSave }) => {
     const [zipCode, setZipCode] = useState('');
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
-    const [admin, setAdmin] = useState(user?.admin || false);
-
-    // ✅ Update form fields when user data is received
+    const [admin, setAdmin] = useState(originalData?.admin || false);
+    const {data: loggedInUserData} = useProfile();
+    
     useEffect(() => {
         if (user) {
-            console.log("Normalized user data:", normalizedUser);
-
             setOriginalData(normalizedUser);
             setUserName(normalizedUser.name);
             setEmail(normalizedUser.email);
@@ -42,8 +40,21 @@ const UserForm = ({ user, onSave }) => {
             setZipCode(normalizedUser.zipCode);
             setCity(normalizedUser.city);
             setCountry(normalizedUser.country);
+            setAdmin(normalizedUser.admin);
         }
     }, [user]);
+
+    useEffect(() => {
+        if (originalData) {
+            setAdmin(originalData.admin); 
+        };
+    }, [originalData]);
+    
+    const handleCheckboxChange = (e) => {
+        const isChecked = e.target.checked;
+        setAdmin(isChecked); 
+    };
+    
 
     const isEdited =
         originalData &&
@@ -53,7 +64,8 @@ const UserForm = ({ user, onSave }) => {
             streetAddress !== originalData.streetAddress ||
             zipCode !== originalData.zipCode ||
             city !== originalData.city ||
-            country !== originalData.country);
+            country !== originalData.country,
+            admin !== originalData?.admin || false);
 
     return (
         <div className="flex gap-4">
@@ -64,7 +76,7 @@ const UserForm = ({ user, onSave }) => {
                 className="grow"
                 onSubmit={(ev) =>
                     onSave(ev, {
-                        name: userName, image, userInfo: {  
+                        name: userName, image, admin, userInfo: {  
                             phone,
                             streetAddress,
                             zipCode,
@@ -128,8 +140,8 @@ const UserForm = ({ user, onSave }) => {
                     value={country}
                     onChange={(ev) => setCountry(ev.target.value)}
                 />
-                <div>
-                    {JSON.stringify(admin)}
+                {loggedInUserData && (
+                    <div>
                     <label
                         className='inline-flex items-center gap-2 mb-2 p-2'
                         htmlFor='adminCb'>
@@ -139,11 +151,12 @@ const UserForm = ({ user, onSave }) => {
                                 className=''
                                 value={'1'}
                                 checked={admin}
-                                onChange={ev => setAdmin(ev.target.checked)} 
+                                onChange={handleCheckboxChange} 
                                 />
                             <span>Admin</span>
                     </label>
                 </div>
+                )}
                 <button type="submit" disabled={!isEdited}>Save</button>
             </form>
         </div>

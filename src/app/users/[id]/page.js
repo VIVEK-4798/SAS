@@ -44,7 +44,6 @@ const EditUserPage = () => {
     ev.preventDefault();
     setSaving(true);
 
-    console.log("Before sending update:", updatedData); // ✅ Debugging
 
     await toast.promise(
       fetch(`/api/users/${id}`, {
@@ -53,6 +52,7 @@ const EditUserPage = () => {
         body: JSON.stringify({
           name: updatedData.name || "",
           image: updatedData.image || "",
+          admin: updatedData.admin, 
           userInfo: updatedData.userInfo || { 
             city: "",
             country: "",
@@ -64,14 +64,14 @@ const EditUserPage = () => {
       }).then(async (res) => {
         if (!res.ok) throw new Error("Error updating user");
         const updatedUser = await res.json();
-        
-        console.log("Updated User Response:", updatedUser); // ✅ Log response
-        
-        setUser(prev => ({
+    
+    
+        setUser((prev) => ({
           ...prev,
           name: updatedUser.user.name,
           image: updatedUser.user.image,
-          userInfo: updatedUser.userInfo || prev.userInfo, // ✅ Ensure userInfo is stored
+          admin: updatedUser.user.admin,
+          userInfo: updatedUser.userInfo || prev.userInfo,
         }));
       }),
       {
@@ -80,7 +80,7 @@ const EditUserPage = () => {
         error: "Error updating user.",
       }
     );
-
+    
     setSaving(false);
 }
 
