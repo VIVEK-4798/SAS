@@ -14,7 +14,6 @@ const header = () => {
    }
 
   console.log("Session Status:", status);
-  // console.log("Session Data:", session);
 
   return (
     <header className='flex items-center justify-between'>
@@ -23,9 +22,9 @@ const header = () => {
         </Link>
         <nav className='flex items-center gap-8 text-gray-500 font-semibold'>
             <Link href={'/'}>Home</Link>
-            <Link href={''}>Menu</Link>
-            <Link href={''}>About</Link>
-            <Link href={''}>Contact</Link>
+            <Link href={'/menu'}>Menu</Link>
+            <Link href={'/#about'}>About</Link>
+            <Link href={'/#contact'}>Contact</Link>
         </nav>
         <nav className='flex items-center gap-4 text-gray-500'>
           {status === 'authenticated' && (

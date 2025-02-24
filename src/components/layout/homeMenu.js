@@ -1,9 +1,22 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import MenuItems from '../Menu/menuItems';
 import SectionHeaders from '../layout/sectionHeaders';
 
 const homeMenu = () => {
+
+  const [bestSellers, setBestSellers] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/menu-items').then(res => {
+      res.json().then(menuItems => {
+        const bestSellers = menuItems.slice(-3);
+          setBestSellers(bestSellers);        
+      })
+    })
+  }, []);
+
   return (
     <section>
         <div className="absolute left-0 right-0 w-full justify-start">
@@ -17,16 +30,13 @@ const homeMenu = () => {
     <div className='text-center mb-4'>
        <SectionHeaders
           subHeader ={'check out'}
-          mainHeader = {'Menu'}
+          mainHeader = {'Our Best Sellers'}
        />
     </div>
     <div className='grid grid-cols-3 gap-4'>
-      <MenuItems/>
-      <MenuItems/>
-      <MenuItems/>
-      <MenuItems/>
-      <MenuItems/>
-      <MenuItems/>
+      {bestSellers?.length > 0 && bestSellers.map((item, index) => (
+        <MenuItems {...item} key={index}/>
+      ))}
     </div>
     </section>
   )
