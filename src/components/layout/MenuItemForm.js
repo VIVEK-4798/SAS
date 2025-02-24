@@ -52,13 +52,13 @@ const MenuItemForm = ({onSubmit, menuItem}) => {
                        onChange={ev => setDescription(ev.target.value)}
                        />
                        <label>Category</label>
-                       <select 
-                        value={category}
-                        onChange={ev => setCategory(ev.target.value)}>
-                          {categories?.length > 0 && categories.map((c, index) => (
-                            <option key={index} value={c._id}>{c.name}</option>
-                          ))}
-                       </select>
+                       <select value={category} onChange={(ev) => setCategory(ev.target.value)}>
+                            <option value="">Select a category</option>  
+                            {categories?.map(c => (
+                                <option key={c._id} value={c._id}>{c.name}</option>
+                            ))}
+                        </select>
+
                     <label>Base price</label>
                     <input 
                        type='text'

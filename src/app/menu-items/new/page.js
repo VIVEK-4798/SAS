@@ -1,6 +1,7 @@
 'use client';
 import { useProfile } from '@/components/UseProfile'
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
+import { useRouter } from 'next/navigation';
 import UserTabs from '@/components/layout/UserTabs';
 import Link from 'next/link';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -16,29 +17,44 @@ const NewMenuItemPage = () => {
 
     async function handleFormSubmit(ev, data) { 
         ev.preventDefault();
-        const savingPromise =new Promise(async(resolve, reject) => {
-            const response = await fetch('/api/menu-items', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {'content-type': 'application/json'},
-            });
-            if(response.ok)
-                resolve();
-            else
-                reject();
+    
+        const savingPromise = new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch('/api/menu-items', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: { 'content-type': 'application/json' },
+                });
+    
+                if (response.ok) {
+                    resolve();
+                } else {
+                    const errorData = await response.json(); 
+                    reject(new Error(errorData.error || "Failed to save menu item"));
+                }
+            } catch (err) {
+                reject(new Error("Network error or server issue"));
+            }
         });
-
+    
         await toast.promise(savingPromise, {
             loading: 'Saving this tasty item...',
             success: 'Saved',
-            error: 'Error saving item'
+            error: (err) => err.message || 'Error saving item',
         });
+    
+        setRedirectToItems(true); 
+    }
+    
+    const router = useRouter();
 
-        setRedirectToItems(true);
-    }
-    if(redirectToItems){
-        return redirect('/menu-items');
-    }
+    useEffect(() => {
+        if (redirectToItems) {
+            router.push('/menu-items'); // Correct way to redirect in client components
+        }
+    }, [redirectToItems]);
+    
+    
 
     if(loading){
         return 'Loading user info...';
