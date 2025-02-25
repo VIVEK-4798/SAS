@@ -1,7 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, createContext } from "react";
 import { SessionProvider } from "next-auth/react";
-import { createContext } from "vm";
 
 const CartContext = createContext({});
 
@@ -10,7 +9,11 @@ export default function SessionWrapper({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
 
   function addTocart(product, size=null, extras=[]) {
-    
+    setCartProducts(prevProducts => {
+      const cartProduct = {...product, size, extras};
+      const newProducts = [...prevProducts, cartProduct];
+      return newProducts;
+    })
   }
 
   return <SessionProvider>
@@ -19,5 +22,5 @@ export default function SessionWrapper({ children }) {
                   }}>
               {children}
             </CartContext.Provider>
-        </SessionProvider>;
+        </SessionProvider>
 }
