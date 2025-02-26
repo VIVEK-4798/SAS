@@ -1,7 +1,8 @@
 "use client"
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link'
-import React from 'react';
+import React, { useContext } from 'react';
+import { CartContext } from '../sessionWrapper';
 
 const header = () => {
 
@@ -9,6 +10,8 @@ const header = () => {
 
   const userData = session?.user;  
   let userName = userData?.name; 
+  const {cartProducts} = useContext(CartContext);
+
    if(userName?.includes(' ')){
     userName = userName.split(' ')[0];
    }
@@ -49,6 +52,7 @@ const header = () => {
               </Link>
             </>
           )}
+            <Link href={'/cart'}>Cart ({cartProducts.length})</Link>
         </nav>
     </header>
   )

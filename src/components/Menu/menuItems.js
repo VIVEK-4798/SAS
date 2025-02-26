@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { CartContext } from "../sessionWrapper";
 
-const menuItems = ({
-  image,
-  name,
-  description,
-  basePrice,
-  sizes,
-  extraIngredeientsPrices,
-}) => {
+const menuItems = (menuItem) => {
+
+  const {image ,name ,description ,basePrice,
+          sizes,extraIngredeientsPrices} = menuItem;
+  const {addToCart} = useContext(CartContext);
+
   return (
     <div
       className="bg-gray-200 p-4 rounded-lg
@@ -27,6 +26,7 @@ const menuItems = ({
         {description}
       </p>
       <button
+        onClick={() => addToCart(menuItem)}
         className="mt-4 bg-primary text-white
              rounded-full px-8 py-2"
       >
