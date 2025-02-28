@@ -10,6 +10,7 @@ const menuItems = (menuItem) => {
           sizes,extraIngredientsPrices } = menuItem;   
 
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedExtras, setSelectedExtras] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const {addToCart} = useContext(CartContext);
 
@@ -20,6 +21,16 @@ const menuItems = (menuItem) => {
     }
     else{
       setShowPopup(true);
+    }
+  }
+
+  function handleExtraThingClick(ev){
+    const checked = ev.target.checked;
+    if(checked){
+      setSelectedExtras(prev => [...prev, extraThing]);
+    }
+    else{
+      setSelectedExtras()
     }
   }
 
@@ -43,7 +54,11 @@ const menuItems = (menuItem) => {
                 <h3 className="text-center text-gray-700 font-semibold">Pick your size</h3>
                 {sizes.map((size, i) => (
                   <label key={i} className="flex items-center gap-2 p-4 border rounded-md mb-1">
-                    <input type="radio" name="size"/>
+                    <input 
+                      type="radio"
+                      onChange={() => setSelectedSize(size)}
+                      checked={selectedSize?.name === size.name} 
+                      name="size"/>
                       {size.name} ₹{basePrice + size.price}
                   </label>
                 ))}
@@ -54,7 +69,10 @@ const menuItems = (menuItem) => {
               <h3 className="text-center text-gray-700 font-semibold">Pick your size</h3>
               {extraIngredientsPrices.map((extraThing, i) => (
                 <label key={i} className="flex items-center gap-2 p-4 border rounded-md mb-1">
-                  <input type="checkbox" name={extraThing}/>
+                  <input 
+                    type="checkbox" 
+                    onChange={handleExtraThingClick}
+                    name={extraThing}/>
                     {extraThing.name} +₹{extraThing.price}
                 </label>
               ))}
