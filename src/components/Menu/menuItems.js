@@ -7,13 +7,14 @@ import Image from "next/image";
 const menuItems = (menuItem) => {
 
   const {image ,name ,description ,basePrice,
-          sizes,extraIngredeientsPrices} = menuItem;          
+          sizes,extraIngredientsPrices } = menuItem;   
 
+  const [selectedSize, setSelectedSize] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const {addToCart} = useContext(CartContext);
 
   function handleAddToCartButtonClick() {
-    if(sizes.length === 0 && extraIngredeientsPrices.length === 0){
+    if(sizes.length === 0 && extraIngredientsPrices.length === 0){
       addToCart(menuItem);
       toast.success('Added to cart!');
     }
@@ -26,7 +27,10 @@ const menuItems = (menuItem) => {
     <>
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/80">
-          <div className="bg-white p-4 rounded-lg max-w-md">
+          <div className=" my-8 bg-white p-2 rounded-lg max-w-md">
+            <div 
+              className="overflow-y-scroll p-2"
+              style={{maxHeight: 'calc(100vh - 90px)'}}>
             <Image 
               src={image} 
               alt={name} 
@@ -45,17 +49,19 @@ const menuItems = (menuItem) => {
                 ))}
               </div>
             )}
-            {extraIngredeientsPrices?.length > 0 && (
+            {extraIngredientsPrices?.length > 0 && (
               <div className="p-2">
               <h3 className="text-center text-gray-700 font-semibold">Pick your size</h3>
-              {extraIngredeientsPrices.map((extraThing, i) => (
+              {extraIngredientsPrices.map((extraThing, i) => (
                 <label key={i} className="flex items-center gap-2 p-4 border rounded-md mb-1">
-                  <input type="radio" name="size"/>
-                    {extraThing.name} ₹{extraThing.price}
+                  <input type="checkbox" name={extraThing}/>
+                    {extraThing.name} +₹{extraThing.price}
                 </label>
               ))}
             </div>
             )}
+            <button className="primary" type="button">Add to cart "selected price"</button>
+            </div>
           </div>
         </div>
       )}
