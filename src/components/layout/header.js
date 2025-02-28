@@ -3,6 +3,8 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link'
 import React, { useContext } from 'react';
 import { CartContext } from '../sessionWrapper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 const header = () => {
 
@@ -52,7 +54,16 @@ const header = () => {
               </Link>
             </>
           )}
-            <Link href={'/cart'}>Cart ({cartProducts.length})</Link>
+            <Link 
+              className='relative text-xl'
+              href={'/cart'}>
+                <FontAwesomeIcon icon={faCartShopping} /> 
+                <span 
+                  className='absolute -top-2 -right-3 bg-primary text-white 
+                            rounded-full text-xs py-1 px-2 leading-3'>
+                    {cartProducts.length}
+                </span>
+            </Link>
         </nav>
     </header>
   )
