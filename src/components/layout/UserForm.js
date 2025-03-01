@@ -64,7 +64,7 @@ const UserForm = ({ user, onSave }) => {
             streetAddress !== originalData.streetAddress ||
             zipCode !== originalData.zipCode ||
             city !== originalData.city ||
-            country !== originalData.country,
+            country !== originalData.country ||
             admin !== originalData?.admin || false);
 
     return (
