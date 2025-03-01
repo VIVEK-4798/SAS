@@ -15,19 +15,24 @@ const menuItems = (menuItem) => {
   const {addToCart} = useContext(CartContext);
 
   async function handleAddToCartButtonClick() {
-
     const hasOptions = sizes.length > 0 || extraIngredientsPrices.length > 0;
-
-    if(hasOptions && !showPopup){
+  
+    if (hasOptions && !showPopup) {
       setShowPopup(true);
       return;
     }
-
-    addToCart(menuItem, selectedSize, selectedExtras);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log('hiding popup');
-    setShowPopup(false);
+  
+    console.log("Adding to cart:", menuItem, selectedSize, selectedExtras);
+  
+    await addToCart(menuItem, selectedSize, selectedExtras);
+    console.log("Item added to cart");
+  
+    // Ensure a short delay before closing the popup
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 500);
   }
+  
 
   function handleExtraThingClick(ev, extraThing){
     const checked = ev.target.checked;
@@ -103,7 +108,7 @@ const menuItems = (menuItem) => {
             <FlyingButton
               targetTop={"5%"}
               targetLeft={"95%"}
-              src={image && image !== "" ? image : null}>
+              src={image && image.trim() !== "" ? image : null}>
                 <div 
                   onClick={handleAddToCartButtonClick}
                    >
