@@ -23,7 +23,7 @@ const menuItems = (menuItem) => {
       return;
     }
 
-    addToCart(menuItem, selectedPrice, selectedExtras);
+    addToCart(menuItem, selectedSize, selectedExtras);
     setShowPopup(false);
     toast.success('Added to cart!');
   }

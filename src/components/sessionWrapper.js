@@ -1,8 +1,28 @@
 "use client";
 import { useState, createContext, useEffect} from "react";
 import { SessionProvider } from "next-auth/react";
+import toast from "react-hot-toast";
 
 export const CartContext = createContext({});
+
+export function cartProductPrice(cartProduct) {
+  let price = cartProduct.basePrice || 0;  // Ensure basePrice is always a number
+
+  if (cartProduct.size && typeof cartProduct.size.price === "number") {
+    price += cartProduct.size.price;
+  }
+
+  if (cartProduct.extras?.length > 0) {
+    for (const extra of cartProduct.extras) {
+      if (typeof extra.price === "number") {
+        price += extra.price;
+      }
+    }
+  }
+
+  return isNaN(price) ? 0 : price;  // Prevent NaN errors
+}
+
 
 export default function SessionWrapper({ children }) {
 
@@ -26,9 +46,10 @@ export default function SessionWrapper({ children }) {
     setCartProducts(prevCartProducts => {
       const newCartProducts = prevCartProducts.filter((v, index) => 
         index !== indexToRemove);
-      saveCartProductsToLocalStorage(newCartProducts);
+      saveCartProductsToLocalStorage(newCartProducts); 
       return newCartProducts;
     });
+    toast.success('Product removed');
   }
 
   function clearCart (){
