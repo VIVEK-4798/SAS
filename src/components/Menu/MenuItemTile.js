@@ -1,8 +1,10 @@
-import React from 'react'
+import React from 'react';
+import AddToCartButton from '../Menu/AddToCartButton';
 
 const MenuItemTile = ({onAddToCart, ...item }) => {
 
     const {image, description, name, basePrice, sizes, extraIngredientsPrices} = item;
+    const hasSizesOrExtras = sizes.length > 0 || extraIngredientsPrices.length > 0;
 
   return (
     <div
@@ -12,7 +14,7 @@ const MenuItemTile = ({onAddToCart, ...item }) => {
       >
       <div className="text-center">
         <img
-          src={image}
+          src={image && image !== "" ? image : null}
           className="max-h-auto max-h-24
             block mx-auto"
           alt="pizza"
@@ -22,16 +24,11 @@ const MenuItemTile = ({onAddToCart, ...item }) => {
       <p className="text-gray-500 text-sm line-clamp-3">
         {description}
       </p>
-      <button
+      <AddToCartButton 
+        hasSizesOrExtras={hasSizesOrExtras}
         onClick={onAddToCart}
-        className="mt-4 bg-primary text-white
-             rounded-full px-8 py-2">
-        {(sizes.length > 0 || extraIngredientsPrices.length > 0) ?(
-          <span>Add to cart (from ₹{basePrice})</span>
-        ):(
-          <span>Add to cart ₹{basePrice}</span>
-        )}
-      </button>
+        basePrice={basePrice}
+        image={image}/>
       </div>
   )
 }

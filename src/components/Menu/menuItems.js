@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../sessionWrapper";
 import MenuItemTile from '../Menu/MenuItemTile'
-import toast from "react-hot-toast";
+import FlyingButton from 'react-flying-item';
 import Image from "next/image";
 
 const menuItems = (menuItem) => {
@@ -14,7 +14,7 @@ const menuItems = (menuItem) => {
   const [showPopup, setShowPopup] = useState(false);
   const {addToCart} = useContext(CartContext);
 
-  function handleAddToCartButtonClick() {
+  async function handleAddToCartButtonClick() {
 
     const hasOptions = sizes.length > 0 || extraIngredientsPrices.length > 0;
 
@@ -24,8 +24,9 @@ const menuItems = (menuItem) => {
     }
 
     addToCart(menuItem, selectedSize, selectedExtras);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('hiding popup');
     setShowPopup(false);
-    toast.success('Added to cart!');
   }
 
   function handleExtraThingClick(ev, extraThing){
@@ -63,7 +64,7 @@ const menuItems = (menuItem) => {
               className="overflow-y-scroll p-2"
               style={{maxHeight: 'calc(100vh - 90px)'}}>
             <Image 
-              src={image} 
+              src={image && image !== "" ? image : null} 
               alt={name} 
               width={300} height={200} 
               className="mx-auto"/>
@@ -98,15 +99,21 @@ const menuItems = (menuItem) => {
               ))}
             </div>
             )}
-            <button 
-              onClick={handleAddToCartButtonClick}
-              className="primary sticky bottom-2" 
-              type="button">
-                Add to cart ₹{selectedPrice}
-            </button>
+            <div className="flying-button-parent">
+            <FlyingButton
+              targetTop={"5%"}
+              targetLeft={"95%"}
+              src={image && image !== "" ? image : null}>
+                <div 
+                  onClick={handleAddToCartButtonClick}
+                   >
+                    Add to cart ₹{selectedPrice}
+                </div>
+            </FlyingButton>
+            </div>
             <button 
               onClick={() => setShowPopup(false)}
-              className="mt-2">Cancel</button>
+              className="mt-2 rounded-full">Cancel</button>
             </div>
           </div>
         </div>

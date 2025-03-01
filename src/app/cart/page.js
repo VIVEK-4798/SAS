@@ -22,7 +22,6 @@ const CartPage = () => {
 
   const [profileFetched, setProfileFetched] = useState(false);
 
-  // Fetch user profile
   useEffect(() => {
     if (status === "authenticated") {
       fetch("/api/profile")
@@ -54,14 +53,13 @@ const CartPage = () => {
       <div className="text-center">
         <SectionHeaders mainHeader="Cart" />
       </div>
-      <div className="grid gap-4 grid-cols-2 mt-4">
-        {/* Cart Items */}
+      <div className="mt-8 grid gap-8 grid-cols-2">
         <div>
           {cartProducts.length === 0 ? (
             <div>No products in your shopping cart</div>
           ) : (
             cartProducts.map((product, index) => (
-              <div key={index} className="flex items-center gap-4 mb-2 border-b py-2">
+              <div key={index} className="flex items-center gap-4 border-b py-4">
                 <div className="w-24">
                   <Image src={product.image} width={240} height={240} alt="" />
                 </div>
@@ -77,7 +75,7 @@ const CartPage = () => {
                   )}
                 </div>
                 <div className="text-lg font-semibold">
-                  {cartProductPrice(product)}
+                ₹{cartProductPrice(product)}
                 </div>
                 <div className="ml-2">
                   <button type="button" onClick={() => removeCartProducts(index)} className="p-2">
@@ -92,8 +90,6 @@ const CartPage = () => {
             <span className="text-lg font-semibold pl-2">₹{total}</span>
           </div>
         </div>
-
-        {/* Checkout Section with Address Form */}
         <div className="bg-gray-100 p-4 rounded-lg">
           <h2>Checkout</h2>
           <AddressInput userInfo={userInfo} setUserInfo={setUserInfo} />
