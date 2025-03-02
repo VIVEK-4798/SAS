@@ -7,6 +7,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import AddressInput from '../../components/layout/AddressInput';
+import toast from "react-hot-toast";
 
 const CartPage = () => {
   const { cartProducts, removeCartProducts } = useContext(CartContext);
@@ -44,16 +45,29 @@ const CartPage = () => {
 
   async function proceedToCheckout(ev) {
     ev.preventDefault();
-    const response = await fetch('/api/checkout', {
-      method: 'POST',
-      heades: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        userInfo,
-        cartProducts
-      }),
+
+    const promise = new Promise((resolve, reject) => {
+      fetch('/api/checkout', {
+        method: 'POST',
+        heades: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          userInfo,
+          cartProducts,
+        }),
+      }).then(async(response) => {
+        if(response.ok){
+          resolve();
+          window.location = await response.json();
+        }else{
+          reject();
+        }
+      });
     });
-    // const link = await  response.json();
-    // window.location = link;
+    await toast.promise(promise, {
+      loading: 'Preparing your order...',
+      success: 'Redirecting to payment...',
+      error: 'Something went wrong... please try again later',
+    })
   }
 
   let subtotal = cartProducts.reduce((sum, p) => sum + cartProductPrice(p), 0);

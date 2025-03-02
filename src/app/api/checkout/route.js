@@ -16,7 +16,7 @@ export async function POST(req) {
     const {userInfo, cartProducts} = await req.json();
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;
-
+    
     const orderDoc = await Order.create({
         userEmail,
         ...userInfo,
@@ -57,26 +57,24 @@ export async function POST(req) {
             }
         });
     }
-
-    console.log({stripeLineItems});
-    return Response.json(null);
     
+    const stripeSession = await stripe.checkout.sessions.create({
+        line_items: stripeLineItems,
+        mode: 'payment',
+        customer_email: String(userEmail).trim(),
+        success_url: process.env.NEXTAUTH_URL + 'cart?success=1',
+        cancel_url: process.env.NEXTAUTH_URL + 'cart?canceled=1',
+        metadata: {orderId:  orderDoc._id.toString()},
+        shipping_options: [
+            {
+                shipping_rate_data: {
+                    display_name: 'Delivery fee',
+                    type: 'fixed_amount',
+                    fixed_amount: {amount: 10000, currency: 'inr'},
+                },
+            }
+        ]
+    });
 
-    // const stripeSession = await stripe.checkout.sessions.create({
-    //     line_items: stripeLineItems,
-    //     mode: 'payment',
-    //     customer_email: 'userEmail',
-    //     success_url: process.env.NEXTAUTH_URL + 'cart?success=1',
-    //     cancel_url: process.env.NEXTAUTH_URL + 'cart?canceled=1',
-    //     metadata: {orderId: orderDoc._id},
-    //     shipping_options: [
-    //         {
-    //             shipping_rate_data: {
-    //                 display_name: 'Delivery fee',
-    //                 type: 'fixed_amount',
-    //                 fixed_amount: {amount: 10000, currency: 'inr'},
-    //             },
-    //         }
-    //     ]
-    // })
+    return Response.json(stripeSession.url);
 }
