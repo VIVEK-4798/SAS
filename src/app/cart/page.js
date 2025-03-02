@@ -42,7 +42,21 @@ const CartPage = () => {
     }
   }, [status]);
 
-  let total = cartProducts.reduce((sum, p) => sum + cartProductPrice(p), 0);
+  async function proceedToCheckout(ev) {
+    ev.preventDefault();
+    const response = await fetch('/api/checkout', {
+      method: 'POST',
+      heades: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        userInfo,
+        cartProducts
+      }),
+    });
+    // const link = await  response.json();
+    // window.location = link;
+  }
+
+  let subtotal = cartProducts.reduce((sum, p) => sum + cartProductPrice(p), 0);
 
   if (status === "loading" || !profileFetched) {
     return <p>Loading...</p>;
@@ -85,17 +99,33 @@ const CartPage = () => {
               </div>
             ))
           )}
-          <div className="py-4 text-right pr-14">
-            <span className="text-gray-500">Subtotal:</span>
-            <span className="text-lg font-semibold pl-2">₹{total}</span>
+          <div className=" flex justify-end items-center py-4 text-right pr-14">
+            <div 
+              className="text-gray-500">
+                Subtotal:<br/>
+                Delivery:<br/>
+                Total:
+            </div>
+            <div 
+              className="font-semibold pl-2 text-right">
+                ₹{subtotal}<br/>
+                ₹100<br/>
+                ₹{subtotal + 100}
+            </div>
           </div>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <h2>Checkout</h2>
-          <AddressInput userInfo={userInfo} setUserInfo={setUserInfo} />
-          <button className="w-full bg-green-500 text-white p-2 rounded mt-4">
-            Pay ₹{total}
+          <form onSubmit={proceedToCheckout}>
+          <AddressInput 
+            userInfo={userInfo} 
+            setUserInfo={setUserInfo} />
+          <button
+            type="submit" 
+            className="w-full !bg-green-500 !border-green-500 text-white p-2 rounded-lg mt-4">
+              Pay ₹{subtotal}
           </button>
+          </form>
         </div>
       </div>
     </section>

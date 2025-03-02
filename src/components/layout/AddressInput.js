@@ -9,9 +9,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
     }));
   };
 
-  const handleProfileUpdate = async (ev) => {
-    ev.preventDefault();
-
+  const handleProfileUpdate = async () => {
     const updatePromise = fetch("/api/profile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -28,14 +26,13 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
   };
 
   return (
-    <form onSubmit={handleProfileUpdate} className="space-y-3">
+    <div className="space-y-3">
       <label>Phone No.</label>
       <input
         type="tel"
         name="phone"
         value={userInfo.phone}
         onChange={handleChange}
-        placeholder="Phone Number"
         className="w-full p-2 border rounded"
       />
 
@@ -45,7 +42,6 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
         name="streetAddress"
         value={userInfo.streetAddress}
         onChange={handleChange}
-        placeholder="Street Address"
         className="w-full p-2 border rounded"
       />
 
@@ -57,7 +53,6 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
             name="zipCode"
             value={userInfo.zipCode}
             onChange={handleChange}
-            placeholder="Zip Code"
             className="w-full p-2 border rounded"
           />
         </div>
@@ -68,7 +63,6 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
             name="city"
             value={userInfo.city}
             onChange={handleChange}
-            placeholder="City"
             className="w-full p-2 border rounded"
           />
         </div>
@@ -80,15 +74,17 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
         name="country"
         value={userInfo.country}
         onChange={handleChange}
-        placeholder="Country"
         className="w-full p-2 border rounded"
       />
 
-      {/* Save Button */}
-      <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
+      <button
+        type="button"
+        onClick={handleProfileUpdate}
+        className="w-full bg-primary text-white p-2 rounded-lg"
+      >
         Save Info
       </button>
-    </form>
+    </div>
   );
 };
 

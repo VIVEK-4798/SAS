@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../sessionWrapper";
 import MenuItemTile from '../Menu/MenuItemTile'
-import FlyingButton from 'react-flying-item';
+import toast from "react-hot-toast";
 import Image from "next/image";
 
 const menuItems = (menuItem) => {
@@ -13,24 +13,19 @@ const menuItems = (menuItem) => {
   const [selectedExtras, setSelectedExtras] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const {addToCart} = useContext(CartContext);
+  const validImage = image && image.trim() !== "" ? image : "/pizzeria-logo.jpg";
 
-  async function handleAddToCartButtonClick() {
+   function handleAddToCartButtonClick() {
     const hasOptions = sizes.length > 0 || extraIngredientsPrices.length > 0;
   
     if (hasOptions && !showPopup) {
       setShowPopup(true);
       return;
-    }
+    }  
+    addToCart(menuItem, selectedSize, selectedExtras);
   
-    console.log("Adding to cart:", menuItem, selectedSize, selectedExtras);
-  
-    await addToCart(menuItem, selectedSize, selectedExtras);
-    console.log("Item added to cart");
-  
-    // Ensure a short delay before closing the popup
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 500);
+    setShowPopup(false);
+    toast.success('Added to cart!');
   }
   
 
@@ -69,7 +64,7 @@ const menuItems = (menuItem) => {
               className="overflow-y-scroll p-2"
               style={{maxHeight: 'calc(100vh - 90px)'}}>
             <Image 
-              src={image && image !== "" ? image : null} 
+              src={image} 
               alt={name} 
               width={300} height={200} 
               className="mx-auto"/>
@@ -104,21 +99,15 @@ const menuItems = (menuItem) => {
               ))}
             </div>
             )}
-            <div className="flying-button-parent">
-            <FlyingButton
-              targetTop={"5%"}
-              targetLeft={"95%"}
-              src={image && image.trim() !== "" ? image : null}>
-                <div 
-                  onClick={handleAddToCartButtonClick}
-                   >
-                    Add to cart ₹{selectedPrice}
-                </div>
-            </FlyingButton>
-            </div>
+            <button 
+              onClick={handleAddToCartButtonClick}
+              className="primary sticky bottom-2" 
+              type="button">
+                Add to cart ₹{selectedPrice}
+            </button>
             <button 
               onClick={() => setShowPopup(false)}
-              className="mt-2 rounded-full">Cancel</button>
+              className="mt-2">Cancel</button>
             </div>
           </div>
         </div>
