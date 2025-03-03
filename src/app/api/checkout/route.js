@@ -12,6 +12,10 @@ export async function POST(req) {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     }); 
+    console.log("headers:", req.headers);
+    const sig = req.headers['stripe-signature'];
+    console.log("headers stripe:", sig);
+
 
     const {userInfo, cartProducts} = await req.json();
     const session = await getServerSession(authOptions);

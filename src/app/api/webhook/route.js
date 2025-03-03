@@ -1,7 +1,7 @@
 const stripe = require('stripe')(process.env.STRIPE_SK);
-// import {buffer} from 'micro';
 
 export async function POST(req){
+    
     console.log("Webhook received!");
     const sig = req.headers.get('stripe-signature');
     let event;
@@ -20,7 +20,8 @@ export async function POST(req){
     
     // if(event.type === 'checkout.session.completed'){
     //     console.log(event);
-    //     console.log({'orderId': event?.metadata?.orderId});
+    //     console.log({'orderId': event?.data?.object?.metadata?.orderId});
     // }    
+
     return Response.json('ok', {status: 200});
 }

@@ -49,7 +49,7 @@ const CartPage = () => {
     const promise = new Promise((resolve, reject) => {
       fetch('/api/checkout', {
         method: 'POST',
-        heades: {'Content-Type':'application/json'},
+        headers: {'Content-Type':'application/json'},
         body: JSON.stringify({
           userInfo,
           cartProducts,
@@ -61,6 +61,7 @@ const CartPage = () => {
         }else{
           reject();
         }
+        console.log("headers hahah :", headers);
       });
     });
     await toast.promise(promise, {
@@ -68,7 +69,7 @@ const CartPage = () => {
       success: 'Redirecting to payment...',
       error: 'Something went wrong... please try again later',
     })
-  }
+  }  
 
   let subtotal = cartProducts.reduce((sum, p) => sum + cartProductPrice(p), 0);
 
