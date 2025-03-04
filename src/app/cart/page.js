@@ -24,6 +24,14 @@ const CartPage = () => {
   const [profileFetched, setProfileFetched] = useState(false);
 
   useEffect(() => {
+    if(typeof window !== 'undefined'){
+      if(window.location.href.includes('canceled=1')){
+        toast.error('Payment failed')
+      }
+    }
+  })
+
+  useEffect(() => {
     if (status === "authenticated") {
       fetch("/api/profile")
         .then((res) => res.json())
@@ -61,7 +69,6 @@ const CartPage = () => {
         }else{
           reject();
         }
-        console.log("headers hahah :", headers);
       });
     });
     await toast.promise(promise, {

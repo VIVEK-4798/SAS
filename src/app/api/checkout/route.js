@@ -12,11 +12,6 @@ export async function POST(req) {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     }); 
-    // console.log("headers:", req.headers);
-    const sig = req.headers['stripe-signature'];
-    console.log("headers stripe:", sig);
-    console.log("videpo headers", req.headers.get('stripe-signature'));
-    
 
     const {userInfo, cartProducts} = await req.json();
     const session = await getServerSession(authOptions);
@@ -67,9 +62,9 @@ export async function POST(req) {
         line_items: stripeLineItems,
         mode: 'payment',
         customer_email: String(userEmail).trim(),
-        success_url: process.env.NEXTAUTH_URL + 'cart?success=1',
+        success_url: process.env.NEXTAUTH_URL + 'order/' + orderDoc._id.toString(),
         cancel_url: process.env.NEXTAUTH_URL + 'cart?canceled=1',
-        metadata: {orderId:  orderDoc._id.toString()},
+        metadata: {orderId: orderDoc._id.toString()},
         shipping_options: [
             {
                 shipping_rate_data: {
