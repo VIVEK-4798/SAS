@@ -1,7 +1,7 @@
 import React from "react";
 import toast from "react-hot-toast";
 
-const AddressInput = ({ userInfo, setUserInfo }) => {
+const AddressInput = ({ userInfo, setUserInfo, disabled=false}) => {
   
   const handleChange = (e) => {
     if (setUserInfo) {
@@ -32,6 +32,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
     <div className="space-y-3">
       <label>Phone No.</label>
       <input
+        disabled = {disabled}
         type="tel"
         name="phone"
         value={userInfo?.phone || ""}
@@ -41,6 +42,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
 
       <label>Street Address</label>
       <input
+        disabled = {disabled}
         type="text"
         name="streetAddress"
         value={userInfo?.streetAddress || ""}
@@ -52,6 +54,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
         <div>
           <label>Zip Code</label>
           <input
+            disabled = {disabled}
             type="text"
             name="zipCode"
             value={userInfo?.zipCode || ""}
@@ -62,6 +65,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
         <div>
           <label>City</label>
           <input
+            disabled = {disabled}
             type="text"
             name="city"
             value={userInfo?.city || ""}
@@ -73,6 +77,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
 
       <label>Country</label>
       <input
+        disabled = {disabled}
         type="text"
         name="country"
         value={userInfo?.country || ""}
