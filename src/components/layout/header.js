@@ -58,11 +58,13 @@ const header = () => {
               className='relative text-xl'
               href={'/cart'}>
                 <FontAwesomeIcon icon={faCartShopping} /> 
-                <span 
+                {cartProducts?.length > 0 && (
+                  <span 
                   className='absolute -top-2 -right-3 bg-primary text-white 
                             rounded-full text-xs py-1 px-2 leading-3'>
                     {cartProducts.length}
                 </span>
+                )}
             </Link>
         </nav>
     </header>

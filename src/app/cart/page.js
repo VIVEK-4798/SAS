@@ -84,6 +84,14 @@ const CartPage = () => {
     return <p>Loading...</p>;
   }
 
+  if(cartProducts?.length === 0){
+    return (
+      <section className="mt-8 text-center">
+        <p className="mt-4">Your shopping cart is empty 😔</p>
+      </section>
+    )
+  }
+
   return (
     <section className="mt-8">
       <div className="text-center">

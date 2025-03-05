@@ -2,11 +2,14 @@ import React from "react";
 import toast from "react-hot-toast";
 
 const AddressInput = ({ userInfo, setUserInfo }) => {
+  
   const handleChange = (e) => {
-    setUserInfo((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    if (setUserInfo) {
+      setUserInfo((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    }
   };
 
   const handleProfileUpdate = async () => {
@@ -31,7 +34,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
       <input
         type="tel"
         name="phone"
-        value={userInfo.phone}
+        value={userInfo?.phone || ""}
         onChange={handleChange}
         className="w-full p-2 border rounded"
       />
@@ -40,7 +43,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
       <input
         type="text"
         name="streetAddress"
-        value={userInfo.streetAddress}
+        value={userInfo?.streetAddress || ""}
         onChange={handleChange}
         className="w-full p-2 border rounded"
       />
@@ -51,7 +54,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
           <input
             type="text"
             name="zipCode"
-            value={userInfo.zipCode}
+            value={userInfo?.zipCode || ""}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
@@ -61,7 +64,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
           <input
             type="text"
             name="city"
-            value={userInfo.city}
+            value={userInfo?.city || ""}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
@@ -72,7 +75,7 @@ const AddressInput = ({ userInfo, setUserInfo }) => {
       <input
         type="text"
         name="country"
-        value={userInfo.country}
+        value={userInfo?.country || ""}
         onChange={handleChange}
         className="w-full p-2 border rounded"
       />

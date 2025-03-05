@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export const CartContext = createContext({});
 
 export function cartProductPrice(cartProduct) {
-  let price = cartProduct.basePrice || 0;  // Ensure basePrice is always a number
+  let price = cartProduct.basePrice || 0;  
 
   if (cartProduct.size && typeof cartProduct.size.price === "number") {
     price += cartProduct.size.price;
@@ -20,7 +20,7 @@ export function cartProductPrice(cartProduct) {
     }
   }
 
-  return isNaN(price) ? 0 : price;  // Prevent NaN errors
+  return isNaN(price) ? 0 : price;  
 }
 
 
