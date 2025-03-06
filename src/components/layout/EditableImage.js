@@ -1,8 +1,7 @@
 import Image from "next/image";
-import { useState } from "react";
-import toast from "react-hot-toast"; // 🔹 Import toast
+import toast from "react-hot-toast"; 
 
-export default function EditableImage({ link, setLink }) { // 🔹 Correct props handling
+export default function EditableImage({ link, setLink }) {
 
   async function handleFileChange(ev) {
     const files = ev.target.files;
@@ -10,7 +9,6 @@ export default function EditableImage({ link, setLink }) { // 🔹 Correct props
       const data = new FormData();
       data.append("files", files[0]);
 
-      // 🔹 Return promise inside toast
       const uploadPromise = fetch("/api/upload", {
         method: "POST",
         body: data,
@@ -20,7 +18,7 @@ export default function EditableImage({ link, setLink }) { // 🔹 Correct props
           return response.json();
         })
         .then(result => {
-          setLink(result.link); // 🔹 Corrected link extraction
+          setLink(result.link); 
         });
 
         toast.promise(uploadPromise, {
@@ -34,13 +32,15 @@ export default function EditableImage({ link, setLink }) { // 🔹 Correct props
   return (
     <>
       {link && (
-        <Image
-          className="rounded-lg mb-1 max-h-[80px]"
+        <div className="flex justify-center">
+          <Image
+          className="rounded-lg mb-1 max-h-[150px] "
           src={link}
           alt="avatar"
           width={250}
           height={250}
         />
+        </div>
       )}
       {!link && (
         <div className="text-center bg-gray-200 p-4 text-gray-500 rounded-lg mb-1">
@@ -50,7 +50,7 @@ export default function EditableImage({ link, setLink }) { // 🔹 Correct props
       <label>
         <input type="file" className="hidden" onChange={handleFileChange} />
         <span className="block text-center border border-gray-300 rounded-lg p-2 cursor-pointer">
-          Edit
+          Change image
         </span>
       </label>
     </>

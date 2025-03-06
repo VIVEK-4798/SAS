@@ -68,7 +68,7 @@ const UserForm = ({ user, onSave }) => {
             admin !== originalData?.admin || false);
 
     return (
-        <div className="flex gap-4">
+        <div className="md:flex gap-4">
             <div className="p-2 rounded-lg relative max-w-[80px]">
                 <EditableImage link={image} setLink={setImage} />
             </div>

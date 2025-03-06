@@ -1,5 +1,6 @@
 import { User } from "@/app/models/user";
 import mongoose from "mongoose";
+import { isAdmin } from "../auth/[...nextauth]/route";
 
 export async function GET(){
 
@@ -8,6 +9,10 @@ export async function GET(){
         useUnifiedTopology: true,
     });  
 
-    const users = await User.find();
-    return Response.json(users);
+    if (await isAdmin()) {
+        const users = await User.find();
+        return Response.json(users);
+    }else{
+        return Response.json([]);
+    }
 }

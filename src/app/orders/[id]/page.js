@@ -10,6 +10,7 @@ const OrderPage = () => {
   const { clearCart } = useContext(CartContext);
   const { id } = useParams();
   const [order, setOrder] = useState(null); 
+  const [loadingOrders, setLoadingOrders] = useState(true);
 
   useEffect(() => {
     if (window?.location?.href.includes('clear-cart=1')) {
@@ -17,10 +18,11 @@ const OrderPage = () => {
     }
 
     if (id) {
+      setLoadingOrders(true);
       fetch('/api/orders?_id='+id).then(res => {
         res.json().then(orderData => {
-          console.log(orderData);
             setOrder(orderData);
+            setLoadingOrders(false);
         });
       });
     }
@@ -39,13 +41,15 @@ const OrderPage = () => {
         <SectionHeaders mainHeader="Your Order"/>
         <div className='mt-4 mb-8'>
           <p>Thanks for your order</p>
-          <p>We will call you when your order will be on the way.</p>
+          <p>We will call you when your order is ready.</p>
         </div>
       </div>
-
+      {loadingOrders && (
+        <p>Loading order...</p>
+      )}
       {order && (
-        <div className='grid grid-cols-2 gap-16'>
-          <div>
+        <div className='grid md:grid-cols-2 md:gap-16'>
+          <div className='max-md:mb-8'>
             {order.cartProducts.map((product, index) => (
               <CartProduct key={product._id || index} product={product} />
           ))}
@@ -70,6 +74,7 @@ const OrderPage = () => {
           </div>
           </div>
           <div>
+            <h2 className='font-semibold mb-1 text-gray-700 text-lg max-md:ml-1'>Delivery address</h2>
             <div className='bg-gray-100 p-4 rounded-lg'>
               <AddressInput disabled={true} userInfo={order} />
             </div>

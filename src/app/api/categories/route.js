@@ -1,5 +1,6 @@
 import { Category } from "@/app/models/Category";
 import mongoose from "mongoose";
+import { isAdmin } from "../auth/[...nextauth]/route";
 
 export async function POST(req){
 
@@ -9,10 +10,13 @@ export async function POST(req){
         });    
 
         const { name } = await req.json();
-
-        const categoryDoc = await Category.create({ name });
-        return Response.json(categoryDoc);
-      
+        if (await isAdmin()) {
+            const categoryDoc = await Category.create({ name });
+            return Response.json(categoryDoc);   
+        }
+        else{
+            return Response.json({});
+        }
 }
 
 export async function PUT(req){
@@ -23,7 +27,9 @@ export async function PUT(req){
     });  
 
     const {_id, name} = await req.json();
-    await Category.updateOne({_id}, {name});
+    if (await isAdmin()) {
+        await Category.updateOne({_id}, {name});
+    }
     return Response.json(true);
 
 }
@@ -35,9 +41,7 @@ export async function GET(){
         useUnifiedTopology: true,
     });  
 
-    return Response.json(
-        await Category.find()
-    )
+    return Response.json(await Category.find())
 
 }
 
@@ -50,7 +54,8 @@ export async function DELETE(req){
 
     const url = new URL(req.url);
     const _id = url.searchParams.get('_id');
-    await Category.deleteOne({_id});
-
+    if (await isAdmin()) {
+        await Category.deleteOne({_id});
+    }
     return Response.json(true);
 }

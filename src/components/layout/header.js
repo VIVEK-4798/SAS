@@ -21,8 +21,9 @@ const header = () => {
   console.log("Session Status:", status);
 
   return (
-    <header className='flex items-center justify-between'>
-        <Link className='text-primary font-semibold text-2xl' href="/">
+    <header >
+      <div className='hidden md:flex items-center justify-between'>
+      <Link className='text-primary font-semibold text-2xl' href="/">
           Pizzeria
         </Link>
         <nav className='flex items-center gap-8 text-gray-500 font-semibold'>
@@ -67,6 +68,7 @@ const header = () => {
                 )}
             </Link>
         </nav>
+      </div>
     </header>
   )
 }

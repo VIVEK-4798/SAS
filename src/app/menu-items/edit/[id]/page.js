@@ -95,7 +95,7 @@ const EditMenuItemPage = () => {
         </div>
         <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit}/>
         <div className='flex justify-center max-w-md mx-auto mt-3'>
-            <div className='max-w-xs ml-auto pl-4'>
+            <div className='max-w-xs md:ml-auto pl-4'>
                 <DeleteButton 
                     label ="Delete this menu item"
                     onDelete={handleDeleteClick}
