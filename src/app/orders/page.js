@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import dbTimeForHuman from '../../libs/datetime';
+import {dbTimeForHuman} from '../../libs/datetime';
 import UserTabs from "@/components/layout/UserTabs";
 import { useProfile } from "@/components/UseProfile";
 
@@ -12,7 +12,7 @@ const OrdersPage = () => {
     fetch("/api/orders").then((res) => {
       res.json().then((orders) => {
         console.log(orders);
-        setOrders(orders);
+        setOrders(orders.reverse());
       });
     });
   }, []);
@@ -29,7 +29,7 @@ const OrdersPage = () => {
             >
               <div 
                 className="text-gray-500">
-                    {order.userEmail}{order.paid}
+                   {order.userEmail}{order.paid}
               </div>
               <div className="text-center">
                 <span className={

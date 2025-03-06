@@ -1,14 +1,22 @@
+import mongoose from 'mongoose';
 import { Order } from '../../models/Order';
 
 const stripe = require('stripe')(process.env.STRIPE_SK);
 
 export async function POST(req) {
+    
+    await mongoose.connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
 
-    const sig = req.headers.get("stripe-signature");
+
+    const sig = req.headers.get("stripe-signature");    
     let event;
 
     try {
         const reqBuffer = await req.text();
+
         const signSecret = process.env.STRIPE_SIGN_SECRET;
         event = stripe.webhooks.constructEvent(
             reqBuffer,
@@ -26,9 +34,9 @@ export async function POST(req) {
         const isPaid = event?.data?.object?.payment_status === 'paid';
 
         if(isPaid){
-        await Order.updateOne({ _id: orderId }, { paid: true });
+        await Order.updateOne({ _id: orderId.toString() }, { paid: true });        
         }
     }
 
-    return new Response("Webhook processed", { status: 200 });
+    return new Response("ok", { status: 200 });
 }
