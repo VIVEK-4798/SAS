@@ -5,6 +5,7 @@ import React, { useContext, useState} from 'react';
 import { CartContext } from '../sessionWrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faCartShopping, faBars } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 function AuthLinks({status, userName}) {
   if (status === 'authenticated') {
@@ -53,7 +54,8 @@ const header = () => {
   return (
     <header>
       <div className='flex items-center md:hidden justify-between'>
-      <Link className='text-primary font-semibold text-2xl' href="/">
+      <Link className='text-primary font-semibold text-2xl flex items-center' href="/">
+      <Image src={'/pizzeria-logo.jpg'} width={50} height={50} alt='pizzeria-logo'/>
           Pizzeria
         </Link>
         <div className='flex gap-5 items-center'>
@@ -89,7 +91,8 @@ const header = () => {
         </div>
       )}
       <div className='hidden md:flex items-center justify-between'>
-      <Link className='text-primary font-semibold text-2xl' href="/">
+      <Link className='text-primary font-semibold text-2xl flex items-center' href="/">
+        <Image src={'/pizzeria-logo.jpg'} width={50} height={50} alt='pizzeria-logo'/>
           Pizzeria
         </Link>
         <nav className='flex items-center gap-8 text-gray-500 font-semibold'>

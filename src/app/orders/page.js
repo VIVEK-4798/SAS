@@ -4,6 +4,7 @@ import {dbTimeForHuman} from '../../libs/datetime';
 import UserTabs from "@/components/layout/UserTabs";
 import { useProfile } from "@/components/UseProfile";
 import Link from "next/link";
+import Loader from "@/components/loader";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -26,11 +27,11 @@ const OrdersPage = () => {
   }
 
   return (
-    <section className="mt-8 max-w-2xl mx-auto">
+    <section className="mt-8 max-w-3xl mx-auto">
       <UserTabs isAdmin={profile} />
       <div className="mt-8">
         {loadingOrders && (
-          <p>Loading orders...</p>
+          <Loader/>
         )}
         {orders?.length > 0 &&
           orders.map((order, i) => (

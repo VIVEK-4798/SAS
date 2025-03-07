@@ -8,7 +8,7 @@ const AboutUs = () => {
           subHeader ={'Our Story'}
           mainHeader = {'About us'}
         />
-        <div className='text-gray-500 max-w-md mx-auto 
+        <div className='text-gray-500 max-w-7xl mx-auto 
         mt-4 flex flex-col gap-4'>
         <p>
             Lorem ipsum dolor sit amet consectetur,

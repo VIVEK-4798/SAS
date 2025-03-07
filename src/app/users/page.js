@@ -3,6 +3,7 @@ import UserTabs from '@/components/layout/UserTabs';
 import { useProfile } from '@/components/UseProfile';
 import Link from 'next/link';
 import {React, useEffect, useState} from 'react';
+import Loader from '../../components/loader';
 
 const UserPage = () => {
 
@@ -16,9 +17,8 @@ const UserPage = () => {
             })
         })
     },[])
-
     if(loading){
-        return 'Loading user info...';
+        return <Loader/>;
       }
     
       if(!data){
@@ -26,7 +26,7 @@ const UserPage = () => {
       }
 
   return (
-    <section className='max-w-2xl mx-auto mt-8'>
+    <section className='max-w-3xl mx-auto mt-8'>
         <UserTabs isAdmin={true}/>
         <div className='mt-8'>
             {users.length > 0 && users.map((user, index) => (

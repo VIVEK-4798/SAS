@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { redirect } from 'next/navigation';
 import toast from "react-hot-toast";
 import MenuItemForm from '@/components/layout/MenuItemForm';
+import Loader from '@/components/loader';
 
 const NewMenuItemPage = () => {
 
@@ -57,14 +58,14 @@ const NewMenuItemPage = () => {
     
 
     if(loading){
-        return 'Loading user info...';
+        return <Loader/>
     }
     if(!data){
         return 'Not an admin';
     }
 
   return (
-    <section className='mt-8'>
+    <section className='mt-8 '>
         <UserTabs isAdmin={true}/>
         <div className='max-w-2xl mx-auto mt-8'>
             <Link

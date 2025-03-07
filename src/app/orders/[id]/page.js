@@ -5,6 +5,7 @@ import { CartContext, cartProductPrice } from '@/components/sessionWrapper';
 import { useParams } from 'next/navigation';
 import AddressInput from '@/components/layout/AddressInput';
 import CartProduct from '@/components/Menu/CartProduct';
+import Loader from '@/components/loader';
 
 const OrderPage = () => {
   const { clearCart } = useContext(CartContext);
@@ -36,7 +37,7 @@ const OrderPage = () => {
   }
 
   return (
-    <section className='max-w-2xl mx-auto mt-8'>
+    <section className='max-w-4xl mx-auto mt-8'>
       <div className='text-center'>
         <SectionHeaders mainHeader="Your Order"/>
         <div className='mt-4 mb-8'>
@@ -45,7 +46,7 @@ const OrderPage = () => {
         </div>
       </div>
       {loadingOrders && (
-        <p>Loading order...</p>
+        <Loader/>
       )}
       {order && (
         <div className='grid md:grid-cols-2 md:gap-16'>

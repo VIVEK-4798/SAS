@@ -9,6 +9,7 @@ import { redirect, useParams } from 'next/navigation';
 import toast from "react-hot-toast";
 import MenuItemForm from '../../../../components/layout/MenuItemForm';
 import DeleteButton from '../../../../components/DeleteButton';
+import Loader from '@/components/loader';
 
 const EditMenuItemPage = () => {
 
@@ -74,7 +75,7 @@ const EditMenuItemPage = () => {
     }
 
     if(loading){
-        return 'Loading user info...';
+        return <Loader/>
     }
     if(!data){
         return 'Not an admin';

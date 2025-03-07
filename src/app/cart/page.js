@@ -6,6 +6,7 @@ import CartProduct from '../../components/Menu/CartProduct';
 import { useSession } from "next-auth/react";
 import AddressInput from '../../components/layout/AddressInput';
 import toast from "react-hot-toast";
+import Loader from "@/components/loader";
 
 const CartPage = () => {
   const { cartProducts, removeCartProducts } = useContext(CartContext);
@@ -79,7 +80,7 @@ const CartPage = () => {
   let subtotal = cartProducts.reduce((sum, p) => sum + cartProductPrice(p), 0);
 
   if (status === "loading" || !profileFetched) {
-    return <p>Loading...</p>;
+    return <Loader/>
   }
 
   if(cartProducts?.length === 0){

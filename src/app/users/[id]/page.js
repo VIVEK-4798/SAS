@@ -5,6 +5,7 @@ import { useProfile } from '@/components/UseProfile';
 import UserForm from '@/components/layout/UserForm';
 import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import Loader from '@/components/loader';
 
 const EditUserPage = () => {
   const { loading, data } = useProfile();
@@ -86,8 +87,10 @@ const EditUserPage = () => {
 
 
 
-  if (loading) return 'Loading user profile...';
-  if (!data) return 'Not an admin';
+  if (loading){
+     return <Loader/>
+    }
+      if (!data) return 'Not an admin';
 
   return (
     <section className='mt-8 mx-auto max-w-2xl'>

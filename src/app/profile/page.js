@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import UserTabs from "../../components/layout/UserTabs";
 import UserForm from "../../components/layout/UserForm";
 import toast from "react-hot-toast";
+import Loader from '../../components/loader';
 
 const ProfilePage = () => {
   const session = useSession();
@@ -59,14 +60,14 @@ const ProfilePage = () => {
     }
   }, [status, router]);
 
-  if (status === "loading" || !profileFetched) {
-    return "Loading...";
+  if(status === "loading" || !profileFetched){
+    return <Loader/>;
   }
 
   return (
     <section className="mt-8">
       <UserTabs isAdmin={isAdmin} />
-      <div className="max-w-2xl mx-auto mt-8">
+      <div className="max-w-3xl mx-auto mt-8">
         <UserForm user={user} session={session} onSave={handleProfileInfoUpdate} />
       </div>
     </section>
