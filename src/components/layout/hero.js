@@ -6,8 +6,8 @@ import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 
 const hero = () => {
   return (
-    <section className="grid grid-cols-custom gap-8 mt-4">
-  <div className="py-12">
+    <section className="sm:text-center md:text-left md:grid grid-cols-custom gap-8 md:mt-4 mb-8">
+  <div className=" py-6 md:py-12">
     <h1 className="text-4xl font-semibold leading-tight">
     For Every Mood, There's a&nbsp;
     <span className='text-primary'>Pizza</span>
