@@ -18,7 +18,7 @@ const ContactUs = () => {
           </a>
           <p className="max-w-md">
             Whether it's a catering inquiry, feedback, or assistance with your order, feel free to reach out.
-            We’d love to hear from you!
+            We&apos;d love to hear from you!
           </p>
         </div>
       </section>

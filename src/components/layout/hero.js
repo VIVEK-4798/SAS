@@ -10,7 +10,7 @@ const hero = () => {
     <section className="sm:text-center md:text-left md:grid grid-cols-custom gap-8 md:mt-4 mb-8">
   <div className=" py-6 md:py-12">
     <h1 className="text-4xl font-semibold leading-tight">
-    For Every Mood, There's a&nbsp;
+    For Every Mood, There&apos;s a&nbsp;
     <span className='text-primary'>Pizza</span>
     </h1>
     <p className="my-6 text-gray-500 text-sm">

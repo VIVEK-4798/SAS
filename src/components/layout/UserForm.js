@@ -42,7 +42,7 @@ const UserForm = ({ user, onSave }) => {
             setCountry(normalizedUser.country);
             setAdmin(normalizedUser.admin);
         }
-    }, [user]);
+    }, [user, normalizedUser]);
 
     useEffect(() => {
         if (originalData) {
