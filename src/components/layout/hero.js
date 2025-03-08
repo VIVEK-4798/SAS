@@ -15,7 +15,7 @@ const hero = () => {
     </h1>
     <p className="my-6 text-gray-500 text-sm">
         Discover the joy of freshly baked pizzas crafted to 
-        perfection. Whether it’s a celebration, comfort meal,
+        perfection. Whether it&apos;s a celebration, comfort meal,
         or quick bite, every slice brings happiness to your
         day
     </p>

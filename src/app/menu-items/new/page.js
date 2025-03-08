@@ -53,7 +53,7 @@ const NewMenuItemPage = () => {
         if (redirectToItems) {
             router.push('/menu-items'); 
         }
-    }, [redirectToItems]);
+    }, [redirectToItems, router]);
     
     
 

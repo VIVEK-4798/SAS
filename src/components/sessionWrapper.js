@@ -40,7 +40,7 @@ export default function SessionWrapper({ children }) {
     if(ls && ls.getItem('cart')){
       setCartProducts( JSON.parse(ls.getItem('cart')));
     }
-  }, []);
+  }, [ls]);
 
   function removeCartProducts(indexToRemove) {
     setCartProducts(prevCartProducts => {

@@ -28,7 +28,7 @@ const CartPage = () => {
     if (status === "unauthenticated") {
       router.push('/login'); 
     }
-  }, [status]);
+  }, [status, router]);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.href.includes('canceled=1')) {

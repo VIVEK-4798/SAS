@@ -36,7 +36,7 @@ function AuthLinks({status, userName}) {
   }
 }
 
-const header = () => {
+const Header = () => {
 
   const { data: session, status } = useSession();  
 
@@ -121,4 +121,4 @@ const header = () => {
   )
 }
 
-export default header
+export default Header

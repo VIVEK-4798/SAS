@@ -1,5 +1,4 @@
 import React from 'react';
-import AddToCartButton from '../Menu/AddToCartButton';
 
 const MenuItemTile = ({ onAddToCart, ...item }) => {
   const { image, description, name, basePrice, sizes, extraIngredientsPrices } = item;

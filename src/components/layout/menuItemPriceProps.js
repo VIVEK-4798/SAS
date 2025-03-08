@@ -2,7 +2,7 @@ import {React, useState} from "react";
 import { faTrash, faPlus, faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const menuItemPriceProps = ({name, addLabel, props, setProps}) => {
+const MenuItemPriceProps = ({name, addLabel, props, setProps}) => {
 
     const [isOpen, setIsOpen] = useState(false);
     
@@ -82,4 +82,4 @@ const menuItemPriceProps = ({name, addLabel, props, setProps}) => {
   );
 };
 
-export default menuItemPriceProps;
+export default MenuItemPriceProps;

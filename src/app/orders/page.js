@@ -29,8 +29,8 @@ const OrdersPage = () => {
   if(orders?.length === 0){
     return (
       <section className="mt-8 text-center">
-        <p className="mt-4">You don't have any orders yet 😔</p>
-      </section>
+        <p className="mt-4">You don&apos;t have any orders yet 😔</p>
+    </section>
     )
   }
 

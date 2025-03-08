@@ -5,7 +5,7 @@ import MenuItems from '../Menu/menuItems';
 import SectionHeaders from '../layout/sectionHeaders';
 import Loader from '../../components/loader';
 
-const homeMenu = () => {
+const HomeMenu = () => {
 
   const [bestSellers, setBestSellers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,4 +62,4 @@ const homeMenu = () => {
   )
 }
 
-export default homeMenu
+export default HomeMenu
