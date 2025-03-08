@@ -3,19 +3,27 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import MenuItems from '../Menu/menuItems';
 import SectionHeaders from '../layout/sectionHeaders';
+import Loader from '../../components/loader';
 
 const homeMenu = () => {
 
   const [bestSellers, setBestSellers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     fetch('/api/menu-items').then(res => {
       res.json().then(menuItems => {
-        const bestSellers = menuItems.slice(-3);
-          setBestSellers(bestSellers);        
+        const bestSellers = menuItems.slice(-6);
+          setBestSellers(bestSellers); 
+          setLoading(false);       
       })
     })
   }, []);
+
+  if(loading){
+    return <Loader/>
+  }
 
   return (
     <section>
@@ -43,11 +51,13 @@ const homeMenu = () => {
           mainHeader = {'Our Best Sellers'}
        />
     </div>
-    <div className='grid sm:grid-cols-3 gap-4'>
+    {!loading && (
+      <div className='grid sm:grid-cols-3 gap-4'>
       {bestSellers?.length > 0 && bestSellers.map((item, index) => (
         <MenuItems {...item} key={index}/>
       ))}
     </div>
+    )}
     </section>
   )
 }

@@ -17,18 +17,18 @@ const loginPage = () => {
     const result = await signIn('credentials', {
         email,
         password,
+        redirect: false,
         callbackUrl: '/',
     });
 
     setLoginInProgress(false);
 
-    if (result.ok) {
-        console.log('Login successful');
-        // window.location.href = result.url;
-        window.location.href = '/';
-    } else {
-        console.error('Login failed:', result.error);
-    }
+    if (!result || result.error) {
+      console.error('Login failed:', result?.error);
+  } else {
+      window.location.href = result.url || '/';
+  }
+  
 }
 
   return (

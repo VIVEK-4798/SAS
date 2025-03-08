@@ -18,7 +18,7 @@ async function connectMongoose() {
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   debug: true,
-  adapter: MongoDBAdapter(await clientPromise), // ✅ Ensuring Adapter is Used
+  adapter: MongoDBAdapter(await clientPromise),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -32,25 +32,34 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          console.log("Authorize function triggered!");
-          await connectMongoose();
-
-          const user = await User.findOne({ email: credentials.email });
-
-          if (!user) {
-            throw new Error("User not found");
-          }
-
-          const passwordOk = bcrypt.compareSync(credentials.password, user.password);
-          if (!passwordOk) {
-            throw new Error("Invalid credentials");
-          }
-
-          return { id: user._id, email: user.email };
+            console.log("Received credentials:", credentials);
+    
+            await connectMongoose();
+            const user = await User.findOne({ email: credentials.email });
+    
+            console.log("User found in DB:", user);
+    
+            if (!user || !user.password) {
+                throw new Error("User not found or password missing");
+            }
+    
+            // Debugging hashed password comparison
+            console.log("Stored hashed password:", user.password);
+            console.log("Entered password:", credentials.password);
+    
+            const passwordOk = bcrypt.compareSync(credentials.password, user.password);
+            console.log("Password match:", passwordOk);
+    
+            if (!passwordOk) {
+                throw new Error("Invalid credentials");
+            }
+    
+            return { id: user._id, email: user.email };
         } catch (error) {
-          throw error;
+            console.error("Login error:", error);
+            throw error;
         }
-      },
+    }    
     }),
   ],
   pages: { signIn: "/login" },
