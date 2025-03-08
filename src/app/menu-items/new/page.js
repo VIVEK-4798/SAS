@@ -51,7 +51,7 @@ const NewMenuItemPage = () => {
 
     useEffect(() => {
         if (redirectToItems) {
-            router.push('/menu-items'); // Correct way to redirect in client components
+            router.push('/menu-items'); 
         }
     }, [redirectToItems]);
     

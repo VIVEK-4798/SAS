@@ -11,7 +11,8 @@ import Loader from '@/components/loader';
 const MenuItemsPage = () => {
 
     const {loading, data} = useProfile();
-    const [menuItems, setMenuItems] = useState('');
+    const [menuItems, setMenuItems] = useState([]);
+    const [loadingImages, setLoadingImages] = useState({});
 
     useEffect(() => {
         fetch('/api/menu-items').then(res => {
@@ -20,6 +21,14 @@ const MenuItemsPage = () => {
             })
         })
     }, [])
+
+    const handleImageLoad = (id) => {
+        setLoadingImages(prev => ({ ...prev, [id]: false }));
+    };
+
+    const handleImageError = (id) => {
+        setLoadingImages(prev => ({ ...prev, [id]: false })); 
+    };
 
     if(loading){
         return <Loader/>
@@ -36,36 +45,42 @@ const MenuItemsPage = () => {
                 className='button'
                 href={'/menu-items/new'}>
                 Create new menu items
-                <FontAwesomeIcon
-                    icon={faArrowCircleRight}
-                />
+                <FontAwesomeIcon icon={faArrowCircleRight} />
             </Link>
         </div>
         <div>
             <h2 className='text-sm text-gray-500 mt-8'>Edit menu items</h2>
-            <div className='grid grid-cols-3 gap-2 mt-2'>
-    {menuItems?.length > 0 && menuItems.map(item => (
-        <Link
-            key={item._id}
-            href={'/menu-items/edit/'+item._id} 
-            className='bg-gray-200 rounded-lg p-4 flex flex-col justify-between h-full'>
-                <div className='relative flex justify-center items-center'>
-                    <Image 
-                        className='rounded-md'
-                        src={item.image || '/pizzeria-logo.jpg'} 
-                        alt={''}
-                        width={200} height={200}/>
-                </div>
-            <div className='text-center mt-auto'>
-                {item.name}
-            </div>
-        </Link>
-    ))}
-</div>
+            <div className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-2'>
+                {menuItems?.length > 0 && menuItems.map(item => (
+                    <Link
+                        key={item._id}
+                        href={'/menu-items/edit/'+item._id} 
+                        className='bg-gray-200 rounded-lg p-4 flex flex-col justify-between h-56'>
+                            
+                        <div className='relative w-full h-32 overflow-hidden flex justify-center items-center'>
+                            {loadingImages[item._id] ? (
+                                <Loader /> 
+                            ) : (
+                                <Image 
+                                    className='object-contain rounded-md' 
+                                    src={item.image || '/pizzeria-logo.jpg'} 
+                                    alt={item.name}
+                                    layout="fill"
+                                    onLoad={() => handleImageLoad(item._id)}
+                                    onError={() => handleImageError(item._id)}
+                                />
+                            )}
+                        </div>
 
+                        <div className='text-center font-semibold mt-2'>
+                            {item.name}
+                        </div>
+                    </Link>
+                ))}
+            </div>
         </div>
     </section>
   )
 }
 
-export default MenuItemsPage
+export default MenuItemsPage;

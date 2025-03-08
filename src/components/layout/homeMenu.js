@@ -14,7 +14,7 @@ const homeMenu = () => {
     setLoading(true);
     fetch('/api/menu-items').then(res => {
       res.json().then(menuItems => {
-        const bestSellers = menuItems.slice(-6);
+        const bestSellers = menuItems.slice(-9);
           setBestSellers(bestSellers); 
           setLoading(false);       
       })

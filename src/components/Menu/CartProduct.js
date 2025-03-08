@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import { cartProductPrice } from "../sessionWrapper";
 
-const CartProduct = ({product, onRemove}) => {
+const CartProduct = ({product, index, onRemove}) => {
   return (
     <div className="flex items-center gap-4 border-b py-4">
       <div className="w-24">

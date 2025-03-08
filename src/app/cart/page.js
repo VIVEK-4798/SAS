@@ -12,7 +12,7 @@ import Loader from "@/components/loader";
 const CartPage = () => {
   const { cartProducts, removeCartProducts } = useContext(CartContext);
   const { data: session, status } = useSession();
-  const router = useRouter();  // Initialize the router
+  const router = useRouter(); 
 
   const [userInfo, setUserInfo] = useState({
     phone: "",
@@ -24,10 +24,9 @@ const CartPage = () => {
 
   const [profileFetched, setProfileFetched] = useState(false);
 
-  // Redirect to login if the user is not authenticated
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push('/login'); // Redirect to login page
+      router.push('/login'); 
     }
   }, [status]);
 
@@ -112,7 +111,8 @@ const CartPage = () => {
               <CartProduct 
                 product={product} 
                 onRemove={removeCartProducts} 
-                key={index}/>
+                key={index}
+                index={index}/>
             ))
           )}
           <div className=" flex justify-end items-center py-4 text-right pr-14">
