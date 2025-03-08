@@ -17,13 +17,14 @@ async function connectMongoose() {
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
+  session: { strategy: "jwt" },  // ✅ Use JWT instead of DB for session storage
   debug: true,
   adapter: MongoDBAdapter(await clientPromise),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
+    }),    
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -31,80 +32,43 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        try {
-            console.log("Received credentials:", credentials);
-    
-            await connectMongoose();
-            const user = await User.findOne({ email: credentials.email });
-    
-            console.log("User found in DB:", user);
-    
-            if (!user || !user.password) {
-                throw new Error("User not found or password missing");
-            }
-    
-            // Debugging hashed password comparison
-            console.log("Stored hashed password:", user.password);
-            console.log("Entered password:", credentials.password);
-    
-            const passwordOk = bcrypt.compareSync(credentials.password, user.password);
-            console.log("Password match:", passwordOk);
-    
-            if (!passwordOk) {
-                throw new Error("Invalid credentials");
-            }
-    
-            return { id: user._id, email: user.email };
-        } catch (error) {
-            console.error("Login error:", error);
-            throw error;
+        await connectMongoose();
+        const user = await User.findOne({ email: credentials.email });
+
+        if (!user || !user.password) {
+          throw new Error("User not found or password missing");
         }
-    }    
-    }),
-  ],
-  pages: { signIn: "/login" },
-  callbacks: {
-    async signIn({ user, account, profile }) {
-      await connectMongoose();
-  
-      if (account.provider === "google") {
-        let existingUser = await User.findOne({ email: user.email });
-  
-        if (!existingUser) {
-          existingUser = await User.create({
-            name: user.name,
-            email: user.email,
-            image: user.image,
-            provider: "google",
-          });
+
+        const passwordOk = bcrypt.compareSync(credentials.password, user.password);
+        if (!passwordOk) {
+          throw new Error("Invalid credentials");
         }
-  
-        const existingAccount = await mongoose.connection.db.collection("accounts").findOne({
-          provider: "google",
-          userId: existingUser._id.toString(),
-        });
-  
-        if (!existingAccount) {
-          await mongoose.connection.db.collection("accounts").insertOne({
-            userId: existingUser._id.toString(),
-            provider: "google",
-            providerAccountId: profile.sub, // Google Account ID
-            access_token: account.access_token,
-            expires_at: account.expires_at,
-            token_type: account.token_type,
-            id_token: account.id_token,
-            scope: account.scope,
-          });
-        }
-  
-        return true; 
+
+        return { id: user._id, email: user.email, name: user.name };  // ✅ Ensure name is included
       }
-      return true;
+    })
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;  // ✅ Include user info in JWT
+      }
+      return token;
     },
-  }
-  
-  
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.email = token.email;
+        session.user.name = token.name;  // ✅ Ensure session contains user details
+      }
+      return session;
+    }
+  },
+  pages: { signIn: "/login" }
 };
+
 
 export async function isAdmin() {
   const session = await getServerSession(authOptions);

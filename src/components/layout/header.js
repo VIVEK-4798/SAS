@@ -11,7 +11,7 @@ function AuthLinks({status, userName}) {
   if (status === 'authenticated') {
     return (
       <>
-    <Link href={'/profile'} className='whitespace-nowrap'>
+    <Link href={'/profile'} className='whitespace-nowrap font-medium hover:text-gray-700'>
       Hello, {userName}
     </Link>
       <button
@@ -95,18 +95,18 @@ const header = () => {
         <Image src={'/pizzeria-logo.jpg'} width={50} height={50} alt='pizzeria-logo'/>
           Pizzeria
         </Link>
-        <nav className='flex items-center gap-8 text-gray-500 font-semibold'>
-            <Link href={'/'}>Home</Link>
-            <Link href={'/menu'}>Menu</Link>
-            <Link href={'/#about'}>About</Link>
-            <Link href={'/#contact'}>Contact</Link>
+        <nav className='flex items-center gap-8 text-gray-500 font-semibold '>
+            <Link href={'/'} className='hover:text-gray-700 hover:underline'>Home</Link>
+            <Link href={'/menu'} className='hover:text-gray-700 hover:underline'>Menu</Link>
+            <Link href={'/#about'} className='hover:text-gray-700 hover:underline'>About</Link>
+            <Link href={'/#contact'} className='hover:text-gray-700 hover:underline'>Contact</Link>
         </nav>
         <nav className='flex items-center gap-4 text-gray-500'>
           <AuthLinks status={status} userName={userName}/>
             <Link 
               className='relative text-xl'
               href={'/cart'}>
-                <FontAwesomeIcon icon={faCartShopping} /> 
+                <FontAwesomeIcon icon={faCartShopping} className='hover:text-gray-600'/> 
                 {cartProducts?.length > 0 && (
                   <span 
                   className='absolute -top-2 -right-3 bg-primary text-white 

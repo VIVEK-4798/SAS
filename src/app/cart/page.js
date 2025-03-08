@@ -1,5 +1,6 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { CartContext, cartProductPrice } from "@/components/sessionWrapper";
 import SectionHeaders from "@/components/layout/sectionHeaders";
 import CartProduct from '../../components/Menu/CartProduct';
@@ -11,6 +12,7 @@ import Loader from "@/components/loader";
 const CartPage = () => {
   const { cartProducts, removeCartProducts } = useContext(CartContext);
   const { data: session, status } = useSession();
+  const router = useRouter();  // Initialize the router
 
   const [userInfo, setUserInfo] = useState({
     phone: "",
@@ -22,13 +24,18 @@ const CartPage = () => {
 
   const [profileFetched, setProfileFetched] = useState(false);
 
+  // Redirect to login if the user is not authenticated
   useEffect(() => {
-    if(typeof window !== 'undefined'){
-      if(window.location.href.includes('canceled=1')){
-        toast.error('Payment failed')
-      }
+    if (status === "unauthenticated") {
+      router.push('/login'); // Redirect to login page
     }
-  })
+  }, [status]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.href.includes('canceled=1')) {
+      toast.error('Payment failed');
+    }
+  }, []);
 
   useEffect(() => {
     if (status === "authenticated") {
