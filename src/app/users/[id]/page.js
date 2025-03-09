@@ -14,7 +14,6 @@ const EditUserPage = () => {
   const [loadings, setLoadings] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // Fetch user data
   useEffect(() => {
     if (id) {
       setLoadings(true);

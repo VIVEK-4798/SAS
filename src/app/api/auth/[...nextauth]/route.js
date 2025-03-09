@@ -6,7 +6,6 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "../../../../libs/mongoConnect";
 import { User } from "../../../models/user";
 import bcrypt from "bcryptjs";
-import { UserInfo } from "@/app/models/UserInfo";
 
 async function connectMongoose() {
   if (mongoose.connection.readyState === 0) {
@@ -17,7 +16,7 @@ async function connectMongoose() {
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
-  session: { strategy: "jwt" },  // ✅ Use JWT instead of DB for session storage
+  session: { strategy: "jwt" },  
   debug: true,
   adapter: MongoDBAdapter(await clientPromise),
   providers: [
@@ -44,7 +43,7 @@ export const authOptions = {
           throw new Error("Invalid credentials");
         }
 
-        return { id: user._id, email: user.email, name: user.name };  // ✅ Ensure name is included
+        return { id: user._id, email: user.email, name: user.name }; 
       }
     })
   ],
@@ -53,7 +52,7 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.name = user.name;  // ✅ Include user info in JWT
+        token.name = user.name;  
       }
       return token;
     },
@@ -61,27 +60,13 @@ export const authOptions = {
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
-        session.user.name = token.name;  // ✅ Ensure session contains user details
+        session.user.name = token.name; 
       }
       return session;
     }
   },
   pages: { signIn: "/login" }
 };
-
-
-export async function isAdmin() {
-  const session = await getServerSession(authOptions);
-  const userEmail = session?.user?.email;
-  if (!userEmail) {
-    return false;
-  }
-  const userInfo = await UserInfo.findOne({email:userEmail});
-  if (!userInfo) {
-    return false;
-  }
-  return userInfo.admin;
-}
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

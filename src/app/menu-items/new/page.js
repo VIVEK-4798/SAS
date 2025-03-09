@@ -6,7 +6,6 @@ import UserTabs from '@/components/layout/UserTabs';
 import Link from 'next/link';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { redirect } from 'next/navigation';
 import toast from "react-hot-toast";
 import MenuItemForm from '@/components/layout/MenuItemForm';
 import Loader from '@/components/loader';
