@@ -102,7 +102,7 @@ const CartPage = () => {
       <div className="text-center">
         <SectionHeaders mainHeader="Cart" />
       </div>
-      <div className="mt-8 grid gap-8 grid-cols-2">
+      <div className="mt-8 md:grid gap-8 grid-cols-2">
         <div>
           {cartProducts.length === 0 ? (
             <div>No products in your shopping cart</div>

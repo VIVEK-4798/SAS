@@ -60,7 +60,7 @@ const OrdersPage = () => {
               <div className="grow">
                 <div className="flex gap-2 items-center mb-1">
                   <div className="grow">{order.userEmail}</div>
-                  <div className="text-gray-500 text-sm">
+                  <div className="text-gray-500 text-xs">
                     {dbTimeForHuman(order.createdAt)}
                   </div>
                 </div>
