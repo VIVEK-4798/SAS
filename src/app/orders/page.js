@@ -57,16 +57,6 @@ const OrdersPage = () => {
             key={i}
           >
             <div className="grow flex flex-col md:flex-row items-center gap-5">
-              <div>
-                <div
-                  className={
-                    (order.paid ? "bg-green-500" : "bg-red-400") +
-                    " p-2 rounded-md text-white w-24 text-center"
-                  }
-                >
-                  {order.paid ? "Paid" : "Not paid"}
-                </div>
-              </div>
               <div className="grow">
                 <div className="flex gap-2 items-center mb-1">
                   <div className="grow">{order.userEmail}</div>
