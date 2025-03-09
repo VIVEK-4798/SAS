@@ -1,16 +1,9 @@
 import mongoose from 'mongoose';
 import { Order } from '../../models/Order';
 const stripe = require('stripe')(process.env.STRIPE_SK);
-
-export const config = {
-    api: {
-      bodyParser: false, // Disable default body parsing
-    },
-  };
   
 
 export async function POST(req) {
-    console.log("Webhook recieved");
     await mongoose.connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -35,8 +28,6 @@ export async function POST(req) {
         const orderId = event?.data?.object?.metadata?.orderId;
         const isPaid = event?.data?.object?.payment_status === 'paid';
 
-        console.log("Received Webhook for Order:", orderId, "Paid:", isPaid);
-
         if (isPaid && orderId) {
             const updatedOrder = await Order.findOneAndUpdate(
                 { _id: orderId.toString() },
@@ -48,8 +39,6 @@ export async function POST(req) {
                 console.error("Order not found for ID:", orderId);
                 return new Response("Order Not Found", { status: 404 });
             }
-
-            console.log("Order Updated Successfully:", updatedOrder);
         }
     }
 
