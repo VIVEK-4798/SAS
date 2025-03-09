@@ -4,18 +4,6 @@ import EditableImage from './EditableImage';
 import { useProfile } from '../UseProfile';
 
 const UserForm = ({ user, onSave }) => {
-    
-    const normalizedUser = { 
-        name: user?.name || user?.user?.name || '',
-        email: user?.email || user?.userInfo?.email || '',
-        image: user?.image || user?.user?.image || '',
-        phone: user?.phone || user?.userInfo?.phone || '',
-        streetAddress: user?.streetAddress || user?.userInfo?.streetAddress || '',
-        zipCode: user?.zipCode || user?.userInfo?.zipCode || '',
-        city: user?.city || user?.userInfo?.city || '',
-        country: user?.country || user?.userInfo?.country || '',
-        admin: user?.admin || user?.userInfo?.admin || false,
-    };
 
     const [originalData, setOriginalData] = useState({});
     const [userName, setUserName] = useState('');
@@ -31,6 +19,18 @@ const UserForm = ({ user, onSave }) => {
     
     useEffect(() => {
         if (user) {
+            const normalizedUser = { 
+                name: user?.name || user?.user?.name || '',
+                email: user?.email || user?.userInfo?.email || '',
+                image: user?.image || user?.user?.image || '',
+                phone: user?.phone || user?.userInfo?.phone || '',
+                streetAddress: user?.streetAddress || user?.userInfo?.streetAddress || '',
+                zipCode: user?.zipCode || user?.userInfo?.zipCode || '',
+                city: user?.city || user?.userInfo?.city || '',
+                country: user?.country || user?.userInfo?.country || '',
+                admin: user?.admin || user?.userInfo?.admin || false,
+            };
+    
             setOriginalData(normalizedUser);
             setUserName(normalizedUser.name);
             setEmail(normalizedUser.email);
@@ -42,7 +42,7 @@ const UserForm = ({ user, onSave }) => {
             setCountry(normalizedUser.country);
             setAdmin(normalizedUser.admin);
         }
-    }, [user, normalizedUser]);
+    }, [user]);
 
     useEffect(() => {
         if (originalData) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const MenuItemTile = ({ onAddToCart, ...item }) => {
   const { image, description, name, basePrice, sizes, extraIngredientsPrices } = item;
@@ -10,8 +11,10 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
       transition-all flex flex-col h-full"
     >
       <div className="text-center">
-        <img
+        <Image
           src={image}
+          width={160}
+          height={300}
           className="max-h-auto max-h-24 block mx-auto"
           alt="pizza"
         />
