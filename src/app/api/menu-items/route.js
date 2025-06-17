@@ -7,6 +7,7 @@ export async function POST(req) {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
+
     const data = await req.json();
 
     if (await isAdmin()) {
@@ -14,18 +15,29 @@ export async function POST(req) {
             return Response.json({ error: "Invalid or missing category ID" }, { status: 400 });
         }
 
+        if (typeof data.image === 'string') {
+            try {
+                data.image = JSON.parse(data.image);
+            } catch (e) {
+                return Response.json({ error: "Invalid image data format" }, { status: 400 });
+            }
+        }
+
+        if (!Array.isArray(data.image)) {
+            return Response.json({ error: "`image` must be an array of strings" }, { status: 400 });
+        }
+
         try {
             const menuItemDoc = await MenuItem.create(data);
             return Response.json(menuItemDoc);
         } catch (error) {
+            console.error("Create error:", error);
             return Response.json({ error: error.message }, { status: 500 });
         }
-    }
-    else{
-        return Response.json({});
+    } else {
+        return Response.json({ error: "Unauthorized" }, { status: 403 });
     }
 }
-
 
 export async function PUT(req){
 

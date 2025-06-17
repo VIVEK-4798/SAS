@@ -9,9 +9,9 @@ const MenuItems = (menuItem) => {
   const [selectedSize, setSelectedSize] = useState(sizes?.[0] || null);
   const [selectedExtras, setSelectedExtras] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false); // Track image load status
+  const [imageLoaded, setImageLoaded] = useState(false);
   const { addToCart } = useContext(CartContext);
-  const validImage = image && image.trim() !== "" ? image : "/pizzeria-logo.jpg";
+  const validImage = image?.[0]?.trim?.() !== "" ? image[0] : "/pizzeria-logo.jpg";
 
   function handleAddToCartButtonClick() {
     const hasOptions = sizes.length > 0 || extraIngredientsPrices.length > 0;

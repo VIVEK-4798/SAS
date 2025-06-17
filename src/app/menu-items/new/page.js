@@ -73,7 +73,7 @@ const NewMenuItemPage = () => {
                 <FontAwesomeIcon
                     icon={faArrowCircleLeft}
                 />
-                <span>Show all menu items</span>
+                <span>Show all collection items</span>
             </Link>
         </div>
         <MenuItemForm menuItem={null} onSubmit={handleFormSubmit}/>

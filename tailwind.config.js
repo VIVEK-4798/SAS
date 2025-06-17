@@ -15,7 +15,7 @@ module.exports = {
         'custom': '0.4fr 0.6fr',
       },
       colors:{
-        primary: '#f13a01'
+        primary: '#1B3B50'
       }
     },
   },

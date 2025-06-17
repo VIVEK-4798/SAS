@@ -3,7 +3,7 @@ import EditableImage from '@/components/layout/EditableImage';
 import MenuItemPriceProps from '../layout/menuItemPriceProps';
 
 const MenuItemForm = ({ onSubmit, menuItem }) => {
-    const [image, setImage] = useState(menuItem?.image || '');
+    const [image, setImage] = useState(menuItem?.image || []);
     const [name, setName] = useState(menuItem?.name || '');
     const [description, setDescription] = useState(menuItem?.description || '');
     const [basePrice, setBasePrice] = useState(menuItem?.basePrice || '');
@@ -30,7 +30,7 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
 
     const validateForm = () => {
         let newErrors = {};
-        if (!image) newErrors.image = "Image is required.";
+        if (!image || image.length === 0) newErrors.image = "At least one image is required.";
         if (!name.trim()) newErrors.name = "Item name is required.";
         if (!description.trim()) newErrors.description = "Description is required.";
         if (!basePrice && basePrice !== 0) newErrors.basePrice = "Base price is required.";
@@ -97,7 +97,7 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
                     {errors.sizes && <p className="text-red-500 text-sm">{errors.sizes}</p>}
 
                     <MenuItemPriceProps 
-                        name={'Extra Ingredients'}
+                        name={'Fit Type'}
                         addLabel={'Add ingredient'} 
                         props={extraIngredientsPrices} 
                         setProps={setExtraIngredientsPrices}

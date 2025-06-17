@@ -44,12 +44,12 @@ const MenuItemsPage = () => {
             <Link 
                 className='button'
                 href={'/menu-items/new'}>
-                Create new menu items
+                Create new collection items
                 <FontAwesomeIcon icon={faArrowCircleRight} />
             </Link>
         </div>
         <div>
-            <h2 className='text-sm text-gray-500 mt-8'>Edit menu items</h2>
+            <h2 className='text-sm text-gray-500 mt-8'>Edit collection items</h2>
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-2'>
                 {menuItems?.length > 0 && menuItems.map(item => (
                     <Link

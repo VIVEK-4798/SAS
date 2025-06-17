@@ -91,14 +91,14 @@ const EditMenuItemPage = () => {
                 <FontAwesomeIcon
                     icon={faArrowCircleLeft}
                 />
-                <span>Show all menu items</span>
+                <span>Show all collection items</span>
             </Link>
         </div>
         <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit}/>
         <div className='flex justify-center max-w-md mx-auto mt-3'>
             <div className='max-w-xs md:ml-auto pl-4'>
                 <DeleteButton 
-                    label ="Delete this menu item"
+                    label ="Delete this collection item"
                     onDelete={handleDeleteClick}
                 />
             </div>

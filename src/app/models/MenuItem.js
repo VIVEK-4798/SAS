@@ -6,7 +6,7 @@ const { Schema, models, model, default: mongoose } = require("mongoose");
     });
 
     const MenuItemSchema = new Schema({
-        image: {type: String},
+        image: [{ type: String }],
         name: {type: String},
         description: {type: String},
         category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },

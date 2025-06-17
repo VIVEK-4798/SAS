@@ -10,17 +10,17 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
       hover:bg-white hover:shadow-md hover:shadow-black/25 
       transition-all flex flex-col h-full"
     >
-      <div className="text-center">
+      <div className="relative w-full h-[300px] rounded-md overflow-hidden mb-3">
         <Image
           src={image}
-          width={160}
-          height={300}
-          className="max-h-auto max-h-24 block mx-auto"
-          alt="pizza"
+          alt={name}
+          fill
+          style={{ objectFit: 'cover' }}
+          className="rounded-md"
         />
       </div>
 
-      <h4 className="font-semibold my-3 text-xl line-clamp-1">{name}</h4>
+      <h4 className="font-semibold my-2 text-lg line-clamp-1">{name}</h4>
 
       <p className="text-gray-500 text-sm line-clamp-3 flex-grow mb-4">
         {description}
