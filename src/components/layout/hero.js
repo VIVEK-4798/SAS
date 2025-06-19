@@ -18,14 +18,14 @@ const Hero = () => {
         </p>
         <div className="flex items-center gap-4">
           <button className="flex items-center bg-primary text-white px-5 py-2 rounded-full text-sm">
-            <Link href="/shop">SHOP NOW</Link>
+            <Link href="/menu">SHOP NOW</Link>
             <FontAwesomeIcon
               icon={faArrowCircleRight}
               className="ml-2 w-4"
             />
           </button>
           <button className="flex items-center gap-2 py-2 text-gray-600 font-semibold text-sm">
-            <Link href="/#about">Learn more</Link>
+            <Link href="/#faq">Learn more</Link>
             <FontAwesomeIcon
               icon={faArrowCircleRight}
               className="ml-2 w-4"

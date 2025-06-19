@@ -85,7 +85,7 @@ const Header = () => {
             flex-col gap-2 text-center'>
         <Link href={'/'}>Home</Link>
         <Link href={'/menu'}>Collection</Link>
-        <Link href={'/#about'}>About</Link>
+        <Link href={'/#faq'}>Faqs</Link>
         <Link href={'/#contact'}>Contact</Link>
         <AuthLinks status={status} userName={userName}/>
         </div>
@@ -98,7 +98,7 @@ const Header = () => {
         <nav className='flex items-center gap-8 text-gray-500 font-semibold '>
             <Link href={'/'} className='hover:text-gray-700 hover:underline'>Home</Link>
             <Link href={'/menu'} className='hover:text-gray-700 hover:underline'>Collection</Link>
-            <Link href={'/#about'} className='hover:text-gray-700 hover:underline'>About</Link>
+            <Link href={'/#faq'} className='hover:text-gray-700 hover:underline'>Faqs</Link>
             <Link href={'/#contact'} className='hover:text-gray-700 hover:underline'>Contact</Link>
         </nav>
         <nav className='flex items-center gap-4 text-gray-500'>

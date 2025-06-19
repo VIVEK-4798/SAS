@@ -46,7 +46,7 @@ const MenuItems = (menuItem) => {
   return (
     <>
       {showPopup && (
-        <div onClick={() => setShowPopup(false)} className="fixed inset-0 flex items-center justify-center bg-black/80">
+        <div onClick={() => setShowPopup(false)} className="fixed inset-0 flex items-center justify-center bg-black/80 z-50">
           <div onClick={ev => ev.stopPropagation()} className="my-8 bg-white p-2 rounded-lg max-w-md">
             <div className="overflow-y-scroll p-2" style={{ maxHeight: 'calc(100vh - 90px)' }}>
               {!imageLoaded && <div className="h-48 w-full bg-gray-300 animate-pulse"></div>} {/* Placeholder while image loads */}
@@ -76,7 +76,7 @@ const MenuItems = (menuItem) => {
                   ))}
                 </div>
               )}
-              {extraIngredientsPrices?.length > 0 && (
+              {/* {extraIngredientsPrices?.length > 0 && (
                 <div className="p-2">
                   <h3 className="text-center text-gray-700 font-semibold">Any extras?</h3>
                   {extraIngredientsPrices.map((extraThing, i) => (
@@ -86,7 +86,7 @@ const MenuItems = (menuItem) => {
                     </label>
                   ))}
                 </div>
-              )}
+              )} */}
               <button onClick={handleAddToCartButtonClick} className="primary sticky bottom-2" type="button">
                 Add to cart ₹{selectedPrice}
               </button>

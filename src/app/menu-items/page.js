@@ -18,6 +18,7 @@ const MenuItemsPage = () => {
         fetch('/api/menu-items').then(res => {
             res.json().then(menuItems => {
                 setMenuItems(menuItems);
+                console.log('menuItems', menuItems);
             })
         })
     }, [])
@@ -63,12 +64,12 @@ const MenuItemsPage = () => {
                             ) : (
                                 <Image 
                                     className='object-contain rounded-md' 
-                                    src={item.image || '/pizzeria-logo.jpg'} 
+                                    src={(item.image?.[0]) || '/pizzeria-logo.jpg'} 
                                     alt={item.name}
                                     layout="fill"
                                     onLoad={() => handleImageLoad(item._id)}
                                     onError={() => handleImageError(item._id)}
-                                />
+                                    />
                             )}
                         </div>
 

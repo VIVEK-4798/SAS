@@ -97,8 +97,8 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
                     {errors.sizes && <p className="text-red-500 text-sm">{errors.sizes}</p>}
 
                     <MenuItemPriceProps 
-                        name={'Fit Type'}
-                        addLabel={'Add ingredient'} 
+                        name={'Discount'}
+                        addLabel={'Add Discounts'} 
                         props={extraIngredientsPrices} 
                         setProps={setExtraIngredientsPrices}
                     />

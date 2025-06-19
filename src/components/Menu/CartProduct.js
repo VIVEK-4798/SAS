@@ -5,10 +5,19 @@ import React from "react";
 import { cartProductPrice } from "../sessionWrapper";
 
 const CartProduct = ({product, index, onRemove}) => {
+  console.log(product);
+    const firstImage = product.image?.[0] || "/pizzeria-logo.jpg";
+
+  
   return (
     <div className="flex items-center gap-4 border-b py-4">
-      <div className="w-24">
-        <Image src={product.image} width={240} height={240} alt="" />
+      <div className="w-24 h-24 relative flex-shrink-0">
+        <Image
+          src={firstImage}
+          alt={product.name || "Product image"}
+          fill
+          className="rounded-md object-contain bg-white"
+        />
       </div>
       <div className="grow">
         <h3 className="font-semibold">{product.name}</h3>

@@ -37,6 +37,11 @@ const UserTabs = ({isAdmin}) => {
                 className={path === '/orders' ? 'active': ''}>
                 Orders
             </Link>
+        <Link 
+                href={'/contact'}
+                className={path === '/contact' ? 'active': ''}>
+                Feedback
+            </Link>
       </div>
   )
 }

@@ -8,6 +8,8 @@ import { useSession } from "next-auth/react";
 import AddressInput from '../../components/layout/AddressInput';
 import toast from "react-hot-toast";
 import Loader from "@/components/loader";
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const CartPage = () => {
   const { cartProducts, removeCartProducts } = useContext(CartContext);
@@ -89,7 +91,7 @@ const CartPage = () => {
     return <Loader/>
   }
 
-  if(cartProducts?.length === 0){
+if(cartProducts?.length === 0){
     return (
       <section className="mt-8 text-center">
         <p className="mt-4">Your shopping cart is empty 😔</p>
