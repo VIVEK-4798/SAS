@@ -58,10 +58,10 @@ const FAQ = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-sm overflow-hidden"
+              className="bg-[#fdf3e7] rounded-xl shadow-sm overflow-hidden"
             >
               <button
-                className="w-full text-left flex justify-between items-center p-6 focus:outline-none hover:bg-gray-50 transition-colors"
+                className="w-full text-left flex justify-between items-center p-6 focus:outline-none hover:bg-[#ffe7c9] transition-colors"
                 onClick={() => toggleFAQ(index)}
               >
                 <span className="text-lg font-semibold text-gray-800">{item.question}</span>

@@ -34,13 +34,13 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="relative hidden md:block h-[450px] rounded-lg overflow-hidden">
+      <div className="relative hidden md:block h-[450px] rounded-lg overflow-hidden bg-[#fdf3e7]">
         <Image
           src="/images/hero.png"
           alt="sas-hero-image"
           layout="fill"
           objectFit="cover"
-          className="rounded-lg"
+          className="rounded-lg mix-blend-multiply"
         />
       </div>
     </section>

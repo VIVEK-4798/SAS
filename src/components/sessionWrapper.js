@@ -6,13 +6,13 @@ import toast from "react-hot-toast";
 export const CartContext = createContext({});
 
 export function cartProductPrice(cartProduct) {
-  let price = cartProduct.basePrice || 0;  
+  let price = cartProduct.basePrice || 0;
 
   if (cartProduct.size && typeof cartProduct.size.price === "number") {
     price += cartProduct.size.price;
   }
 
-  if (cartProduct.extras?.length > 0) {
+  if (Array.isArray(cartProduct.extras) && cartProduct.extras.length > 0) {
     for (const extra of cartProduct.extras) {
       if (typeof extra.price === "number") {
         price += extra.price;
@@ -20,8 +20,21 @@ export function cartProductPrice(cartProduct) {
     }
   }
 
-  return isNaN(price) ? 0 : price;  
+  // ✅ Apply discount if available in extraIngredientsPrices
+  if (
+    Array.isArray(cartProduct.extraIngredientsPrices) &&
+    cartProduct.extraIngredientsPrices.length > 0
+  ) {
+    const discount = cartProduct.extraIngredientsPrices[0];
+    if (typeof discount?.price === "number") {
+      price -= discount.price;
+    }
+  }
+
+  // Ensure no negative pricing
+  return isNaN(price) ? 0 : Math.max(0, price);
 }
+
 
 
 export default function SessionWrapper({ children }) {

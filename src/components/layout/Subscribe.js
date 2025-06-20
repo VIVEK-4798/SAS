@@ -28,11 +28,10 @@ const Subscribe = () => {
   }
 
   return (
-    <section className="bg-gray-100 py-12 px-4 rounded-md">
-      {/* ... your grid section ... */}
+    <section className="bg-[#fdf3e7] py-12 px-4 ">
 
       <div
-        className="relative bg-cover bg-center py-16 px-4"
+        className="relative bg-cover bg-center py-16 px-4 rounded-md"
         style={{ backgroundImage: "url('/banner.jpg')" }}
       >
         <div className="absolute inset-0 bg-black opacity-10"></div>

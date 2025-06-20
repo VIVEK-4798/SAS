@@ -29,7 +29,7 @@ const Footer = () => {
   }
 
   return (
-    <div className="bg-white mt-16 md:mt-auto md:pt-36">
+    <div className="bg-[#fdf3e7] mt-16 md:mt-auto md:pt-36">
       {/* Help Section */}
       <section
         className="relative bg-cover bg-center text-white py-16 px-6 md:px-16"

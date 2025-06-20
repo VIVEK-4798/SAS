@@ -21,7 +21,7 @@ export default function CollectionGrid() {
   ];
 
   return (
-    <section className="px-6 md:px-12 py-16 bg-white text-center">
+    <section className="px-6 md:px-12 py-16 bg-[#fdf3e7] text-center">
       {/* Heading */}
       <div className="mb-12">
         <p className="uppercase text-sm tracking-wide text-gray-500">Our Special</p>

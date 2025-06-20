@@ -5,6 +5,11 @@
 html {
   scroll-behavior: smooth;
 }
+html,body{
+  background-color: #fdf3e7;
+  margin: 0;
+  padding: 0;
+}
 
 
 section.hero{

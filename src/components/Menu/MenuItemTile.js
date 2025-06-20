@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaChevronLeft, FaChevronRight, FaShoppingCart } from 'react-icons/fa';
 
 const MenuItemTile = ({ onAddToCart, ...item }) => {
   const { image, description, name, basePrice, sizes, extraIngredientsPrices } = item;
-  console.log("MenuItemTile", item);
-  
+  console.log(extraIngredientsPrices);
 
   const validImages = image?.length > 0 ? image : ["/pizzeria-logo.jpg"];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
+  const [direction, setDirection] = useState(1);
 
+  // Randomize image change interval
+  const randomInterval = Math.floor(Math.random() * 4000) + 3000; // Random interval between 3 to 7 seconds
+
+  // Auto-rotate images with random timing
   useEffect(() => {
     const interval = setInterval(() => {
-      setDirection(1); // next
+      setDirection(1);
       setCurrentImageIndex((prev) => (prev + 1) % validImages.length);
-    }, 3000);
+    }, randomInterval);
     return () => clearInterval(interval);
-  }, [validImages.length]);
+  }, [validImages.length, randomInterval]);
 
   const handlePrevImage = () => {
     setDirection(-1);
@@ -30,87 +34,98 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
   };
 
   return (
-    <div
-      className="group bg-gray-200 p-4 rounded-lg text-center 
-      hover:bg-gray-100 hover:shadow-md hover:shadow-black/25 
-      transition-all flex flex-col h-full min-h-[550px]"
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
+      className="group bg-[#fdf0e0] p-5 rounded-2xl text-center 
+      hover:shadow-xl hover:shadow-black/10 transition-all 
+      flex flex-col h-full min-h-[550px] border border-[#f0e0cc]"
     >
-      <div className="relative w-full h-[300px] bg-gray-200 group-hover:bg-gray-100 overflow-hidden mb-3">
-        {/* Image Slider */}
-        <div className="relative w-full h-full overflow-hidden">
-          <div
-            className="absolute top-0 left-0 w-full h-full flex transition-transform duration-700 ease-in-out"
-            style={{
-              transform: `translateX(-${currentImageIndex * 100}%)`,
-              flexDirection: 'row',
-            }}
+      {/* Image Carousel */}
+      <div className="relative w-full h-full rounded-xl overflow-hidden mb-4 ">
+        <AnimatePresence custom={direction}>
+          <motion.div
+            key={currentImageIndex}
+            custom={direction}
+            initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
           >
-            {validImages.map((img, index) => (
-              <div key={index} className="relative min-w-full h-full">
-                <Image
-                  src={img}
-                  alt={name}
-                  fill
-                  style={{ objectFit: 'contain' }}
-                  className="rounded-md bg-gray-200"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+            <Image
+              src={validImages[currentImageIndex]}
+              alt={name}
+              fill
+              className="object-cover"
+              style={{ objectPosition: 'center' }}
+              priority={currentImageIndex === 0}
+            />
+          </motion.div>
+        </AnimatePresence>
 
-        {/* Navigation buttons */}
+        {/* Navigation Arrows */}
         {validImages.length > 1 && (
           <>
+            {/* Left Arrow */}
             <button
               onClick={handlePrevImage}
               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/3
-                        bg-transparent text-black hover:text-gray-500 p-3 pr-10
-                        z-10 focus:outline-none border-none"
-              type="button"
+                        text-gray-800 p-2 rounded-full
+                        z-10 focus:outline-none transition-all border-none"
+              aria-label="Previous image"
             >
-              <FaChevronLeft size={28} />
+              <FaChevronLeft size={18} />
             </button>
 
+            {/* Right Arrow */}
             <button
               onClick={handleNextImage}
               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/3 
-                        bg-transparent text-black hover:text-gray-500 p-3 pl-10
-                        z-10 focus:outline-none border-none"
-              type="button"
+                        text-gray-800 p-2 rounded-full
+                        z-10 focus:outline-none transition-all border-none"
+              aria-label="Next image"
             >
-              <FaChevronRight size={28} />
+              <FaChevronRight size={18} />
             </button>
           </>
         )}
       </div>
 
-      <h4 className="font-semibold my-2 text-lg line-clamp-1">{name}</h4>
-
-      <p className="text-gray-500 text-sm line-clamp-3 flex-grow mb-4">
+      {/* Product Info */}
+      <h4 className="font-bold text-xl text-gray-800 mb-2 line-clamp-1">{name}</h4>
+      <p className="text-gray-600 text-sm line-clamp-3 flex-grow mb-4 px-2">
         {description}
       </p>
 
-<div className="mt-auto">
-  <button
-    onClick={onAddToCart}
-    className="bg-primary text-white rounded-full px-6 py-2 w-full text-sm sm:text-base"
-  >
-    {extraIngredientsPrices.length > 0 ? (
-      <span>
-        {extraIngredientsPrices[0].name} OFF – Now ₹
-        {basePrice - extraIngredientsPrices[0].price}{" "}
-        <span className="line-through opacity-70 ml-1">₹{basePrice}</span>
-      </span>
-    ) : sizes.length > 0 ? (
-      <span>Add to cart (from ₹{basePrice})</span>
-    ) : (
-      <span>Add to cart ₹{basePrice}</span>
-    )}
-  </button>
-</div>
-
-    </div>
+      {/* Price & Add to Cart */}
+      <div className="mt-auto">
+        <motion.button
+          onClick={onAddToCart}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="bg-gradient-to-r from-[#395f79] to-[#1B3B50] text-white 
+                    rounded-full px-6 py-3 w-full font-medium shadow-md
+                    flex items-center justify-center gap-2"
+        >
+          <FaShoppingCart />
+          {extraIngredientsPrices.length > 0 ? (
+            <span className="flex gap-2 items-center">
+              <span className="text-xs font-normal">{extraIngredientsPrices[0].name}</span>
+              <span>
+                ₹{basePrice - extraIngredientsPrices[0].price}{" "}
+                <span className="line-through text-white/70 ml-1 text-xs">₹{basePrice}</span>
+              </span>
+            </span>
+          ) : sizes.length > 0 ? (
+            <span>From ₹{basePrice}</span>
+          ) : (
+            <span>₹{basePrice}</span>
+          )}
+        </motion.button>
+      </div>
+    </motion.div>
   );
 };
 
