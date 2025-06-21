@@ -21,7 +21,7 @@ export default function CollectionShowcase() {
           Staying Classy
         </p>
         <h2 className="text-3xl md:text-4xl font-semibold mb-4">
-          GENTLEMAN'S KINGDOM
+          GENTLEMAN&apos;S KINGDOM
         </h2>
         <p className="text-gray-600 mb-6 max-w-md mx-auto md:mx-0 text-sm md:text-base">
           An elevated wardrobe for the new season, defined by rich tactility and a sense of quiet flow.

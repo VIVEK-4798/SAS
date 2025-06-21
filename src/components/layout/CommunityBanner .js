@@ -11,7 +11,7 @@ const CommunityBanner = () => {
 
       <div className="relative max-w-4xl mx-auto text-center space-y-6 text-white z-10">
         <p className="text-lg md:text-xl font-light italic">
-          IT'S NICE TO BE ON THE INSIDE.
+          IT&apos;S NICE TO BE ON THE INSIDE.
         </p>
 
         <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-wider">

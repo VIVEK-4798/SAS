@@ -168,7 +168,7 @@ const CartPage = () => {
             </svg>
           </div>
           <h3 className="text-xl font-semibold text-gray-800 mb-2">Your cart feels light</h3>
-          <p className="text-gray-500 mb-6">No items in your cart yet. Let's find something special!</p>
+          <p className="text-gray-500 mb-6">No items in your cart yet. Let&apos;s find something special!</p>
           <Link href="/menu" className="inline-block bg-primary hover:bg-primary-dark text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
             Browse Menu
           </Link>

@@ -13,7 +13,7 @@ const Hero = () => {
           <span className="text-primary">Style</span>
         </h1>
         <p className="my-6 text-gray-500 text-sm">
-          Discover fashion that fits your story. Whether it’s casual, classy,
+          Discover fashion that fits your story. Whether it&apos;s casual, classy,
           or bold — Sas helps you dress your vibe with confidence.
         </p>
         <div className="flex items-center gap-4">
