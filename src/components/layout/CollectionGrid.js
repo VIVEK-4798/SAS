@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import SectionHeaders from '../layout/sectionHeaders';
 
 export default function CollectionGrid() {
   const collections = [
@@ -24,8 +25,7 @@ export default function CollectionGrid() {
     <section className="px-6 md:px-12 py-16 bg-[#fdf3e7] text-center">
       {/* Heading */}
       <div className="mb-12">
-        <p className="uppercase text-sm tracking-wide text-gray-500">Our Special</p>
-        <h2 className="text-4xl font-bold tracking-wide mt-2">COLLECTION</h2>
+        <SectionHeaders mainHeader={'COLLECTION'} subHeader={'Our Special'} />
       </div>
 
       {/* Collection Cards */}
@@ -51,8 +51,8 @@ export default function CollectionGrid() {
       {/* Quote Section */}
       <div className="mt-16 max-w-4xl mx-auto text-center space-y-12">
         <blockquote className="relative text-gray-700 text-2xl font-semibold leading-relaxed px-8">
-          <span className="text-6xl text-gray-300 absolute -left-0 -top-6 select-none">“</span>
-          <p className="z-10 relative">
+          <span className="text-6xl  text-gray-300 absolute -left-0 -top-6 select-none">“</span>
+          <p className="z-10 relative md:text-2xl text-[17px]">
             The designs are timeless and the quality is unmatched. Every piece feels made just for me.
           </p>
           <footer className="mt-4 text-base text-gray-600 font-medium">— Alina R.</footer>

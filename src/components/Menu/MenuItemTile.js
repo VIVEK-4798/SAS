@@ -40,7 +40,7 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
       whileHover={{ y: -5 }}
       className="group bg-[#faebd9] p-5 rounded-2xl text-center 
                 hover:shadow-xl hover:shadow-black/10 transition-all 
-                flex flex-col border border-[#f0e0cc] min-h-[580px]"
+                flex flex-col border border-[#f0e0cc] min-h-[520px]"
     >
 
       {/* Image Carousel */}
@@ -101,7 +101,7 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
       </p>
 
       {/* Price & Add to Cart */}
-      <div className="mt-auto">
+      <div className="mt-3">
         <motion.button
           onClick={onAddToCart}
           whileHover={{ scale: 1.03 }}
@@ -113,11 +113,11 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
           <FaShoppingCart />
           {extraIngredientsPrices.length > 0 ? (
             <span className="flex gap-2 items-center">
-              <span className="text-xs font-normal">{extraIngredientsPrices[0].name}</span>
-              <span>
-                ₹{basePrice - extraIngredientsPrices[0].price}{" "}
+              <span className='flex items-center gap-2'>
                 <span className="line-through text-white/70 ml-1 text-xs">₹{basePrice}</span>
+                ₹{basePrice - extraIngredientsPrices[0].price}{" "}
               </span>
+              <span className="text-xs font-medium text-[#facc15]">{extraIngredientsPrices[0].name}</span>
             </span>
           ) : sizes.length > 0 ? (
             <span>From ₹{basePrice}</span>

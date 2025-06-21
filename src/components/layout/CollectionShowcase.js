@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import SectionHeaders from '../layout/sectionHeaders';
 
 export default function CollectionShowcase() {
   return (
-    <section className="flex flex-col md:flex-row w-full items-center justify-between gap-10 px-4 md:px-20 py-32">
+    <section className="flex flex-col md:flex-row w-full items-center justify-between gap-10 px-4 md:px-20 md:py-32 py-8">
       {/* Left Image */}
       <div className="w-full md:w-1/2">
         <Image
@@ -17,12 +18,7 @@ export default function CollectionShowcase() {
 
       {/* Right Text Content */}
       <div className="w-full md:w-1/2 text-center md:text-left mt-6 md:mt-0">
-        <p className="uppercase tracking-widest text-sm text-gray-600 mb-1">
-          Staying Classy
-        </p>
-        <h2 className="text-3xl md:text-4xl font-semibold mb-4">
-          GENTLEMAN&apos;S KINGDOM
-        </h2>
+      <SectionHeaders mainHeader={"GENTLEMAN'S KINGDOM"} subHeader={'Staying Classy'} />
         <p className="text-gray-600 mb-6 max-w-md mx-auto md:mx-0 text-sm md:text-base">
           An elevated wardrobe for the new season, defined by rich tactility and a sense of quiet flow.
         </p>
