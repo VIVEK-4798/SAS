@@ -21,7 +21,7 @@ const Footer = () => {
     const data = await res.json();
 
     if (res.ok) {
-      toast.success("You're subscribed!");
+      toast.success("You&apos;re subscribed!");
       setEmail('');
     } else {
       toast.error(data?.error || data?.message || 'Subscription failed');
@@ -36,7 +36,6 @@ const Footer = () => {
         style={{ backgroundImage: "url('/banner3.jpg')" }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto">
           <div className="max-w-xl space-y-4">
             <p className="uppercase text-sm tracking-wider">Need help?</p>
@@ -62,9 +61,7 @@ const Footer = () => {
           {/* Contact */}
           <div className="space-y-3">
             <h4 className="uppercase font-semibold text-white">Contact</h4>
-            <p>Email: support@sas.com</p>
-            <p>Phone: +91 9876543210</p>
-            <p>Address: 123 Street, City, India</p>
+            <p>Email: sassingh224@gmail.com</p>
           </div>
 
           {/* Shop */}
@@ -76,21 +73,15 @@ const Footer = () => {
             <Link href="/menu#womenswear" className="block hover:underline text-white/80 hover:text-white transition">
               Women
             </Link>
-            <Link href="/menu#accessories" className="block hover:underline text-white/80 hover:text-white transition">
-              Accessories
-            </Link>
-            <Link href="/menu#sale" className="block hover:underline text-white/80 hover:text-white transition">
-              Sale
-            </Link>
           </div>
-          
-          {/* Company */}
+
+          {/* Terms & Conditions */}
           <div className="space-y-3">
-            <h4 className="uppercase font-semibold text-white">Company</h4>
-            <p>About</p>
-            <p>Careers</p>
-            <p>Returns & Exchanges</p>
-            <p>Privacy Policy</p>
+            <h4 className="uppercase font-semibold text-white">Terms &amp; Conditions</h4>
+            <p className="text-white/80 leading-relaxed">
+              Please note that currently we do not offer any replacements or refunds for purchased items.
+              All sales are final. Kindly check sizes and product details before confirming your order.
+            </p>
           </div>
 
           {/* Newsletter */}
@@ -103,7 +94,7 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email"
-                style={{backgroundColor: 'white', border: '1px solid #ccc'}}
+                style={{ backgroundColor: 'white', border: '1px solid #ccc' }}
                 className="px-3 py-2 text-black w-full focus:outline-none"
               />
               <button

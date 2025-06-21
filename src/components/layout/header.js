@@ -125,6 +125,9 @@ const Header = ({ overlay = false }) => {
             <Link href={'/menu'} className="hover:text-cocoa hover:underline">
               Collection
             </Link>
+            <Link href={'/#about'} className="hover:text-cocoa hover:underline">
+              About
+            </Link>
             <Link href={'/#faq'} className="hover:text-cocoa hover:underline">
               Faqs
             </Link>

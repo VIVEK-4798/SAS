@@ -22,6 +22,7 @@ export default function Home() {
         <CommunityBanner />
         <ContactUs />
         <Subscribe />
+        <AboutUs/>
         <FAQ />
       </div>
     </>
