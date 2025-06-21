@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import toast from "react-hot-toast"; // make sure this is imported
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -11,26 +12,35 @@ const RegisterPage = () => {
   const [userCreated, setUserCreated] = useState(false);
   const [error, setError] = useState(false);
 
-  async function handleFormSubmit(ev) {
-    ev.preventDefault();
-    setCreatingUser(true);
-    setError(false);
-    setUserCreated(false);
 
-    const response = await fetch("/api/register", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: { "content-Type": "application/json" },
-    });
+async function handleFormSubmit(ev) {
+  ev.preventDefault();
+  setCreatingUser(true);
+  setError(false);
+  setUserCreated(false);
 
-    if (response.ok) {
-      setUserCreated(true);
-    } else {
-      setError(true);
-    }
+  const response = await fetch("/api/register", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+    headers: { "Content-Type": "application/json" },
+  });
 
-    setCreatingUser(false);
+  const data = await response.json();
+
+  if (response.status === 409) {
+    // Duplicate user
+    toast.error(data.error || "User already exists.");
+  } else if (!response.ok) {
+    toast.error(data.error || "Unexpected error. Please try again.");
+    setError(true);
+  } else {
+    toast.success("Account created successfully!");
+    setUserCreated(true);
   }
+
+  setCreatingUser(false);
+}
+
 
   return (
     <section className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen h-screen overflow-hidden">

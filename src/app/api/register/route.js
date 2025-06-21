@@ -2,22 +2,37 @@ import mongoose from "mongoose";
 import { User } from "../../models/user";
 import bcrypt from "bcryptjs";
 
-export async function POST(req){
-    const body = await req.json()
-    await mongoose.connect(process.env.MONGO_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-    console.log("Database connected for registration");
+export async function POST(req) {
+  try {
+    const body = await req.json();
+    const { email, password } = body;
 
-    const pass = body.password;
+    await mongoose.connect(process.env.MONGO_URL);
 
-    const notHashedPassword = pass;
     const salt = bcrypt.genSaltSync(10);
-    // const hashPassword = bcrypt.hashSync(notHashedPassword, salt);
-    const hashedPassword = bcrypt.hashSync(notHashedPassword, salt);
-    body.password = hashedPassword;
+    const hashedPassword = bcrypt.hashSync(password, salt);
 
-    const createdUser = await User.create(body);
+    const createdUser = await User.create({
+      email,
+      password: hashedPassword,
+      provider: 'credentials', // Add this if your schema requires it
+    });
+
     return Response.json({ success: true, user: createdUser });
+
+  } catch (err) {
+    // Handle duplicate key (email exists)
+    if (err?.code === 11000 && err?.keyPattern?.email) {
+      return Response.json(
+        { error: "User already exists with this email." },
+        { status: 409 }
+      );
+    }
+
+    // Other errors
+    return Response.json(
+      { error: "Something went wrong. Please try again later." },
+      { status: 500 }
+    );
+  }
 }
