@@ -11,10 +11,9 @@ const MenuItems = (menuItem) => {
   const [showPopup, setShowPopup] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const { addToCart } = useContext(CartContext);
-  console.log("image", image);
+  console.log("image", menuItem);
   
   const validImage = image?.[0]?.trim?.() !== "" ? image[0] : "/sas2-logo.jpg";
-  console.log("validImage", validImage);
 
   function handleAddToCartButtonClick() {
     const hasOptions = sizes.length > 0 || extraIngredientsPrices.length > 0;
@@ -74,7 +73,7 @@ const MenuItems = (menuItem) => {
                         checked={selectedSize?.name === size.name}
                         name="size"
                       />
-                      {size.name} ₹{basePrice + size.price}
+                      {size.name} ₹{basePrice + size.price - extraIngredientsPrices[0].price}
                     </label>
                   ))}
                 </div>
