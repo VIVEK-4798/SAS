@@ -20,7 +20,7 @@ const ContactFeedbackPage = () => {
   if (!profileData) return "Not authorized";
 
   return (
-    <section className="mt-8 max-w-4xl mx-auto">
+    <section className="mt-8 max-w-4xl mx-auto ">
       <UserTabs isAdmin={true} />
       <h1 className="text-xl font-semibold mt-10 mb-4">Contact Feedback</h1>
 
@@ -30,7 +30,7 @@ const ContactFeedbackPage = () => {
         feedbackList.map((feedback, index) => (
           <div
             key={feedback._id || index}
-            className="bg-gray-100 rounded-lg p-4 mb-4 shadow-sm"
+           className="bg-secondry border border-borclr rounded-lg p-4 mb-4 shadow-sm"
           >
             <div className="font-medium text-lg">{feedback.name}</div>
             <div className="text-sm text-gray-600 mb-2">{feedback.email}</div>

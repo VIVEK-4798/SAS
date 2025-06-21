@@ -33,7 +33,8 @@ const DeleteButton = ({label, onDelete}) => {
   return (
     <button
         onClick={() => setShowConfirm(true)}
-        type='button'>
+        type='button'
+        className='border border-[#F9BC75]'>
         {label}
     </button>
   )

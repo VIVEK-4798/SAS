@@ -12,9 +12,9 @@ const MenuPage = () => {
   const generateId = (name) => {
     return name
       .toLowerCase()
-      .replace(/\s+/g, '') 
-      .replace(/['’]/g, '')        
-      .replace(/[^\w-]/g, '');      
+      .replace(/\s+/g, '')
+      .replace(/['’]/g, '')
+      .replace(/[^\w-]/g, '');
   };
 
   // Fetch categories and menu items
@@ -23,14 +23,19 @@ const MenuPage = () => {
     const fetchCategories = fetch('/api/categories').then(res => res.json());
     const fetchMenuItems = fetch('/api/menu-items').then(res => res.json());
 
-    Promise.all([fetchCategories, fetchMenuItems]).then(([categories, menuItems]) => {
-      setCategories(categories);
-      setMenuItems(menuItems);
-      setLoading(false);
-    });
+    Promise.all([fetchCategories, fetchMenuItems])
+      .then(([categories, menuItems]) => {
+        setCategories(categories);
+        setMenuItems(menuItems);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error loading data:", err);
+        setLoading(false);
+      });
   }, []);
 
-  // 🔁 Scroll to anchor *after* loading is complete
+  // Scroll to anchor on hash change
   useEffect(() => {
     if (!loading) {
       const hash = window.location.hash;
@@ -42,27 +47,29 @@ const MenuPage = () => {
         }
       }
     }
-  }, [loading]); // run when loading becomes false
+  }, [loading]);
 
   return (
     <section className='mt-8'>
       {loading ? (
         <Loader />
       ) : (
-        categories?.length > 0 && categories.map((c, i) => (
+        categories?.length > 0 &&
+        categories.map((c, i) => (
           <div key={i} id={generateId(c.name)}>
             <div className="text-center">
               <SectionHeaders mainHeader={c.name} />
             </div>
-            <div className='grid sm:grid-cols-3 gap-4 mt-6 mb-12'>
-              {menuItems
-                .filter(item => item.category === c._id)
-                .map((item, i) => (
-                  <div key={i}>
-                    <MenuItems {...item} />
-                  </div>
-                ))}
-            </div>
+              <div className='grid sm:grid-cols-3 gap-4 mt-6 mb-12'>
+                {menuItems
+                  .filter(item => item.category === c._id)
+                  .filter(item => Array.isArray(item.image) && item.image.length > 0)
+                  .map((item, j) => (
+                    <div key={j}>
+                      <MenuItems {...item} />
+                    </div>
+                  ))}
+              </div>
           </div>
         ))
       )}

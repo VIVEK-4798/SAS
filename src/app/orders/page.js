@@ -52,7 +52,7 @@ const OrdersPage = () => {
       <div className="mt-8">
         {orders.map((order, i) => (
           <div
-            className="bg-gray-100 mb-2 p-4 rounded-lg flex flex-col md:flex-row
+            className="bg-secondry border border-borclr mb-2 p-4 rounded-lg flex flex-col md:flex-row
                   items-center gap-6"
             key={i}
           >
@@ -70,7 +70,7 @@ const OrdersPage = () => {
               </div>
             </div>
             <div className="justify-end text-right flex gap-2 items-center whitespace-nowrap">
-              <Link href={"/orders/" + order._id} className="button">
+              <Link href={"/orders/" + order._id} className="button" style={{border: '1px solid #F9BC75'}}>
                 Show order
               </Link>
             </div>

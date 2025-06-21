@@ -3,7 +3,7 @@ import SessionWrapper from '../components/sessionWrapper';
 import Footer from '../components/layout/footer';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
-import HeaderWrapper from '../components/layout/HeaderWrapper'; // ⬅️ new wrapper
+import HeaderWrapper from '../components/layout/HeaderWrapper'; 
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',

@@ -19,7 +19,7 @@ const CartProduct = ({ product, index, onRemove }) => {
           src={firstImage}
           alt={product.name || "Product image"}
           fill
-          className="rounded-md object-contain bg-white"
+          className="rounded-md object-contain bg-[#fdf3e7]"
         />
       </div>
 

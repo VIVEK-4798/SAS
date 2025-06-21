@@ -125,7 +125,7 @@ const CategoriesPage = () => {
           {categories?.length > 0 && categories.map(c => (
             <div
               key={c._id}
-              className=' bg-gray-100 items-center rounded-xl p-2 px-4 flex gap-1 mb-1'>
+              className=' bg-secondry border border-borclr items-center rounded-xl p-2 px-4 flex gap-1 mb-1'>
               <div 
                 className='grow'>
                 {c.name}
@@ -136,6 +136,7 @@ const CategoriesPage = () => {
                       setEditedCategory(c);
                       setCategoryName(c.name)
                     }}
+                    className='border border-[#F9BC75]'
                     type='button'>
                     Edit
                   </button>

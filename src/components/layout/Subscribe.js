@@ -45,6 +45,7 @@ const Subscribe = () => {
               placeholder="Your e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              style={{backgroundColor: 'white', border: '1px solid #ccc'}}
               className="flex-grow h-12 border border-white bg-white text-black px-4 py-2 focus:outline-none focus:border-black"
             />
             <button

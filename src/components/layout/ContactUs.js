@@ -46,6 +46,7 @@ const ContactUs = () => {
               value={form.name}
               onChange={handleChange}
               required
+              style={{backgroundColor: 'white', border: '1px solid #ccc'}}
               className='w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-black'
             />
           </div>
@@ -58,6 +59,7 @@ const ContactUs = () => {
               value={form.email}
               onChange={handleChange}
               required
+              style={{backgroundColor: 'white', border: '1px solid #ccc'}}
               className='w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-black'
             />
           </div>

@@ -103,6 +103,7 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email"
+                style={{backgroundColor: 'white', border: '1px solid #ccc'}}
                 className="px-3 py-2 text-black w-full focus:outline-none"
               />
               <button

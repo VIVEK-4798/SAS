@@ -7,7 +7,7 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
   const { image, description, name, basePrice, sizes, extraIngredientsPrices } = item;
   console.log(extraIngredientsPrices);
 
-  const validImages = image?.length > 0 ? image : ["/pizzeria-logo.jpg"];
+  const validImages = image?.length > 0 ? image : ["/sas2-logo.jpg"];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -38,12 +38,14 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
-      className="group bg-[#fdf0e0] p-5 rounded-2xl text-center 
-      hover:shadow-xl hover:shadow-black/10 transition-all 
-      flex flex-col h-full min-h-[550px] border border-[#f0e0cc]"
+      className="group bg-[#faebd9] p-5 rounded-2xl text-center 
+                hover:shadow-xl hover:shadow-black/10 transition-all 
+                flex flex-col border border-[#f0e0cc] min-h-[580px]"
     >
+
       {/* Image Carousel */}
-      <div className="relative w-full h-full rounded-xl overflow-hidden mb-4 ">
+      <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-4">
+
         <AnimatePresence custom={direction}>
           <motion.div
             key={currentImageIndex}
@@ -58,8 +60,7 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
               src={validImages[currentImageIndex]}
               alt={name}
               fill
-              className="object-cover"
-              style={{ objectPosition: 'center' }}
+              className="object-contain bg-[#faebd9]"
               priority={currentImageIndex === 0}
             />
           </motion.div>
@@ -94,8 +95,8 @@ const MenuItemTile = ({ onAddToCart, ...item }) => {
       </div>
 
       {/* Product Info */}
-      <h4 className="font-bold text-xl text-gray-800 mb-2 line-clamp-1">{name}</h4>
-      <p className="text-gray-600 text-sm line-clamp-3 flex-grow mb-4 px-2">
+     <h4 className="font-bold text-xl text-gray-800 mb-2">{name}</h4>
+      <p className="text-gray-700 text-sm flex-grow mb-4 px-2 max-h-[72px] ">
         {description}
       </p>
 

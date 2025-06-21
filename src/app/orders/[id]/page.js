@@ -52,9 +52,9 @@ const OrderPage = () => {
     <section className='max-w-4xl mx-auto mt-8'>
       <div className='text-center'>
         <SectionHeaders mainHeader="Your Order"/>
-        <div className='mt-4 mb-8'>
-          <p>Thanks for your order</p>
-          <p>We will call you when your order is ready.</p>
+        <div className="mt-4 mb-8">
+          <p className="text-lg font-semibold">Thank you for shopping with SAS!</p>
+          <p className="text-gray-700">Your order has been placed successfully. You’ll receive updates once your items are packed and shipped.</p>
         </div>
       </div>
 
@@ -69,8 +69,8 @@ const OrderPage = () => {
             ))}
             <div className='text-right py-2 text-gray-500'>
               <p>Subtotal: ₹{subtotal}</p>
-              <p>Delivery: ₹100</p>
-              <p>Total: ₹{subtotal + 100}</p>
+              <p>Delivery: Free</p>
+              <p>Total: ₹{subtotal + 0}</p>
             </div>
           </div>
           <div>

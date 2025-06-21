@@ -31,7 +31,7 @@ const UserPage = () => {
         <div className='mt-8'>
             {users.length > 0 && users.map((user, index) => (
                 <div key={index} 
-                     className='flex items-center bg-gray-100 rounded-lg
+                     className='flex items-center bg-secondry border border-borclr rounded-lg
                                  mb-2 p-1 px-4 gap-4'>
                     <div className='md:grid md:grid-cols-2  gap-4 grow'>
                         <div className='text-gray-900'>
@@ -43,6 +43,7 @@ const UserPage = () => {
                     <div>
                         <Link 
                             className='button'
+                            style={{border: '1px solid #F9BC75'}}
                             href={'/users/'+user._id}>
                             Edit
                         </Link>

@@ -11,7 +11,10 @@ const MenuItems = (menuItem) => {
   const [showPopup, setShowPopup] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const { addToCart } = useContext(CartContext);
-  const validImage = image?.[0]?.trim?.() !== "" ? image[0] : "/pizzeria-logo.jpg";
+  console.log("image", image);
+  
+  const validImage = image?.[0]?.trim?.() !== "" ? image[0] : "/sas2-logo.jpg";
+  console.log("validImage", validImage);
 
   function handleAddToCartButtonClick() {
     const hasOptions = sizes.length > 0 || extraIngredientsPrices.length > 0;
