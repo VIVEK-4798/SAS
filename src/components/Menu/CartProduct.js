@@ -12,69 +12,75 @@ const CartProduct = ({ product, index, onRemove }) => {
   const finalPrice = cartProductPrice(product);
 
   return (
-    <div className="flex items-center gap-4 border-b py-4">
-      {/* Product Image */}
-      <div className="w-24 h-24 relative flex-shrink-0">
-        <Image
-          src={firstImage}
-          alt={product.name || "Product image"}
-          fill
-          className="rounded-md object-contain bg-[#fdf3e7]"
-        />
-      </div>
+    <div className="flex flex-col border-b py-4">
+      {/* Product Row */}
+      <div className="flex items-center gap-4">
+        {/* Product Image */}
+        <div className="w-24 h-24 relative flex-shrink-0">
+          <Image
+            src={firstImage}
+            alt={product.name || "Product image"}
+            fill
+            className="rounded-md object-contain bg-[#fdf3e7]"
+          />
+        </div>
 
-      {/* Product Details */}
-      <div className="grow">
-        <h3 className="font-semibold text-lg">{product.name}</h3>
+        {/* Product Details */}
+        <div className="grow">
+          <h3 className="font-semibold text-lg">{product.name}</h3>
 
-        {product.size && (
-          <div className="text-sm">
-            Size: <span>{product.size.name}</span>
-          </div>
-        )}
+          {product.size && (
+            <div className="text-sm">
+              Size: <span>{product.size.name}</span>
+            </div>
+          )}
 
-        {product.extras?.length > 0 && (
-          <div className="text-sm text-gray-500 mt-1">
-            {product.extras.map((extra, i) => (
-              <div key={i}>
-                {extra.name} ₹{extra.price}
-              </div>
-            ))}
-          </div>
-        )}
+          {product.extras?.length > 0 && (
+            <div className="text-sm text-gray-500 mt-1">
+              {product.extras.map((extra, i) => (
+                <div key={i}>
+                  {extra.name} ₹{extra.price}
+                </div>
+              ))}
+            </div>
+          )}
 
-        {/* Show Discount */}
-        {discounted && (
-          <div className="text-sm text-green-600 font-medium mt-1">
-            Discount: {discounted.name} (-₹{discountAmount})
-          </div>
-        )}
-      </div>
-
-      {/* Price and Remove Button */}
-      <div className="text-right flex flex-col items-end justify-between h-full gap-2">
-        {/* Show Original Price Struck Through if Discounted */}
-        <div className="text-lg font-bold text-primary">
-          {discounted ? (
-            <>
-              <span className="line-through text-gray-400 text-sm mr-1">₹{originalPrice}</span>
-              ₹{finalPrice}
-            </>
-          ) : (
-            <>₹{finalPrice}</>
+          {discounted && (
+            <div className="text-sm text-green-600 font-medium mt-1">
+              Discount: {discounted.name} (-₹{discountAmount})
+            </div>
           )}
         </div>
 
-        {!!onRemove && (
-          <button
-            type="button"
-            onClick={() => onRemove(index)}
-            className="text-gray-500 hover:text-red-500 transition-colors"
-            title="Remove"
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
-        )}
+        {/* Price and Remove Button */}
+        <div className="text-right flex flex-col items-end justify-between h-full gap-2">
+          <div className="text-lg font-bold text-primary">
+            {discounted ? (
+              <>
+                <span className="line-through text-gray-400 text-sm mr-1">₹{originalPrice}</span>
+                ₹{finalPrice}
+              </>
+            ) : (
+              <>₹{finalPrice}</>
+            )}
+          </div>
+
+          {!!onRemove && (
+            <button
+              type="button"
+              onClick={() => onRemove(index)}
+              className="text-gray-500 hover:text-red-500 transition-colors"
+              title="Remove"
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="mt-3 px-3 py-2 bg-yellow-50 border-l-4 border-yellow-400 text-sm text-gray-700 rounded">
+        <strong>Note:</strong> We currently do not offer refunds or replacements. Please review your order carefully before proceeding.
       </div>
     </div>
   );
