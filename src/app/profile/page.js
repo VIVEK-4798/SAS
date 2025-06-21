@@ -10,20 +10,28 @@ import Loader from '../../components/loader';
 const ProfilePage = () => {
   const session = useSession();
   const router = useRouter();
-  
+
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [profileFetched, setProfileFetched] = useState(false);
 
-  const { status, data } = session;
+  const { status } = session;
 
   async function handleProfileInfoUpdate(ev, data) {
     ev.preventDefault();
 
+    // ✅ Ensure image is a string (not an array)
+    const safeImage = Array.isArray(data.image) ? data.image[0] : data.image;
+
+    const payload = {
+      ...data,
+      image: safeImage,
+    };
+
     const updatePromise = fetch("/api/profile", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     }).then(response => {
       if (!response.ok) throw new Error("Profile update failed");
     });
@@ -52,7 +60,6 @@ const ProfilePage = () => {
         .catch(error => console.error("Error fetching profile:", error));
     }
   }, [session, status]);
-  
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -60,8 +67,8 @@ const ProfilePage = () => {
     }
   }, [status, router]);
 
-  if(status === "loading" || !profileFetched){
-    return <Loader/>;
+  if (status === "loading" || !profileFetched) {
+    return <Loader />;
   }
 
   return (
