@@ -39,7 +39,7 @@ const OrderPage = () => {
     };
 
     fetchOrder();
-  }, [id]); // Removed `clearCart` from dependency to avoid re-renders
+  }, [id]); 
 
   let subtotal = 0;
   if (order?.cartProducts) {
@@ -72,7 +72,20 @@ const OrderPage = () => {
               <p>Delivery: Free</p>
               <p>Total: ₹{subtotal + 0}</p>
             </div>
+            <div className="my-4">
+              <h3 className="text-lg font-semibold mb-2">Payment Status:</h3>
+              {order.paid ? (
+                <span className="inline-block bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
+                  Paid (Online)
+                </span>
+              ) : (
+                <span className="inline-block bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">
+                  Cash on Delivery
+                </span>
+              )}
+            </div>
           </div>
+          
           <div>
             <h2 className='font-semibold mb-1 text-gray-700 text-lg max-md:ml-1'>Delivery address</h2>
             <div className='bg-gray-100 p-4 rounded-lg'>
