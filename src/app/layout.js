@@ -1,9 +1,10 @@
 import localFont from 'next/font/local';
+import Script from 'next/script'; // Import GA script
 import SessionWrapper from '../components/sessionWrapper';
 import Footer from '../components/layout/footer';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
-import HeaderWrapper from '../components/layout/HeaderWrapper'; 
+import HeaderWrapper from '../components/layout/HeaderWrapper';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -28,6 +29,21 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        {/* Google Analytics 4 Script */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          strategy="afterInteractive"
+        />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4YVBGVR798');
+          `}
+        </Script>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SessionWrapper>
           <Toaster />

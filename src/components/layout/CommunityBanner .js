@@ -18,9 +18,15 @@ const CommunityBanner = () => {
           JOIN OUR COMMUNITY & STAY IN TOUCH
         </h2>
 
-        <button className="mt-8 bg-primary text-white w-fit px-6 py-2 uppercase font-medium tracking-wider hover:brightness-110 transition duration-300 mx-auto">
+        <a
+          href="https://www.instagram.com/sas_youaremadetobethebest?utm_source=ig_web_button_share_sheet&igsh=Mzl0ZjB2NXRzeGgy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block mt-8 bg-primary text-white w-fit px-6 py-2 border border-white rounded-lg
+           uppercase font-medium tracking-wider hover:brightness-110 transition duration-300 mx-auto"
+        >
           CHECK US OUT
-        </button>
+        </a>
       </div>
     </section>
   );

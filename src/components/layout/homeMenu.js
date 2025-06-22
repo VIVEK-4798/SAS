@@ -7,59 +7,60 @@ import Loader from "../../components/loader";
 
 const HomeMenu = () => {
   const [bestSellers, setBestSellers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [featuredItems, setFeaturedItems] = useState([]);
-  
-    useEffect(() => {
-      setLoading(true);
-      fetch("/api/menu-items?featured=true")
-        .then((res) => res.json())
-        .then((items) => {
-          setFeaturedItems(items);
-          console.log("Featured items:", items);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }, []);
+  const [loadingFeatured, setLoadingFeatured] = useState(true);
+  const [loadingBestSellers, setLoadingBestSellers] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    fetch("/api/menu-items")
+    setLoadingFeatured(true);
+    fetch("/api/menu-items?featured=true")
       .then((res) => res.json())
-      .then((menuItems) => {
-        const bestSellers = menuItems.slice(-9);
-        setBestSellers(bestSellers);
-        setLoading(false);
+      .then((items) => {
+        setFeaturedItems(items);
+        setLoadingFeatured(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => setLoadingFeatured(false));
+  }, []);
+
+  useEffect(() => {
+    setLoadingBestSellers(true);
+    fetch("/api/menu-items?bestseller=true")
+      .then((res) => res.json())
+      .then((items) => {
+        setBestSellers(items);
+        setLoadingBestSellers(false);
+      })
+      .catch(() => setLoadingBestSellers(false));
   }, []);
 
   return (
     <section>
-     <div className="absolute left-0 right-0 w-full justify-start hidden md:flex">
-      <div className="absolute left-0 -top-[70px] text-left -z-10">
-        <Image
-          src="/female-image.png"
-          width={250}
-          height={400}
-          alt="model"
-          className="md:w-[250px] md:h-auto object-contain"
-        />
+      <div className="absolute left-0 right-0 w-full justify-start hidden md:flex">
+        <div className="absolute left-0 -top-[70px] text-left -z-10">
+          <Image
+            src="/female-image.png"
+            width={250}
+            height={400}
+            alt="model"
+            className="md:w-[250px] md:h-auto object-contain"
+          />
+        </div>
+        <div className="absolute -top-[100px] right-0 -z-10">
+          <Image
+            src={"/cloth2.png"}
+            width={250}
+            height={400}
+            className="md:w-[250px] md:h-auto"
+            alt={"model2"}
+          />
+        </div>
       </div>
-      <div className="absolute -top-[100px] right-0 -z-10">
-        <Image
-          src={"/cloth2.png"}
-          width={250}
-          height={400}
-          className="md:w-[250px] md:h-auto"
-          alt={"model2"}
-        />
-      </div>
-    </div>
+
+      {/* Best Sellers */}
       <div className="text-center mb-4">
         <SectionHeaders subHeader={"Check out"} mainHeader={"Our Best Sellers"} />
       </div>
-      {loading ? (
+      {loadingBestSellers ? (
         <Loader />
       ) : (
         <div className="grid sm:grid-cols-3 gap-4">
@@ -67,17 +68,19 @@ const HomeMenu = () => {
             bestSellers.map((item, index) => <MenuItems {...item} key={index} />)}
         </div>
       )}
-      {/* <div className="text-center mb-4 mt-10">
+
+      {/* Featured Products */}
+      <div className="text-center mb-4 mt-10">
         <SectionHeaders subHeader={"Spotlight"} mainHeader={"Our Featured Products"} />
       </div>
-      {loading ? (
+      {loadingFeatured ? (
         <Loader />
       ) : (
         <div className="grid sm:grid-cols-3 gap-4">
           {featuredItems.length > 0 &&
             featuredItems.map((item, index) => <MenuItems {...item} key={index} />)}
         </div>
-      )} */}
+      )}
     </section>
   );
 };

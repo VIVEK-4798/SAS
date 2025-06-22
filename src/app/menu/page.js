@@ -35,19 +35,25 @@ const MenuPage = () => {
       });
   }, []);
 
-  // Scroll to anchor on hash change
-  useEffect(() => {
-    if (!loading) {
+// Scroll to anchor after categories render
+useEffect(() => {
+  if (!loading) {
+    const scrollToHash = () => {
       const hash = window.location.hash;
       if (hash) {
         const id = hash.substring(1); // remove '#'
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          setTimeout(scrollToHash, 100);
         }
       }
-    }
-  }, [loading]);
+    };
+
+    scrollToHash();
+  }
+}, [loading, categories]);
 
   return (
     <section className='mt-8'>

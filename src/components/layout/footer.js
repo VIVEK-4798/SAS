@@ -130,7 +130,7 @@ const Footer = () => {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center text-white/50 border-t border-white/20 pt-6">
-          <p>&copy; 2025 sas.com</p>
+          <p>&copy; 2025 sasyouaremadetobethebest.shop</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a href="#" className="hover:text-white">
               <i className="fab fa-facebook-f"></i>

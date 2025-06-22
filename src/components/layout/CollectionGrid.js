@@ -12,7 +12,7 @@ export default function CollectionGrid() {
     {
       title: "Women’s Collection",
       src: "/images/female-collection.avif",
-      targetId: "womenswear",
+      targetId: "women",
     },
     {
       title: "Accessories Collection",
