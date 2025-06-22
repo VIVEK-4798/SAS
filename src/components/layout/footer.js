@@ -59,11 +59,23 @@ const Footer = () => {
       <footer className="bg-primary text-white px-6 md:px-16 py-12 text-sm">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           {/* Contact */}
-          <div className="space-y-3">
-            <h4 className="uppercase font-semibold text-white">Contact</h4>
-            <p>Email: sassingh224@gmail.com</p>
-          </div>
+          <div className="space-y-3 text-sm text-gray-200">
+            <h4 className="uppercase font-semibold text-white text-base">Contact</h4>
 
+            <div>
+              <p className="font-medium text-white">Email:</p>
+              <p>sassingh224@gmail.com</p>
+            </div>
+
+            <div>
+              <p className="font-medium text-white">Address:</p>
+              <p>
+                Whitefield,<br />
+                Bengaluru – 560066,<br />
+                Karnataka, India
+              </p>
+            </div>
+          </div>
           {/* Shop */}
           <div className="space-y-3">
             <h4 className="uppercase font-semibold text-white">Shop</h4>

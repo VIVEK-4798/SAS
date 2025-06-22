@@ -20,7 +20,7 @@ const Subscribe = () => {
     const data = await res.json();
 
     if (res.ok) {
-      toast.success("You're subscribed!");
+      toast.success("You are subscribed!");
       setEmail('');
     } else {
       toast.error(data?.error || data?.message || 'Subscription failed');

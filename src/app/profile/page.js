@@ -20,7 +20,6 @@ const ProfilePage = () => {
   async function handleProfileInfoUpdate(ev, data) {
     ev.preventDefault();
 
-    // ✅ Ensure image is a string (not an array)
     const safeImage = Array.isArray(data.image) ? data.image[0] : data.image;
 
     const payload = {

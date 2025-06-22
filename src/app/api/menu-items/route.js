@@ -54,15 +54,24 @@ export async function PUT(req){
 
 }
 
-export async function GET(){
+export async function GET(req) {
+    await mongoose.connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
 
-        await mongoose.connect(process.env.MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });  
+    const url = new URL(req.url);
+    const isFeatured = url.searchParams.get('featured');
+    const isBestSeller = url.searchParams.get('bestseller');
 
-        return Response.json(await MenuItem.find())
+    const filter = {};
+    if (isFeatured === 'true') filter.isFeatured = true;
+    if (isBestSeller === 'true') filter.isBestSeller = true;
+
+    const items = await MenuItem.find(filter);
+    return Response.json(items);
 }
+
 
 export async function DELETE(req){
 

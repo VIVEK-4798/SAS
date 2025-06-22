@@ -8,6 +8,19 @@ import Loader from "../../components/loader";
 const HomeMenu = () => {
   const [bestSellers, setBestSellers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [featuredItems, setFeaturedItems] = useState([]);
+  
+    useEffect(() => {
+      setLoading(true);
+      fetch("/api/menu-items?featured=true")
+        .then((res) => res.json())
+        .then((items) => {
+          setFeaturedItems(items);
+          console.log("Featured items:", items);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -54,6 +67,17 @@ const HomeMenu = () => {
             bestSellers.map((item, index) => <MenuItems {...item} key={index} />)}
         </div>
       )}
+      {/* <div className="text-center mb-4 mt-10">
+        <SectionHeaders subHeader={"Spotlight"} mainHeader={"Our Featured Products"} />
+      </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="grid sm:grid-cols-3 gap-4">
+          {featuredItems.length > 0 &&
+            featuredItems.map((item, index) => <MenuItems {...item} key={index} />)}
+        </div>
+      )} */}
     </section>
   );
 };

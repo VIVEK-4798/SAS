@@ -5,7 +5,6 @@ import { FaChevronLeft, FaChevronRight, FaShoppingCart } from 'react-icons/fa';
 
 const MenuItemTile = ({ onAddToCart, ...item }) => {
   const { image, description, name, basePrice, sizes, extraIngredientsPrices } = item;
-  console.log(extraIngredientsPrices);
 
   const validImages = image?.length > 0 ? image : ["/sas2-logo.jpg"];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

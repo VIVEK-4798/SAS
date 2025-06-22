@@ -11,6 +11,8 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
     const [category, setCategory] = useState(menuItem?.category || '');
     const [categories, setCategories] = useState([]);
     const [extraIngredientsPrices, setExtraIngredientsPrices] = useState(menuItem?.extraIngredientsPrices || []);
+    const [isFeatured, setIsFeatured] = useState(menuItem?.isFeatured || false);
+    const [isBestSeller, setIsBestSeller] = useState(menuItem?.isBestSeller || false);
 
     const [errors, setErrors] = useState({});
 
@@ -44,7 +46,7 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
         ev.preventDefault();
         if (!validateForm()) return; 
 
-        onSubmit(ev, { image, name, description, basePrice, sizes, extraIngredientsPrices, category });
+        onSubmit(ev, { image, name, description, basePrice, sizes, extraIngredientsPrices, category, isFeatured, isBestSeller });
     };
 
     return (
@@ -103,6 +105,27 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
                         setProps={setExtraIngredientsPrices}
                     />
 
+                        <div className="flex gap-4 mt-4">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                type="checkbox" 
+                                className="toggle-checkbox" 
+                                checked={isFeatured} 
+                                onChange={(e) => setIsFeatured(e.target.checked)} 
+                                />
+                                <span>Featured</span>
+                            </label>
+                            
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input 
+                                type="checkbox" 
+                                className="toggle-checkbox" 
+                                checked={isBestSeller} 
+                                onChange={(e) => setIsBestSeller(e.target.checked)} 
+                                />
+                                <span>Bestseller</span>
+                            </label>
+                            </div>
                     <button type='submit' className="mt-4 bg-primary text-white px-4 py-2 rounded-lg">
                         Save
                     </button>
