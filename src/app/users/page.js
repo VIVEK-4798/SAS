@@ -30,6 +30,7 @@ const UserPage = () => {
       const data = await res.json();
       setUsers(data.users);
       setTotalUsers(data.totalUsers);
+      
     } catch (err) {
       console.error('Failed to fetch users:', err);
     } finally {
