@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
       <head>
         {/* Google Analytics 4 Script */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          src="https://www.googletagmanager.com/gtag/js?id=G-4YVBGVR798"
           strategy="afterInteractive"
         />
         <Script id="ga-init" strategy="afterInteractive">
