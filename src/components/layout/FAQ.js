@@ -17,7 +17,7 @@ const FAQ = () => {
     },
     {
       question: 'What is the return policy?',
-      answer: 'Returns are accepted within 14 days of delivery for unworn, unwashed items in their original packaging. Please check our Return Policy page.',
+      answer: 'Please note that currently we do not offer any replacements or refunds for purchased items. All sales are final. Kindly check sizes and product details before confirming your order.',
     },
     {
       question: 'How much is shipping?',
@@ -25,7 +25,7 @@ const FAQ = () => {
     },
     {
       question: 'Other concerns & questions?',
-      answer: 'Feel free to reach out via our contact form or email support@yourbrand.com — we usually respond within 24 hours.',
+      answer: 'Feel free to reach out via our contact form or email sassingh224@gmail.com — we usually respond within 24 hours.',
     },
   ];
 

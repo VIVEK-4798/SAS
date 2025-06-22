@@ -75,14 +75,23 @@ const Footer = () => {
             </Link>
           </div>
 
-          {/* Terms & Conditions */}
-          <div className="space-y-3">
-            <h4 className="uppercase font-semibold text-white">Terms &amp; Conditions</h4>
-            <p className="text-white/80 leading-relaxed">
-              Please note that currently we do not offer any replacements or refunds for purchased items.
-              All sales are final. Kindly check sizes and product details before confirming your order.
-            </p>
-          </div>
+          {/* Terms & Conditions & Privacy Policy */}
+            <div className="space-y-3">
+              <Link href="/termCondition" className="uppercase font-semibold text-white">Terms and Conditions</Link>
+              <p className="text-white/80 leading-relaxed">
+                Please note that currently we do not offer any replacements or refunds for purchased items.
+                All sales are final. Kindly check sizes and product details before confirming your order.
+              </p>
+              <Link
+                href="/privacy-policy"
+                className="uppercase font-semibold text-white mt-4 inline-block"
+              >
+                Privacy Policy
+              </Link>
+              <p className="text-white/80" style={{ marginTop: '0' }}>
+                We respect your privacy and do not share your data.
+              </p>
+            </div>
 
           {/* Newsletter */}
           <div className="space-y-3">
