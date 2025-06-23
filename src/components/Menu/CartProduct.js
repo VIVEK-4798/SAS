@@ -79,9 +79,9 @@ const CartProduct = ({ product, index, onRemove }) => {
       </div>
 
       {/* Disclaimer */}
-      <div className="mt-3 px-3 py-2 bg-yellow-50 border-l-4 border-yellow-400 text-sm text-gray-700 rounded">
+      {/* <div className="mt-3 px-3 py-2 bg-yellow-50 border-l-4 border-yellow-400 text-sm text-gray-700 rounded">
         <strong>Note:</strong> We currently do not offer refunds or replacements. Please review your order carefully before proceeding.
-      </div>
+      </div> */}
     </div>
   );
 };
