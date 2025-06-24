@@ -22,6 +22,11 @@ const UserTabs = ({ isAdmin }) => {
             Categories
           </Link>
           <Link 
+            href="/coupons"
+            className={path === '/coupons' ? 'active' : ''}>
+            coupons
+          </Link>
+          <Link 
             href="/menu-items"
             className={path.includes('menu-items') ? 'active' : ''}>
             Collection Items

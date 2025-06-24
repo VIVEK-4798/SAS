@@ -29,6 +29,10 @@ input[type="text"]{
     @apply block w-full mb-2 rounded-xl; 
     @apply block border p-2 border-borclr bg-secondry;
 }
+input[type="number"]{
+    @apply block w-full mb-2 rounded-xl; 
+    @apply block border p-2 border-borclr bg-secondry;
+}
 label{
     @apply text-gray-500 text-sm leading-tight ml-1;
 }

@@ -33,7 +33,7 @@ const DeleteButton = ({ label, icon, onDelete }) => {
     <button
       onClick={() => setShowConfirm(true)}
       type="button"
-      className="flex items-center gap-2 px-3 py-1 border border-[#F9BC75] rounded hover:bg-red-100 transition"
+      className="flex items-center gap-2 px-3 py-1 border border-[#F9BC75] rounded-xl hover:bg-red-100 transition"
     >
       {icon && <span>{icon}</span>}
       {label && <span>{label}</span>}
