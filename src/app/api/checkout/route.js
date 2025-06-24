@@ -16,18 +16,10 @@ export async function POST(req) {
     useUnifiedTopology: true,
   });
 
-  const { userInfo, cartProducts } = await req.json();
+  const { userInfo, cartProducts, couponDiscount } = await req.json();
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email;
 
-  const orderDoc = await Order.create({
-    userEmail,
-    ...userInfo,
-    cartProducts,
-    paid: false,
-  });
-
-  // Calculate total amount
   let totalAmount = 0;
   for (const cartProduct of cartProducts) {
     const productInfo = await MenuItem.findById(cartProduct._id);
@@ -48,11 +40,20 @@ export async function POST(req) {
     totalAmount += productPrice;
   }
 
-  // Add delivery charge (optional)
-  totalAmount += 0;
+  const finalAmount = totalAmount - (couponDiscount || 0);
+
+  const orderDoc = await Order.create({
+    userEmail,
+    ...userInfo,
+    cartProducts,
+    paid: false,
+    paymentMethod: 'online',
+    totalAmount: finalAmount,
+    couponDiscount: couponDiscount || 0,
+  });
 
   const razorpayOrder = await razorpay.orders.create({
-    amount: totalAmount * 100, // amount in paise
+    amount: finalAmount * 100, // amount in paise
     currency: 'INR',
     receipt: orderDoc._id.toString(),
     notes: {

@@ -11,7 +11,7 @@ export async function POST(req) {
       useUnifiedTopology: true,
     });
 
-    const { userInfo, cartProducts } = await req.json();
+    const { userInfo, cartProducts, couponDiscount } = await req.json();
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;
 
@@ -42,13 +42,16 @@ export async function POST(req) {
       totalAmount += productPrice;
     }
 
+    const finalAmount = totalAmount - (couponDiscount || 0);
+
     const orderDoc = await Order.create({
       userEmail,
       ...userInfo,
       cartProducts,
       paid: false,
       paymentMethod: 'COD',
-      totalAmount,
+      totalAmount: finalAmount,
+      couponDiscount: couponDiscount || 0,
     });
 
     return Response.json({
@@ -62,4 +65,3 @@ export async function POST(req) {
     });
   }
 }
-

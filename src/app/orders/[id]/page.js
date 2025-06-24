@@ -29,6 +29,8 @@ const OrderPage = () => {
         const res = await fetch('/api/orders?_id=' + id);
         if (!res.ok) throw new Error("Failed to fetch order");
         const orderData = await res.json();
+        console.log("Fetched order data:", orderData);
+        
         setOrder(orderData);
       } catch (err) {
         console.error("Error fetching order:", err);
@@ -43,15 +45,18 @@ const OrderPage = () => {
 
   let subtotal = 0;
   if (order?.cartProducts) {
-    for (const product of order?.cartProducts) {
+    for (const product of order.cartProducts) {
       subtotal += cartProductPrice(product);
     }
   }
 
+  const couponDiscount = order?.couponDiscount || 0;
+  const finalTotal = subtotal - couponDiscount;
+
   return (
     <section className='max-w-4xl mx-auto mt-8'>
       <div className='text-center'>
-        <SectionHeaders mainHeader="Your Order"/>
+        <SectionHeaders mainHeader="Your Order" />
         <div className="mt-4 mb-8">
           <p className="text-lg font-semibold">Thank you for shopping with SAS!</p>
           <p className="text-gray-700">Your order has been placed successfully. You’ll receive updates once your items are packed and shipped.</p>
@@ -70,7 +75,10 @@ const OrderPage = () => {
             <div className='text-right py-2 text-gray-500'>
               <p>Subtotal: ₹{subtotal}</p>
               <p>Delivery: Free</p>
-              <p>Total: ₹{subtotal + 0}</p>
+              {couponDiscount > 0 && (
+                <p className="text-green-600">Coupon Discount: - ₹{couponDiscount}</p>
+              )}
+              <p className="font-semibold text-black mt-1">Total: ₹{finalTotal}</p>
             </div>
             <div className="my-4">
               <h3 className="text-lg font-semibold mb-2">Payment Status:</h3>

@@ -27,6 +27,9 @@ const CartPage = () => {
 
   const [profileFetched, setProfileFetched] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("online");
+  const [coupons, setCoupons] = useState([]);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [orderCount, setOrderCount] = useState(0);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -57,6 +60,15 @@ const CartPage = () => {
           setProfileFetched(true);
         })
         .catch((error) => console.error("Error fetching profile:", error));
+
+      fetch("/api/coupons")
+        .then(res => res.json())
+        .then(data => setCoupons(data));
+
+      fetch("/api/orders")
+        .then(res => res.json())
+        .then(data => setOrderCount(data?.orders?.length || 0))
+        .catch(err => console.error("Failed to fetch orders", err));
     }
   }, [status]);
 
@@ -68,7 +80,11 @@ const CartPage = () => {
         fetch('/api/cod-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userInfo, cartProducts }),
+          body: JSON.stringify({
+            userInfo,
+            cartProducts,
+            couponDiscount: selectedCoupon?.discountAmount || 0
+          }),
         }).then(async (response) => {
           if (response.ok) {
             const data = await response.json();
@@ -92,7 +108,11 @@ const CartPage = () => {
       fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userInfo, cartProducts }),
+        body: JSON.stringify({
+          userInfo,
+          cartProducts,
+          couponDiscount: selectedCoupon?.discountAmount || 0
+        }),
       }).then(async (response) => {
         if (response.ok) {
           const orderData = await response.json();
@@ -149,33 +169,32 @@ const CartPage = () => {
     razorpay.open();
   }
 
-  let subtotal = cartProducts.reduce((sum, p) => sum + cartProductPrice(p), 0);
+let subtotal = cartProducts.reduce((sum, p) => sum + cartProductPrice(p), 0);
+let extraDiscounts = cartProducts.reduce((sum, p) => sum + (p.extraIngredientsPrices?.[0]?.price || 0), 0);
+
+let couponDiscountOnly = 0;
+let totalDiscount = extraDiscounts; // For display only
+
+if (selectedCoupon) {
+  const name = selectedCoupon.name;
+  const discount = selectedCoupon.discountAmount;
+
+  const isEligible =
+    (name === "SAVE100" && subtotal >= 999) ||
+    (name === "BIGSAVE200" && subtotal >= 1999) ||
+    (name === "WELCOME50" && orderCount === 0) ||
+    (!['SAVE100', 'BIGSAVE200', 'WELCOME50'].includes(name));
+
+  if (isEligible) {
+    couponDiscountOnly = discount;
+    totalDiscount += discount;
+  }
+}
+
+let totalAfterCoupon = subtotal - couponDiscountOnly;
+
 
   if (status === "loading" || !profileFetched) return <Loader />;
-
-  if (cartProducts?.length === 0) {
-    return (
-      <motion.section 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-md mx-auto mt-12 text-center"
-      >
-        <div className="bg-[#f7e8d5] rounded-xl p-8 shadow-sm border border-[#f8d7ac]">
-          <div className="flex justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Your cart feels light</h3>
-          <p className="text-gray-500 mb-6">No items in your cart yet. Let&apos;s find something special!</p>
-          <Link href="/menu" className="inline-block bg-primary hover:bg-primary-dark text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200">
-            Browse Menu
-          </Link>
-        </div>
-      </motion.section>
-    );
-  }
 
   return (
     <section className="mt-8">
@@ -188,15 +207,68 @@ const CartPage = () => {
           {cartProducts.map((product, index) => (
             <CartProduct product={product} onRemove={removeCartProducts} key={index} index={index} />
           ))}
+
+          {/* Coupon Dropdown */}
+          <div className="mb-4 mt-4">
+            <label htmlFor="coupon" className="block mb-1 font-medium text-gray-700">
+              Apply Coupon
+            </label>
+            <select
+              id="coupon"
+              className="w-full border p-2 rounded"
+              value={selectedCoupon?._id || ""}
+              onChange={(e) => {
+                const selectedId = e.target.value;
+                const coupon = coupons.find(c => c._id === selectedId);
+                if (!coupon) return;
+
+                if (coupon.name === "SAVE100" && subtotal < 999) {
+                  toast.error("SAVE100 requires a minimum subtotal of ₹999");
+                  return;
+                }
+                if (coupon.name === "BIGSAVE200" && subtotal < 1999) {
+                  toast.error("BIGSAVE200 requires a minimum subtotal of ₹1999");
+                  return;
+                }
+                if (coupon.name === "WELCOME50" && orderCount > 0) {
+                  toast.error("WELCOME50 is only for first-time customers");
+                  return;
+                }
+
+                setSelectedCoupon(coupon);
+              }}
+            >
+              <option value="">Select a Coupon</option>
+              {coupons.map((coupon) => {
+                const isDisabled =
+                  (coupon.name === "SAVE100" && subtotal < 999) ||
+                  (coupon.name === "BIGSAVE200" && subtotal < 1999) ||
+                  (coupon.name === "WELCOME50" && orderCount > 0);
+                return (
+                  <option
+                    key={coupon._id}
+                    value={coupon._id}
+                    disabled={isDisabled}
+                  >
+                    {coupon.name} - ₹{coupon.discountAmount} off {isDisabled ? "(Not eligible)" : ""}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
           <div className="flex justify-end items-center py-4 text-right pr-14">
             <div className="text-gray-500">
-              Subtotal:<br />Delivery:<br />Total:
+              Subtotal:<br />Delivery:<br />Total Discount:<br />Total:
             </div>
             <div className="font-semibold pl-2 text-right">
-              ₹{subtotal}<br />Free<br />₹{subtotal + 0}
+              ₹{subtotal}<br />Free<br />
+              - ₹{totalDiscount}<br />
+              ₹{totalAfterCoupon}
             </div>
           </div>
         </div>
+
         <div className="bg-[#f7e8d5] border border-[#f8d7ac] p-4 rounded-lg">
           <h2>Checkout</h2>
           <form onSubmit={proceedToCheckout}>
@@ -214,7 +286,7 @@ const CartPage = () => {
             </div>
 
             <button type="submit" className="w-full !bg-green-500 !border-green-500 text-white p-2 rounded-lg mt-4">
-              {paymentMethod === 'online' ? `Pay ₹${subtotal}` : `Place Order (COD)`}
+              {paymentMethod === 'online' ? `Pay ₹${totalAfterCoupon}` : `Place Order (COD)`}
             </button>
           </form>
         </div>
