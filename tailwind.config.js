@@ -18,12 +18,6 @@ module.exports = {
         primary: '#1B3B50',
         secondry: '#FBDDB9',
         borclr: '#FDCE96',
-        cocoa: '#3a2d1f',
-        taupe: '#5f5040',
-        bronze: '#744c3a',
-        sand: '#9a8879',
-        clay: '#7c6656',
-
       }
     },
   },

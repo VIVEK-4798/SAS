@@ -4,14 +4,7 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/libs/mongoConnect";
 import { User } from "@/app/models/user";
 import bcrypt from "bcryptjs";
-
-async function connectMongoose() {
-  const mongoose = (await import("mongoose")).default;
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(process.env.MONGO_URL);
-    console.log("Mongoose connected");
-  }
-}
+import { sendWelcomeEmail } from "../libs/sendWelcomeEmail";
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -64,5 +57,19 @@ export const authOptions = {
       return session;
     }
   },
-  pages: { signIn: "/login" }
+  pages: {
+    signIn: "/login"
+  },
+
+  events: {
+    async createUser({ user }) {
+      try {
+        console.log("New user created via Google:", user.email);
+        await sendWelcomeEmail(user.email);
+        console.log("Welcome email sent to Google user.");
+      } catch (err) {
+        console.error("Failed to send welcome email to Google user:", err);
+      }
+    }
+  }
 };

@@ -16,17 +16,14 @@ const handler = NextAuth({
           },
           async authorize(credentials, req) {
             try {
-              console.log("Authorize function triggered");
               // const { email, password } = credentials;
               
               const email = credentials?.email;
               const password = credentials?.password;
 
               await mongoose.connect(process.env.MONGO_URL);
-              console.log("Connected to database");
           
               const user = await User.findOne({ email });
-              console.log("User fetched:", user);
           
               if (!user) {
                 console.error("User not found");

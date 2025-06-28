@@ -1,5 +1,4 @@
 "use client";
-
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useContext, useState, useEffect } from "react";
@@ -9,6 +8,8 @@ import { faCartShopping, faBars, faChevronDown } from "@fortawesome/free-solid-s
 import Image from "next/image";
 
 function AuthLinks({ status, userName }) {
+  // console.log("userName", userName);
+
   if (status === "authenticated") {
     return (
       <>
@@ -21,6 +22,7 @@ function AuthLinks({ status, userName }) {
       </>
     );
   }
+  
   if (status === "unauthenticated") {
     return (
       <>
@@ -43,6 +45,7 @@ const Header = ({ overlay = false }) => {
   const [showMobileCategories, setShowMobileCategories] = useState(false);
   const [showDesktopDropdown, setShowDesktopDropdown] = useState(false);
   let hideDropdownTimeout;
+console.log(userData);
 
   if (userName?.includes(" ")) {
     userName = userName.split(" ")[0];

@@ -5,6 +5,7 @@ import Footer from '../components/layout/footer';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import HeaderWrapper from '../components/layout/HeaderWrapper';
+import StickyHeader from '../components/layout/StickyHeader';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
         <SessionWrapper>
           <Toaster />
           <HeaderWrapper />
+          <StickyHeader/>
           <main className="max-w-7xl mx-auto p-4 pt-0">{children}</main>
           <Footer />
         </SessionWrapper>
