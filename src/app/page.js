@@ -22,9 +22,9 @@ export default function Home() {
     if (status === 'unauthenticated') {
       const timer = setTimeout(() => {
         setShowPopup(true);
-      }, 7000); // 10 seconds delay
+      }, 7000); 
 
-      return () => clearTimeout(timer); // cleanup on unmount
+      return () => clearTimeout(timer); 
     }
   }, [status]);
 
