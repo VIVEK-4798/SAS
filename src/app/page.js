@@ -1,6 +1,7 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import MetaComponent from '@/components/MetaComponent';
 
 import FullScreenBanner from '../components/layout/FullScreenBanner';
 import Hero from '../components/layout/hero';
@@ -15,21 +16,23 @@ import Subscribe from '../components/layout/Subscribe';
 import BenefitsBar from '../components/layout/BenefitsBar';
 
 export default function Home() {
-  const { status } = useSession(); // check login status
+  const { status } = useSession();
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       const timer = setTimeout(() => {
         setShowPopup(true);
-      }, 7000); // 10 seconds delay
+      }, 7000); 
 
-      return () => clearTimeout(timer); // cleanup on unmount
+      return () => clearTimeout(timer); 
     }
   }, [status]);
 
   return (
     <>
+      <MetaComponent title="HOME | SAS Fashion made effortless" description="Welcome to SAS — Fashion made effortless" />
+
       <FullScreenBanner />
 
       <div>

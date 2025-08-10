@@ -1,11 +1,12 @@
 import localFont from 'next/font/local';
-import Script from 'next/script'; // Import GA script
+import Script from 'next/script';
 import SessionWrapper from '../components/sessionWrapper';
 import Footer from '../components/layout/footer';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import HeaderWrapper from '../components/layout/HeaderWrapper';
 import StickyHeader from '../components/layout/StickyHeader';
+import ClientLayoutWrapper from './ClientLayoutWrapper'; 
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -20,7 +21,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: 'SAS',
+  title: 'SAS | Fashion Made Effortless',
   description: 'Best Shopping app',
   icons: {
     icon: '/sas-logo.jpg',
@@ -30,29 +31,29 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <head>
-        {/* Google Analytics 4 Script */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-4YVBGVR798"
-          strategy="afterInteractive"
-        />
-        <Script id="ga-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-4YVBGVR798');
-          `}
-        </Script>
-      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <SessionWrapper>
-          <Toaster />
-          <HeaderWrapper />
-          <StickyHeader/>
-          <main className="max-w-7xl mx-auto p-4 pt-0">{children}</main>
-          <Footer />
-        </SessionWrapper>
+        <ClientLayoutWrapper> {/* ✅ HelmetProvider is now client-side */}
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-4YVBGVR798"
+            strategy="afterInteractive"
+          />
+          <Script id="ga-init" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-4YVBGVR798');
+            `}
+          </Script>
+
+          <SessionWrapper>
+            <Toaster />
+            <HeaderWrapper />
+            <StickyHeader />
+            <main className="max-w-7xl mx-auto p-4 pt-0">{children}</main>
+            <Footer />
+          </SessionWrapper>
+        </ClientLayoutWrapper>
       </body>
     </html>
   );

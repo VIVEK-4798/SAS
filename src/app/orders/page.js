@@ -33,53 +33,60 @@ const OrdersPage = () => {
     }
   };
 
-const handleDelete = async (orderId) => {
-  toast(
-    (t) => (
-      <div className="flex flex-col gap-2">
-        <span>Are you sure you want to delete this order?</span>
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={() => toast.dismiss(t.id)}
-            className="px-2 py-1 border border-gray-300 rounded"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={async () => {
-              toast.dismiss(t.id); // Close the prompt first
+  const handleDelete = async (orderId) => {
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-2">
+          <span>Are you sure you want to delete this order?</span>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-2 py-1 border border-gray-300 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={async () => {
+                toast.dismiss(t.id);
 
-              const promise = new Promise(async (resolve, reject) => {
-                const res = await fetch(`/api/orders?id=${orderId}`, {
-                  method: "DELETE",
+                const promise = new Promise(async (resolve, reject) => {
+                  const res = await fetch(`/api/orders?id=${orderId}`, {
+                    method: "DELETE",
+                  });
+                  if (res.ok) {
+                    setOrders((prev) => prev.filter((o) => o._id !== orderId));
+                    resolve("Deleted");
+                  } else {
+                    reject("Failed to delete order");
+                  }
                 });
-                if (res.ok) {
-                  setOrders((prev) => prev.filter((o) => o._id !== orderId));
-                  resolve("Deleted");
-                } else {
-                  reject("Failed to delete order");
-                }
-              });
 
-              toast.promise(promise, {
-                loading: "Deleting...",
-                success: "Order deleted successfully",
-                error: (err) => err || "Failed to delete order",
-              });
-            }}
-            className="px-2 py-1 bg-red-500 text-white rounded"
-          >
-            Yes, Delete
-          </button>
+                toast.promise(promise, {
+                  loading: "Deleting...",
+                  success: "Order deleted successfully",
+                  error: (err) => err || "Failed to delete order",
+                });
+              }}
+              className="px-2 py-1 bg-red-500 text-white rounded"
+            >
+              Yes, Delete
+            </button>
+          </div>
         </div>
-      </div>
-    ),
-    {
-      duration: 10000, // Keeps the prompt long enough
-    }
-  );
-};
+      ),
+      {
+        duration: 10000,
+      }
+    );
+  };
 
+  // Check if an order is within 6 hours
+  const canDeleteOrder = (createdAt) => {
+    const orderTime = new Date(createdAt).getTime();
+    const now = Date.now();
+    const sixHours = 6 * 60 * 60 * 1000; // ms
+    return now - orderTime <= sixHours;
+  };
 
   useEffect(() => {
     fetchOrders(currentPage);
@@ -107,6 +114,11 @@ const handleDelete = async (orderId) => {
         </div>
       ) : (
         <>
+          {!profile?.isAdmin && orders.length > 0 && (
+            <p className="text-sm text-gray-500 mb-4 mt-5">
+              <strong>Note:</strong> Orders can only be cancelled within the first 6 hours after placing them.
+            </p>
+          )}
           <div className="mt-8">
             {orders.map((order, i) => (
               <div
@@ -127,13 +139,21 @@ const handleDelete = async (orderId) => {
                   </div>
                 </div>
                 <div className="justify-end text-right flex gap-2 items-center whitespace-nowrap">
-                  <Link href={"/orders/" + order._id} className="button" style={{ border: '1px solid #F9BC75' }}>
+                  <Link
+                    href={"/orders/" + order._id}
+                    className="button"
+                    style={{ border: "1px solid #F9BC75" }}
+                  >
                     Show order
                   </Link>
-                  <DeleteButton
-                    onDelete={() => handleDelete(order._id)}
-                    icon={<FaTrash />}
-                  />
+
+                  {/* Admin always sees delete, user sees delete only if within 6 hours */}
+                  {(profile?.isAdmin || canDeleteOrder(order.createdAt)) && (
+                    <DeleteButton
+                      onDelete={() => handleDelete(order._id)}
+                      icon={<FaTrash />}
+                    />
+                  )}
                 </div>
               </div>
             ))}
@@ -152,7 +172,9 @@ const handleDelete = async (orderId) => {
               <button
                 key={i}
                 onClick={() => handlePageClick(i + 1)}
-                className={`px-3 py-1 border rounded ${currentPage === i + 1 ? "bg-primary text-white" : ""}`}
+                className={`px-3 py-1 border rounded ${
+                  currentPage === i + 1 ? "bg-primary text-white" : ""
+                }`}
               >
                 {i + 1}
               </button>
